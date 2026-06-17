@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJN DSN | Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+        
+        body {
+            background-color: #0c0714;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-image: linear-gradient(rgba(18, 10, 36, 0.3) 1px, transparent 1px), linear-gradient(90px, rgba(18, 10, 36, 0.3) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .neon-text-pink {
+            text-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f, 0 0 20px #ff007f;
+        }
+
+        .neon-text-cyan {
+            text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+        }
+
+        .neon-border-pink {
+            box-shadow: 0 0 10px #ff007f, inset 0 0 5px #ff007f;
+            border: 2px solid #ff007f;
+        }
+
+        .neon-border-cyan {
+            box-shadow: 0 0 10px #00f0ff, inset 0 0 5px #00f0ff;
+            border: 2px solid #00f0ff;
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90px, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 999;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+
+    <header class="p-6 flex justify-between items-center max-w-6xl mx-auto border-b border-purple-900">
+        <h1 class="text-5xl font-black tracking-wider text-pink-500 neon-text-pink font-['Share_Tech_Mono']">AJN</h1>
+        <nav class="flex gap-6 items-center">
+            <a href="#thumbnails" class="hover:text-cyan-400 transition font-['Share_Tech_Mono']">// THUMBNAILS</a>
+            <a href="#posters" class="hover:text-pink-400 transition font-['Share_Tech_Mono']">// POSTERS</a>
+            <a href="#contact" class="hover:text-cyan-400 transition font-['Share_Tech_Mono']">// CONTACT</a>
+            <button onclick="openLoginModal()" class="px-4 py-1 neon-border-cyan text-sm text-cyan-400 font-['Share_Tech_Mono'] hover:bg-cyan-500 hover:text-black transition">SYS_LOGIN</button>
+        </nav>
+    </header>
+
+    <div class="max-w-4xl mx-auto my-8 p-4">
+        <div class="neon-border-pink p-1 rounded-xl bg-black">
+            <iframe src="https://open.spotify.com/playlist/3Cam6NTFHkK08lUXfntCoE?si=bdeacd59f8e841e7&pt=11e8bab5be5ece1f44cb014f29b31e79" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        
+        <section id="thumbnails" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-cyan-400 neon-text-cyan font-['Share_Tech_Mono']">> INITIALIZING_THUMBNAILS (Rate: $25)</h2>
+            <div id="thumbnail-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-purple-950/40 p-3 rounded-lg border border-purple-800/60 group hover:border-cyan-400 transition-all duration-300">
+                    <div class="aspect-video bg-zinc-900 rounded overflow-hidden mb-3">
+                        <img src="images/thumb1.jpg" onerror="this.src='https://via.placeholder.com/1920x1080/160e26/00f0ff?text=AJN+Thumbnail+1'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                    </div>
+                    <div class="flex justify-between items-center font-['Share_Tech_Mono']">
+                        <span class="text-zinc-400">PROJECT_01.RAW</span>
+                        <span class="text-cyan-400">$25</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="posters" class="mb-20">
+            <h2 class="text-3xl font-bold mb-8 text-pink-500 neon-text-pink font-['Share_Tech_Mono']">> COMPILING_ART_POSTERS (Rate: $40)</h2>
+            <div id="poster-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-purple-950/40 p-3 rounded-lg border border-purple-800/60 group hover:border-pink-500 transition-all duration-300">
+                    <div class="aspect-[3/4] bg-zinc-900 rounded overflow-hidden mb-3">
+                        <img src="images/poster1.jpg" onerror="this.src='https://via.placeholder.com/1200x1600/160e26/ff007f?text=AJN+Art+Poster+1'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                    </div>
+                    <div class="flex justify-between items-center font-['Share_Tech_Mono']">
+                        <span class="text-zinc-400">POSTER_RETR_01</span>
+                        <span class="text-pink-500">$40</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="max-w-2xl mx-auto bg-black/60 p-8 rounded-xl border-2 border-purple-900 relative">
+            <div class="absolute top-0 left-4 -translate-y-1/2 bg-purple-950 px-3 py-1 font-['Share_Tech_Mono'] text-pink-500 text-sm border border-pink-500">SECURE_TERMINAL_V.867</div>
+            <h3 class="text-xl mb-6 font-['Share_Tech_Mono'] text-zinc-400">> CONNECT_WITH_AJN:</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center font-['Share_Tech_Mono']">
+                <a href="https://instagram.com/AJN_DSN" target="_blank" class="p-4 bg-purple-950/30 rounded border border-purple-800 hover:border-pink-500 transition text-pink-400 hover:text-white">
+                    <i class="fab fa-instagram text-2xl mb-2"></i>
+                    <p class="text-xs">@AJN_DSN</p>
+                </a>
+                <div class="p-4 bg-purple-950/30 rounded border border-purple-800 hover:border-cyan-400 transition text-cyan-400">
+                    <i class="fab fa-discord text-2xl mb-2"></i>
+                    <p class="text-xs">elyas867</p>
+                </div>
+                <a href="mailto:xilyassexss@gmail.com" class="p-4 bg-purple-950/30 rounded border border-purple-800 hover:border-pink-500 transition text-pink-400 hover:text-white">
+                    <i class="far fa-envelope text-2xl mb-2"></i>
+                    <p class="text-xs">xilyassexss</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <div id="loginModal" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden z-50 p-4">
+        <div class="bg-zinc-950 p-8 rounded-xl border-2 border-cyan-400 max-w-sm w-full font-['Share_Tech_Mono'] relative">
+            <h3 class="text-2xl text-cyan-400 neon-text-cyan mb-6 text-center">ACCESS_GATEWAY</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-zinc-500 text-xs mb-1">USER_ID</label>
+                    <input type="text" id="username" class="w-full bg-zinc-900 border border-purple-900 p-2 text-cyan-400 focus:outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="block text-zinc-500 text-xs mb-1">ACCESS_KEY</label>
+                    <input type="password" id="password" class="w-full bg-zinc-900 border border-purple-900 p-2 text-pink-500 focus:outline-none focus:border-pink-500">
+                </div>
+                <button onclick="checkCredentials()" class="w-full py-2 bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition shadow-lg">GRANT_ACCESS</button>
+                <button onclick="closeLoginModal()" class="w-full py-1 text-xs text-zinc-500 hover:text-white transition">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminPanel" class="fixed bottom-4 right-4 bg-zinc-950 p-6 rounded-xl border-2 border-pink-500 max-w-xs w-full font-['Share_Tech_Mono'] hidden z-50 shadow-2xl">
+        <div class="flex justify-between items-center mb-4 border-b border-purple-900 pb-2">
+            <span class="text-pink-500 neon-text-pink">⚙️ AJN_DASHBOARD</span>
+            <button onclick="logout()" class="text-xs text-zinc-400 hover:text-red-500">LOGOUT</button>
+        </div>
+        <div class="space-y-3 text-xs">
+            <div>
+                <label class="block text-zinc-400 mb-1">IMAGE FILE NAME (inside images/)</label>
+                <input type="text" id="imgName" placeholder="e.g., project5.jpg" class="w-full bg-zinc-900 border border-purple-800 p-2 text-white focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-zinc-400 mb-1">PROJECT CATEGORY</label>
+                <select id="imgCategory" class="w-full bg-zinc-900 border border-purple-800 p-2 text-white focus:outline-none">
+                    <option value="thumb">THUMBNAIL ($25)</option>
+                    <option value="poster">ART POSTER ($40)</option>
+                </select>
+            </div>
+            <button onclick="uploadProject()" class="w-full py-2 bg-pink-600 text-white font-bold hover:bg-pink-500 transition">DEPLOY_TO_LIVE_GRID</button>
+        </div>
+    </div>
+
+    <script>
+        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+        
+        function checkCredentials() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            if(u === 'ajn_boss' && p === 'retro2026') {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                closeLoginModal();
+                document.getElementById('adminPanel').classList.remove('hidden');
+            } else {
+                alert('🚨 SECURITY BREACH: INVALID ACCESS KEY');
+            }
+        }
+
+        function logout() { document.getElementById('adminPanel').classList.add('hidden'); }
+
+        function uploadProject() {
+            const name = document.getElementById('imgName').value;
+            const cat = document.getElementById('imgCategory').value;
+            if(!name) return alert('Enter file name!');
+
+            const gridId = cat === 'thumb' ? 'thumbnail-grid' : 'poster-grid';
+            const borderClass = cat === 'thumb' ? 'hover:border-cyan-400' : 'hover:border-pink-500';
+            const textClass = cat === 'thumb' ? 'text-cyan-400' : 'text-pink-500';
+            const price = cat === 'thumb' ? '$25' : '$40';
+            const aspect = cat === 'thumb' ? 'aspect-video' : 'aspect-[3/4]';
+
+            const card = document.createElement('div');
+            card.className = `bg-purple-950/40 p-3 rounded-lg border border-purple-800/60 group ${borderClass} transition-all duration-300`;
+            card.innerHTML = `
+                <div class="${aspect} bg-zinc-900 rounded overflow-hidden mb-3">
+                    <img src="images/${name}" onerror="this.src='https://via.placeholder.com/800x600/160e26/ffffff?text=${name}'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                </div>
+                <div class="flex justify-between items-center font-['Share_Tech_Mono']">
+                    <span class="text-zinc-400">${name.toUpperCase()}</span>
+                    <span class="${textClass}">${price}</span>
+                </div>
+            `;
+            document.getElementById(gridId).appendChild(card);
+            confetti({ particleCount: 30, spread: 40 });
+        }
+    </script>
+</body>
+</html>
