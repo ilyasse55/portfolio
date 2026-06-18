@@ -6,114 +6,60 @@
     <title>AJN DSN | Vault</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
     <style>
         body { 
-            margin: 0; 
-            padding: 0; 
-            background-color: #05020a; 
-            color: white; 
-            font-family: sans-serif; 
-            overflow-x: hidden; 
+            margin: 0; padding: 0; 
+            background-color: #05020a; color: white; 
+            font-family: sans-serif; overflow-x: hidden; 
         }
         
-        /* 1. شاشة الدخول (GUNS.LOL STYLE ENTER SCREEN) */
+        /* 1. شاشة الدخول الرئيسية */
         #enter-screen {
-            position: fixed;
-            top: 0; left: 0; 
-            width: 100%; height: 100%;
-            background-color: #05020a;
-            z-index: 99999 !important; /* ديما الفوق باش يتكليكا */
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #05020a; z-index: 99999 !important;
+            cursor: pointer; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             transition: opacity 0.8s ease-out;
         }
 
         /* 2. الشمس الكبيرة فـ الخلفية */
         .sun-bg {
-            position: fixed;
-            bottom: -15%; /* شادة المساحة لتحت */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 900px; 
-            height: 900px;
+            position: fixed; bottom: -15%; left: 50%; transform: translateX(-50%);
+            width: 900px; height: 900px;
             background: linear-gradient(to bottom, #ff007f, #ffcc00);
-            border-radius: 50%;
-            box-shadow: 0 0 200px #ff007f;
-            z-index: -2;
+            border-radius: 50%; box-shadow: 0 0 200px #ff007f; z-index: -2;
         }
 
-        /* 3. الشبكة المتحركة (Synthwave Grid Floor) */
+        /* 3. الشبكة المتحركة (Synthwave Grid) */
         .grid-floor {
-            position: fixed; 
-            bottom: 0; 
-            width: 100%; 
-            height: 50%;
-            background-image: 
-                linear-gradient(to right, #ff00ff 2px, transparent 2px), 
-                linear-gradient(to bottom, #ff00ff 2px, transparent 2px);
-            background-size: 50px 50px;
-            transform: perspective(500px) rotateX(60deg);
-            z-index: -1;
-            animation: moveGrid 2s linear infinite;
+            position: fixed; bottom: 0; width: 100%; height: 50%;
+            background-image: linear-gradient(to right, #ff00ff 2px, transparent 2px), linear-gradient(to bottom, #ff00ff 2px, transparent 2px);
+            background-size: 50px 50px; transform: perspective(500px) rotateX(60deg);
+            z-index: -1; animation: moveGrid 2s linear infinite;
         }
-        
-        @keyframes moveGrid { 
-            from { background-position: 0 0; } 
-            to { background-position: 0 50px; } 
-        }
+        @keyframes moveGrid { from { background-position: 0 0; } to { background-position: 0 50px; } }
 
-        /* 4. تنسيق حاوية النص والوضوح */
-        .text-container { 
-            position: relative; 
-            z-index: 10; 
-            text-align: center; 
-            padding-top: 100px; 
-        }
-
-        /* التوهج والوضوح للكلمة الزرقاء */
+        /* 4. تنسيق الوضوح للـ Thumbnail */
         .neon-glow-cyan { 
-            text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff; 
-            color: #ffffff; 
-            background: rgba(0, 0, 0, 0.6); /* خلفية داكنة باش تبان الكلمة */
-            padding: 2px 10px; 
-            border: 1px solid rgba(0, 240, 255, 0.5);
-            border-radius: 8px;
+            text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff; color: #ffffff; 
+            background: rgba(0, 0, 0, 0.6); padding: 2px 10px; 
+            border: 1px solid rgba(0, 240, 255, 0.5); border-radius: 8px;
         }
 
-        /* تنسيق كاسيت الصوت والزر */
         .cassette-container {
-            margin-top: 40px;
-            background: rgba(10, 5, 20, 0.85);
-            border: 2px solid #00f0ff;
-            border-radius: 12px;
-            padding: 20px;
-            max-width: 450px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+            background: rgba(10, 5, 20, 0.85); border: 2px solid #00f0ff;
+            border-radius: 12px; padding: 20px; max-width: 450px;
+            margin: 40px auto 20px auto; box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
         }
 
-        .audio-btn { 
-            width: 100%;
-            padding: 12px 24px; 
-            background: #00f0ff; 
-            color: black;
-            border: none; 
-            cursor: pointer; 
-            font-weight: bold; 
-            text-transform: uppercase;
-            border-radius: 6px;
-            transition: all 0.2s;
+        /* كروت عرض الصور والأثمنة */
+        .item-card {
+            background: rgba(15, 10, 25, 0.8); border: 1px solid rgba(255, 0, 127, 0.4);
+            border-radius: 8px; overflow: hidden; transition: all 0.3s;
         }
-        .audio-btn:hover {
-            background: #ff007f;
-            color: white;
-            box-shadow: 0 0 15px #ff007f;
-        }
+        .item-card:hover { transform: translateY(-5px); box-shadow: 0 0 15px #ff007f; }
     </style>
 </head>
 <body class="min-h-screen relative pb-24">
@@ -125,10 +71,16 @@
         </h2>
     </div>
 
+    <div class="absolute top-4 right-4 z-50">
+        <button onclick="openLogin()" class="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-lg shadow-lg font-mono text-xs tracking-wider transition">
+            <i class="fas fa-lock mr-2"></i>ADMIN LOG IN
+        </button>
+    </div>
+
     <div class="sun-bg"></div>
     <div class="grid-floor"></div>
 
-    <div class="text-container px-4">
+    <div class="relative z-10 text-center pt-20 px-4">
         <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white mb-4">
             Do you need <span class="neon-glow-cyan">a thumbnail</span>
         </h1>
@@ -136,69 +88,40 @@
             that boosts your CTR?
         </h2>
         
-        <p class="text-zinc-400 max-w-md mx-auto mb-8 text-sm md:text-base">
-            We make the best High Tier Thumbnails with a cinematic retro vibe.
-        </p>
-
         <div class="cassette-container">
             <div class="text-left text-xs font-mono text-cyan-400 mb-4 flex justify-between">
                 <span>SYSTEM_AUDIO: Venger.mp3</span>
                 <span id="tape-status">● READY</span>
             </div>
-            
-            <button id="playBtn" class="audio-btn" onclick="toggleAudio()">
+            <button id="playBtn" class="w-full py-3 bg-cyan-400 hover:bg-pink-500 text-black hover:text-white font-bold uppercase rounded-md transition" onclick="toggleAudio()">
                 <i id="playIcon" class="fas fa-play mr-2"></i> <span id="playText">INSERT TAPE / PLAY</span>
             </button>
-            
             <audio id="bgAudio" src="Venger.mp3" loop></audio>
+        </div>
+
+        <div class="max-w-6xl mx-auto mt-16 px-4">
+            <h3 class="text-xl font-bold font-mono tracking-widest text-pink-500 mb-8 text-left border-b border-pink-500/30 pb-2">
+                <i class="fas fa-th-large mr-2"></i>AVAILABLE WORK & PRICING
+            </h3>
+            
+            <div id="itemsGallery" class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div class="item-card">
+                    <div class="h-48 bg-zinc-800 flex items-center justify-center text-zinc-500 font-mono">Sample Thumbnail 1</div>
+                    <div class="p-4 flex justify-between items-center bg-black/40">
+                        <span class="font-bold text-white text-sm">Gaming Thumbnail</span>
+                        <span class="text-cyan-400 font-mono font-bold">$15.00</span>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="h-48 bg-zinc-800 flex items-center justify-center text-zinc-500 font-mono">Sample Thumbnail 2</div>
+                    <div class="p-4 flex justify-between items-center bg-black/40">
+                        <span class="font-bold text-white text-sm">Vlog Cinematic</span>
+                        <span class="text-cyan-400 font-mono font-bold">$20.00</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-        const audio = document.getElementById('bgAudio');
-        const playBtn = document.getElementById('playBtn');
-        const playText = document.getElementById('playText');
-        const playIcon = document.getElementById('playIcon');
-        const tapeStatus = document.getElementById('tape-status');
-
-        // دالة الدخول للموقع عند الضغط على الشاشة الأولى
-        function initializeVault() {
-            console.log("Vault initialization triggered!");
-            const screen = document.getElementById('enter-screen');
-            
-            // إخفاء شاشة الدخول بـ تأثير سلس
-            screen.style.opacity = '0';
-            
-            // تدمير الطبقة تماماً بعد الأنيميشن باش تخلي الأزرار اللي تحتها تتكليكا
-            setTimeout(() => {
-                screen.style.display = 'none';
-            }, 800);
-
-            // تشغيل الأغنية أوتوماتيكياً إذا وافق المتصفح
-            audio.play().then(() => {
-                tapeStatus.innerText = "● PLAYING";
-                playText.innerText = "PAUSE TAPE";
-                playIcon.className = "fas fa-pause mr-2";
-            }).catch(err => {
-                console.log("Auto-play blocked, waiting for user input.");
-                tapeStatus.innerText = "● READY";
-            });
-        }
-
-        // دالة الزر لتشغيل وإيقاف الأغنية يدوياً
-        function toggleAudio() {
-            if (audio.paused) {
-                audio.play();
-                tapeStatus.innerText = "● PLAYING";
-                playText.innerText = "PAUSE TAPE";
-                playIcon.className = "fas fa-pause mr-2";
-            } else {
-                audio.pause();
-                tapeStatus.innerText = "● PAUSED";
-                playText.innerText = "PLAY TAPE";
-                playIcon.className = "fas fa-play mr-2";
-            }
-        }
-    </script>
-</body>
-</html>
+    <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100000] hidden flex items-center justify-center p-4">
+        <div class="bg-
