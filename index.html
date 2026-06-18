@@ -239,7 +239,6 @@
       transform: translateX(6px);
     }
 
-    /* Entry overlay scanlines */
     #entry-overlay::before {
       content: '';
       position: absolute;
@@ -795,7 +794,7 @@
     }
 
     /* ================================================================
-       FLOATING CASSETTE PLAYER - BOTTOM RIGHT
+       FLOATING CASSETTE PLAYER
     ================================================================ */
     #cassette-float-container {
       position: fixed;
@@ -1154,7 +1153,7 @@
     }
 
     /* ================================================================
-       RETRO ARCADE SECTION - PAC-MAN
+       RETRO ARCADE SECTION - REPLACED WITH NEON DESIGN
     ================================================================ */
     #arcade {
       padding: 6rem 2rem 5rem;
@@ -1186,13 +1185,18 @@
       background: linear-gradient(145deg, #1a0a2e, #0d0520);
       border: 3px solid var(--purple);
       border-radius: 16px;
-      padding: 1.5rem;
+      padding: 2rem;
       box-shadow: 
         0 0 60px rgba(123, 0, 255, 0.15),
         inset 0 0 60px rgba(123, 0, 255, 0.03),
         0 20px 60px rgba(0, 0, 0, 0.6);
       position: relative;
       overflow: hidden;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .arcade-cabinet::before {
@@ -1217,40 +1221,92 @@
       opacity: 0.6;
     }
 
-    .arcade-screen {
-      background: #000;
-      border-radius: 8px;
-      overflow: hidden;
+    .arcade-display {
+      text-align: center;
+      padding: 2rem;
       position: relative;
-      aspect-ratio: 16 / 9;
-      border: 2px solid rgba(123, 0, 255, 0.3);
-      box-shadow: inset 0 0 30px rgba(123, 0, 255, 0.1);
     }
 
-    .arcade-screen iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+    .arcade-display .arcade-icon {
+      font-size: 5rem;
+      color: var(--pink);
+      text-shadow: 0 0 40px rgba(255, 0, 127, 0.4);
+      margin-bottom: 1.5rem;
       display: block;
+      animation: arcade-pulse 2s ease-in-out infinite;
     }
 
-    .arcade-screen::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: 
-        repeating-linear-gradient(
-          0deg,
-          transparent 0px,
-          transparent 1px,
-          rgba(0, 0, 0, 0.1) 1px,
-          rgba(0, 0, 0, 0.1) 2px
-        );
-      pointer-events: none;
-      z-index: 1;
+    @keyframes arcade-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
     }
 
-    .arcade-screen .scanlines {
+    .arcade-display h3 {
+      font-family: var(--sans);
+      font-weight: 900;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--pink), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .arcade-display p {
+      font-family: var(--mono);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+    }
+
+    .arcade-display .arcade-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .arcade-display .arcade-buttons .arcade-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.8rem 2rem;
+      border-radius: 30px;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 0, 127, 0.3);
+      color: var(--text);
+      background: rgba(255, 0, 127, 0.05);
+    }
+
+    .arcade-display .arcade-buttons .arcade-btn:hover {
+      border-color: var(--pink);
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .arcade-display .arcade-buttons .arcade-btn .btn-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 15px var(--pink);
+      animation: blink 1s step-end infinite;
+    }
+
+    .arcade-display .arcade-buttons .arcade-btn .btn-dot.cyan {
+      background: var(--cyan);
+      box-shadow: 0 0 15px var(--cyan);
+    }
+
+    .arcade-scanlines {
       position: absolute;
       inset: 0;
       pointer-events: none;
@@ -1260,8 +1316,8 @@
           0deg,
           transparent 0px,
           transparent 3px,
-          rgba(0, 0, 0, 0.15) 3px,
-          rgba(0, 0, 0, 0.15) 4px
+          rgba(0, 0, 0, 0.1) 3px,
+          rgba(0, 0, 0, 0.1) 4px
         );
     }
 
@@ -1269,14 +1325,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.5rem 1rem;
-      margin-top: 0.8rem;
+      padding: 0.8rem 1rem;
+      margin-top: 1rem;
+      width: 100%;
       font-family: var(--mono);
       font-size: 0.55rem;
       letter-spacing: 0.4em;
       color: var(--text-muted);
       border-top: 1px solid rgba(123, 0, 255, 0.1);
-      padding-top: 0.8rem;
+      padding-top: 1rem;
     }
 
     .arcade-marquee .marquee-left {
@@ -1427,6 +1484,8 @@
       transition: all 0.3s;
       position: relative;
       overflow: hidden;
+      text-decoration: none;
+      text-align: center;
     }
     .rate-btn span { position: relative; z-index: 1; }
     .rate-btn::before {
@@ -1784,7 +1843,17 @@
       }
 
       .arcade-cabinet {
-        padding: 1rem;
+        padding: 1.5rem;
+        min-height: 300px;
+      }
+
+      .arcade-display .arcade-icon {
+        font-size: 3.5rem;
+      }
+
+      .arcade-display .arcade-buttons .arcade-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.55rem;
       }
 
       .arcade-marquee {
@@ -1801,6 +1870,8 @@
       .spool-inner { width: 10px; height: 10px; }
       .cassette-btn { width: 32px; height: 32px; font-size: 0.8rem; }
       .cassette-deck-body { padding: 1rem; }
+      .arcade-cabinet { padding: 1rem; min-height: 250px; }
+      .arcade-display .arcade-icon { font-size: 2.5rem; }
     }
 
     /* Content wrapper - hidden until entry */
@@ -1817,7 +1888,7 @@
 <body>
 
 <!-- ============================================================
-     ENTRY OVERLAY - GUNS.LOL STYLE
+     ENTRY OVERLAY
 ============================================================ -->
 <div id="entry-overlay">
   <div class="entry-crt"></div>
@@ -2029,12 +2100,15 @@
   </section>
 
   <!-- ============================================================
-       FLOATING CASSETTE PLAYER - BOTTOM RIGHT
+       FLOATING CASSETTE PLAYER
   ============================================================ -->
-  <div id="cassette-float-container" data-position="bottom-right">
+  <div id="cassette-float-container">
     <div class="cassette-deck-float" id="cassette-deck">
-      <!-- Audio Element -->
-      <audio id="audio-player" src="Venger.mp3" loop preload="metadata"></audio>
+      <!-- Audio Element - FIXED: Using CDN audio for testing -->
+      <audio id="audio-player" loop preload="metadata">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="Venger.mp3" type="audio/mpeg">
+      </audio>
 
       <!-- Cassette Header - Drag Handle -->
       <div class="cassette-header" id="cassette-drag-handle">
@@ -2097,7 +2171,7 @@
   </div>
 
   <!-- ============================================================
-       THE PRICING — RATES
+       THE PRICING — RATES (FIXED: Buttons link to terminal)
   ============================================================ -->
   <section id="rates" aria-label="Prices — Pricing Rates">
     <div class="container">
@@ -2122,7 +2196,7 @@
             <li><i class="fas fa-check-circle"></i> PNG + PSD delivery</li>
             <li><i class="fas fa-check-circle"></i> 5-day turnaround</li>
           </ul>
-          <button class="rate-btn"><span>COMMISSION NOW</span></button>
+          <a href="#terminal" class="rate-btn"><span>COMMISSION NOW</span></a>
         </div>
 
         <div class="rate-card featured">
@@ -2138,7 +2212,7 @@
             <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> 3-day priority turnaround</li>
             <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> Commercial use license</li>
           </ul>
-          <button class="rate-btn"><span>COMMISSION NOW</span></button>
+          <a href="#terminal" class="rate-btn"><span>COMMISSION NOW</span></a>
         </div>
 
         <div class="rate-card">
@@ -2155,7 +2229,7 @@
             <li><i class="fas fa-check-circle"></i> Full commercial license</li>
             <li><i class="fas fa-check-circle"></i> 1-month post-delivery support</li>
           </ul>
-          <button class="rate-btn"><span>COMMISSION NOW</span></button>
+          <a href="#terminal" class="rate-btn"><span>COMMISSION NOW</span></a>
         </div>
       </div>
 
@@ -2178,7 +2252,7 @@
   </section>
 
   <!-- ============================================================
-       RETRO ARCADE - PAC-MAN
+       RETRO ARCADE - NEON DESIGN (Replaced Pac-Man)
   ============================================================ -->
   <section id="arcade" aria-label="Retro Arcade Cabinet">
     <div class="container">
@@ -2191,18 +2265,23 @@
       </div>
 
       <div class="arcade-cabinet reveal reveal-delay-1">
-        <div class="arcade-screen">
-          <!-- Embedded Pac-Man Game -->
-          <iframe src="https://www.retrogames.cz/play_146-DOS.php?emulator=dosbox" 
-                  allowfullscreen
-                  loading="lazy"
-                  title="Pac-Man Retro Arcade Game">
-          </iframe>
-          <div class="scanlines"></div>
+        <div class="arcade-display">
+          <span class="arcade-icon"><i class="fas fa-gamepad"></i></span>
+          <h3>NEON ARCADE</h3>
+          <p>// PRESS START · INSERT COIN //</p>
+          <div class="arcade-buttons">
+            <button class="arcade-btn" onclick="document.getElementById('terminal').scrollIntoView({behavior:'smooth'})">
+              <span class="btn-dot"></span> PLAY NOW
+            </button>
+            <button class="arcade-btn" onclick="document.getElementById('vault').scrollIntoView({behavior:'smooth'})">
+              <span class="btn-dot cyan"></span> VIEW VAULT
+            </button>
+          </div>
         </div>
+        <div class="arcade-scanlines"></div>
         <div class="arcade-marquee">
           <div class="marquee-left">
-            <span>◉ PAC-MAN</span>
+            <span>◉ ARCADE MODE</span>
             <div class="marquee-dots">
               <span></span>
               <span></span>
@@ -2311,7 +2390,7 @@
 ============================================================ -->
 <script>
 /* ================================================================
-   ENTRY SCREEN CONTROLLER (GUNS.LOL STYLE)
+   ENTRY SCREEN CONTROLLER
 ================================================================ */
 (function initEntryScreen() {
   const overlay = document.getElementById('entry-overlay');
@@ -2335,11 +2414,17 @@
         audioCtx.resume();
       }
       
-      // Play audio with error handling
+      // Force load and play audio
+      audio.load();
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(function(error) {
           console.warn('Audio playback blocked by browser:', error);
+          // Try again on user interaction
+          document.addEventListener('click', function playOnClick() {
+            audio.play().catch(function(e) {});
+            document.removeEventListener('click', playOnClick);
+          }, { once: true });
         });
       }
     } catch (e) {
@@ -2353,18 +2438,13 @@
     setTimeout(function() {
       mainContent.classList.add('visible');
       
-      // Show nav
       nav.classList.add('visible');
-      
-      // Show home with animation
       home.classList.add('visible');
       
-      // Show cassette with delay
       setTimeout(function() {
         cassette.classList.add('visible');
       }, 400);
       
-      // Show all sections with stagger
       document.querySelectorAll('section:not(#home)').forEach(function(section, index) {
         setTimeout(function() {
           section.classList.add('visible');
@@ -2373,10 +2453,8 @@
     }, 300);
   }
 
-  // Entry button click
   entryBtn.addEventListener('click', unlockSystem);
 
-  // Also allow Enter key press
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && !isUnlocked) {
       unlockSystem();
@@ -2408,7 +2486,7 @@
   }
   trackRing();
 
-  document.querySelectorAll('a,button,.vault-card,.rate-card,input,textarea,.cassette-btn,.cassette-header-btn,.entry-btn').forEach(function(el) {
+  document.querySelectorAll('a,button,.vault-card,.rate-card,input,textarea,.cassette-btn,.cassette-header-btn,.entry-btn,.arcade-btn').forEach(function(el) {
     el.addEventListener('mouseenter', function() {
       cursor.style.transform = 'translate(-50%,-50%) scale(2.2)';
       cursorRing.style.width = '64px';
@@ -2524,10 +2602,9 @@
 })();
 
 /* ================================================================
-   FLOATING CASSETTE PLAYER - DRAGGABLE
+   FLOATING CASSETTE PLAYER - DRAGGABLE (FIXED AUDIO)
 ================================================================ */
 (function initFloatingCassette() {
-  // --- DOM refs ---
   const container = document.getElementById('cassette-float-container');
   const deck = document.getElementById('cassette-deck');
   const audio = document.getElementById('audio-player');
@@ -2541,7 +2618,6 @@
   const minimizeBtn = document.getElementById('minimize-btn');
   const closeBtn = document.getElementById('close-cassette-btn');
 
-  // --- State ---
   let isPlaying = false;
   let eqAnimation = null;
   let audioContext = null;
@@ -2549,8 +2625,6 @@
   let isDragging = false;
   let isMinimized = false;
   let isVisible = true;
-  let dragOffsetX = 0;
-  let dragOffsetY = 0;
 
   // --- Drag functionality ---
   function initDrag() {
@@ -2607,20 +2681,18 @@
     document.addEventListener('touchend', onEnd);
   }
 
-  // --- Minimize ---
   function toggleMinimize() {
     isMinimized = !isMinimized;
     container.classList.toggle('minimized', isMinimized);
     minimizeBtn.innerHTML = isMinimized ? '<i class="fas fa-window-maximize"></i>' : '<i class="fas fa-window-minimize"></i>';
   }
 
-  // --- Close ---
   function toggleVisibility() {
     isVisible = !isVisible;
     container.style.display = isVisible ? 'block' : 'none';
   }
 
-  // --- Audio Controls ---
+  // --- Audio Controls (FIXED) ---
   function initAudioContext() {
     try {
       if (!audioContext) {
@@ -2667,6 +2739,7 @@
 
   function togglePlay() {
     try {
+      // Initialize audio context on first play
       if (!audioInitialized) {
         const ctxOk = initAudioContext();
         if (!ctxOk) {
@@ -2687,6 +2760,11 @@
         animateEqualizer();
         updateStatus('⏹ PAUSED');
       } else {
+        // Force reload if audio is stuck
+        if (audio.readyState < 2) {
+          audio.load();
+        }
+        
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(function() {
@@ -2696,6 +2774,7 @@
             updateStatus('▶ PLAYING');
           }).catch(function(error) {
             console.warn('Audio playback blocked:', error);
+            // Visual-only mode fallback
             isPlaying = true;
             updateUI();
             animateEqualizer();
@@ -2752,7 +2831,17 @@
   minimizeBtn.addEventListener('click', toggleMinimize);
   closeBtn.addEventListener('click', toggleVisibility);
 
+  // Handle audio errors gracefully
   if (audio) {
+    audio.addEventListener('error', function(e) {
+      console.warn('Audio loading error:', e);
+      updateStatus('⚠️ AUDIO ERROR (visual mode)');
+      // Try to recover by reloading
+      setTimeout(function() {
+        audio.load();
+      }, 1000);
+    });
+
     audio.addEventListener('ended', function() {
       if (isPlaying) {
         isPlaying = false;
@@ -2764,11 +2853,6 @@
           audio.play().catch(function(e) {});
         } catch (e) {}
       }
-    });
-
-    audio.addEventListener('error', function(e) {
-      console.warn('Audio loading error:', e);
-      updateStatus('⚠️ AUDIO ERROR (visual mode)');
     });
   }
 
