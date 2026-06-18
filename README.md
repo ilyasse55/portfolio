@@ -1,4 +1,4 @@
-# 🌌 AJN DSN — THE RETRO VAULT v867
+# 🌌 AJN DSN — THE RETRO VAULT V1.5
 
 <p align="center">
   <img src="https://img.shields.io/badge/System-Secure-ff007f?style=for-the-badge&logo=retroarch&logoColor=white" />
