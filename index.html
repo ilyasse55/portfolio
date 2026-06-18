@@ -1,263 +1,2136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AJN DSN | Vault</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    
-    <style>
-        body { 
-            margin: 0; padding: 0; 
-            background-color: #05020a; color: white; 
-            font-family: sans-serif; overflow-x: hidden; 
-        }
-        
-        /* 1. شاشة الدخول الرئيسية */
-        #enter-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #05020a; z-index: 99999 !important;
-            cursor: pointer; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            transition: opacity 0.8s ease-out;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TORNOVIS — dsn_ajn · Graphic Designer</title>
+  <meta name="description" content="Tornovis (dsn_ajn) — Retro-futuristic graphic designer. Automotive, Horror, Brand Identity, Documentary visuals.">
 
-        /* 2. الشمس الكبيرة فـ الخلفية */
-        .sun-bg {
-            position: fixed; bottom: -15%; left: 50%; transform: translateX(-50%);
-            width: 900px; height: 900px;
-            background: linear-gradient(to bottom, #ff007f, #ffcc00);
-            border-radius: 50%; box-shadow: 0 0 200px #ff007f; z-index: -2;
-        }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
-        /* 3. الشبكة المتحركة (Synthwave Grid) */
-        .grid-floor {
-            position: fixed; bottom: 0; width: 100%; height: 50%;
-            background-image: linear-gradient(to right, #ff00ff 2px, transparent 2px), linear-gradient(to bottom, #ff00ff 2px, transparent 2px);
-            background-size: 50px 50px; transform: perspective(500px) rotateX(60deg);
-            z-index: -1; animation: moveGrid 2s linear infinite;
-        }
-        @keyframes moveGrid { from { background-position: 0 0; } to { background-position: 0 50px; } }
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        /* 4. تنسيق الوضوح للـ Thumbnail */
-        .neon-glow-cyan { 
-            text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff; color: #ffffff; 
-            background: rgba(0, 0, 0, 0.6); padding: 2px 10px; 
-            border: 1px solid rgba(0, 240, 255, 0.5); border-radius: 8px;
-        }
+  <style>
+    /* ================================================================
+       CSS CUSTOM PROPERTIES — PALETTE & TOKENS
+    ================================================================ */
+    :root {
+      --bg:         #0c0714;
+      --bg-mid:     #110a1e;
+      --pink:       #ff007f;
+      --pink-dim:   rgba(255, 0, 127, 0.18);
+      --cyan:       #00f0ff;
+      --cyan-dim:   rgba(0, 240, 255, 0.12);
+      --purple:     #7b00ff;
+      --text:       #e0d7ff;
+      --text-muted: rgba(224, 215, 255, 0.45);
+      --mono:       'Share Tech Mono', monospace;
+      --sans:       'Montserrat', sans-serif;
+    }
 
-        .cassette-container {
-            background: rgba(10, 5, 20, 0.85); border: 2px solid #00f0ff;
-            border-radius: 12px; padding: 20px; max-width: 450px;
-            margin: 40px auto 20px auto; box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
-        }
+    /* ================================================================
+       RESET & BASE
+    ================================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
 
-        /* كروت عرض الصور والأثمنة */
-        .item-card {
-            background: rgba(15, 10, 25, 0.8); border: 1px solid rgba(255, 0, 127, 0.4);
-            border-radius: 8px; overflow: hidden; transition: all 0.3s;
-        }
-        .item-card:hover { transform: translateY(-5px); box-shadow: 0 0 15px #ff007f; }
-    </style>
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      cursor: none;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--pink); box-shadow: 0 0 8px var(--pink); }
+
+    /* ================================================================
+       CUSTOM CURSOR
+    ================================================================ */
+    #cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: var(--cyan);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: screen;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--pink);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s, height 0.25s, border-color 0.25s;
+    }
+
+    /* ================================================================
+       CRT SCANLINE + VIGNETTE OVERLAY
+    ================================================================ */
+    #crt {
+      position: fixed;
+      inset: 0;
+      z-index: 9990;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0,0,0,0.07) 2px,
+          rgba(0,0,0,0.07) 4px
+        );
+    }
+    #crt::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.65) 100%);
+    }
+
+    /* ================================================================
+       ANIMATED PERSPECTIVE GRID BACKGROUND
+    ================================================================ */
+    #grid-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ================================================================
+       NEON HELPERS
+    ================================================================ */
+    .neon-pink {
+      color: var(--pink);
+      text-shadow: 0 0 6px var(--pink), 0 0 20px var(--pink), 0 0 40px rgba(255,0,127,0.5);
+    }
+    .neon-cyan {
+      color: var(--cyan);
+      text-shadow: 0 0 6px var(--cyan), 0 0 20px var(--cyan), 0 0 40px rgba(0,240,255,0.5);
+    }
+    .glow-border-pink {
+      border: 1px solid var(--pink);
+      box-shadow: 0 0 10px rgba(255,0,127,0.4), inset 0 0 10px rgba(255,0,127,0.05);
+    }
+    .glow-border-cyan {
+      border: 1px solid var(--cyan);
+      box-shadow: 0 0 10px rgba(0,240,255,0.4), inset 0 0 10px rgba(0,240,255,0.05);
+    }
+
+    /* ================================================================
+       FLICKER ANIMATIONS
+    ================================================================ */
+    @keyframes flicker {
+      0%,18%,20%,50.1%,60%,65.1%,80%,90.1%,92%,100% { opacity: 1; }
+      19%,49%,50%,60.1%,65%,80.1%,90%,91% { opacity: 0.25; }
+    }
+    @keyframes flicker-slow {
+      0%,85%,87%,100% { opacity: 1; }
+      86% { opacity: 0.4; }
+    }
+    .flicker { animation: flicker 5s infinite; }
+    .flicker-slow { animation: flicker-slow 8s infinite 2s; }
+
+    /* ================================================================
+       GLITCH TEXT EFFECT
+    ================================================================ */
+    @keyframes glitch-clip-1 {
+      0%   { clip-path: inset(42% 0 56% 0); transform: translate(-3px, 0); }
+      20%  { clip-path: inset(10% 0 80% 0); transform: translate(3px, 0); }
+      40%  { clip-path: inset(73% 0 8%  0); transform: translate(-3px, 0); }
+      60%  { clip-path: inset(35% 0 55% 0); transform: translate(3px, 0); }
+      80%  { clip-path: inset(60% 0 25% 0); transform: translate(-3px, 0); }
+      100% { clip-path: inset(42% 0 56% 0); transform: translate(0, 0); }
+    }
+    @keyframes glitch-clip-2 {
+      0%   { clip-path: inset(65% 0 15% 0); transform: translate(3px, 0); }
+      25%  { clip-path: inset(5%  0 85% 0); transform: translate(-3px, 0); }
+      50%  { clip-path: inset(40% 0 45% 0); transform: translate(3px, 0); }
+      75%  { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 0); }
+      100% { clip-path: inset(65% 0 15% 0); transform: translate(0, 0); }
+    }
+
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      font: inherit;
+      white-space: nowrap;
+    }
+    .glitch::before {
+      color: var(--cyan);
+      animation: glitch-clip-1 4s infinite steps(1);
+    }
+    .glitch::after {
+      color: var(--pink);
+      animation: glitch-clip-2 3s infinite steps(1) 0.5s;
+    }
+
+    /* ================================================================
+       NAVIGATION
+    ================================================================ */
+    #nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 1.4rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(12,7,20,0.92) 0%, transparent 100%);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .nav-logo-dot {
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--cyan);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.6); }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.3s;
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { color: var(--cyan); }
+    .nav-links a.active::after { width: 100%; }
+
+    /* Hamburger */
+    #nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      z-index: 1001;
+      padding: 4px;
+    }
+    #nav-toggle span {
+      display: block;
+      width: 22px; height: 1.5px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    /* Mobile nav overlay */
+    #mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(12,7,20,0.97);
+      z-index: 999;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    #mobile-nav.open { display: flex; }
+    #mobile-nav a {
+      font-family: var(--mono);
+      font-size: 1.2rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--text);
+      transition: color 0.3s;
+    }
+    #mobile-nav a:hover { color: var(--pink); }
+
+    /* ================================================================
+       SECTION SHARED
+    ================================================================ */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 9rem 2.5rem 8rem;
+    }
+    .container { max-width: 1320px; margin: 0 auto; }
+
+    .section-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.5em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .section-eyebrow::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    .section-title {
+      font-family: var(--sans);
+      font-weight: 900;
+      font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+      text-transform: uppercase;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+    }
+
+    /* Reveal animation classes */
+    .reveal { opacity: 0; transform: translateY(48px); }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal-delay-1.visible { transition-delay: 0.1s; }
+    .reveal-delay-2.visible { transition-delay: 0.2s; }
+    .reveal-delay-3.visible { transition-delay: 0.3s; }
+    .reveal-delay-4.visible { transition-delay: 0.4s; }
+
+    /* ================================================================
+       HERO — #home
+    ================================================================ */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+    }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.5em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: hero-fade-up 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+    }
+
+    @keyframes hero-fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-name {
+      font-family: var(--sans);
+      font-weight: 900;
+      font-size: clamp(4rem, 14vw, 11rem);
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 0.88;
+      opacity: 0;
+      animation: hero-fade-up 1s cubic-bezier(0.22,1,0.36,1) 0.5s forwards;
+    }
+    .hero-name .line-1 { display: block; }
+    .hero-name .line-2 { display: block; color: var(--text); }
+
+    .hero-handle {
+      font-family: var(--mono);
+      font-size: clamp(0.75rem, 1.8vw, 1.1rem);
+      letter-spacing: 0.6em;
+      color: var(--pink);
+      margin-top: 1.5rem;
+      opacity: 0;
+      animation: hero-fade-up 0.8s cubic-bezier(0.22,1,0.36,1) 0.85s forwards;
+    }
+
+    .hero-sub {
+      font-size: 0.82rem;
+      line-height: 1.9;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      max-width: 380px;
+      margin: 1.8rem auto 0;
+      opacity: 0;
+      animation: hero-fade-up 0.8s cubic-bezier(0.22,1,0.36,1) 1.05s forwards;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1.2rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: hero-fade-up 0.8s cubic-bezier(0.22,1,0.36,1) 1.25s forwards;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 0.95rem 2.2rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s;
+      white-space: nowrap;
+    }
+    .btn-pink { border: 1px solid var(--pink); color: var(--pink); box-shadow: 0 0 10px rgba(255,0,127,0.25); }
+    .btn-cyan  { border: 1px solid var(--cyan);  color: var(--cyan);  box-shadow: 0 0 10px rgba(0,240,255,0.25); }
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      transform: translateX(-101%);
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+      z-index: 0;
+    }
+    .btn-pink::before { background: var(--pink); }
+    .btn-cyan::before  { background: var(--cyan); }
+    .btn:hover { color: var(--bg); }
+    .btn:hover::before { transform: translateX(0); }
+    .btn span { position: relative; z-index: 1; }
+    .btn:hover .btn-icon { position: relative; z-index: 1; color: var(--bg); }
+    .btn-pink:hover { box-shadow: 0 0 25px var(--pink); }
+    .btn-cyan:hover  { box-shadow: 0 0 25px var(--cyan); }
+
+    /* Scroll caret */
+    .scroll-down {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: hero-fade-up 0.8s ease 1.6s forwards;
+    }
+    .scroll-down span {
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.4em;
+      color: var(--text-muted);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--cyan), transparent);
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+    @keyframes scroll-pulse {
+      0%,100% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+      50% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
+    }
+
+    /* ================================================================
+       THE VAULT — #vault  (Portfolio)
+    ================================================================ */
+    #vault {
+      background: linear-gradient(to bottom, transparent, rgba(0,240,255,0.02), transparent);
+    }
+
+    .vault-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      grid-template-rows: 280px 280px;
+      gap: 1.2rem;
+      margin-top: 4rem;
+    }
+
+    /* Card layout positions */
+    .vault-card:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }
+    .vault-card:nth-child(2) { grid-column: 2; grid-row: 1; }
+    .vault-card:nth-child(3) { grid-column: 3; grid-row: 1; }
+    .vault-card:nth-child(4) { grid-column: 2 / 4; grid-row: 2; }
+
+    .vault-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(0,240,255,0.1);
+      transition: border-color 0.4s, box-shadow 0.4s;
+    }
+    .vault-card:hover {
+      border-color: rgba(0,240,255,0.5);
+      box-shadow: 0 0 40px rgba(0,240,255,0.12);
+    }
+
+    /* Card-specific color backdrops */
+    .vault-card-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+    .vault-card:hover .vault-card-bg { transform: scale(1.08); }
+
+    .vc-automotive .vault-card-bg {
+      background:
+        linear-gradient(135deg, rgba(255,0,127,0.35) 0%, transparent 55%),
+        linear-gradient(315deg, rgba(0,240,255,0.18) 0%, transparent 55%),
+        #180828;
+    }
+    .vc-horror .vault-card-bg {
+      background:
+        linear-gradient(135deg, rgba(123,0,255,0.45) 0%, transparent 55%),
+        linear-gradient(315deg, rgba(255,0,127,0.18) 0%, transparent 55%),
+        #100518;
+    }
+    .vc-brands .vault-card-bg {
+      background:
+        linear-gradient(45deg, rgba(0,240,255,0.3) 0%, transparent 55%),
+        linear-gradient(225deg, rgba(123,0,255,0.18) 0%, transparent 55%),
+        #07101a;
+    }
+    .vc-historical .vault-card-bg {
+      background:
+        linear-gradient(135deg, rgba(255,160,0,0.22) 0%, transparent 55%),
+        linear-gradient(315deg, rgba(0,240,255,0.15) 0%, transparent 55%),
+        #100d02;
+    }
+
+    /* Geometric SVG decoration inside each card */
+    .vault-card-geo {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.1;
+      transition: opacity 0.4s;
+    }
+    .vault-card:hover .vault-card-geo { opacity: 0.22; }
+
+    /* Large icon */
+    .vault-card-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(4rem, 7vw, 8rem);
+      opacity: 0.08;
+      transition: opacity 0.4s, transform 0.5s;
+    }
+    .vault-card:hover .vault-card-icon {
+      opacity: 0.18;
+      transform: scale(1.12) rotate(6deg);
+    }
+
+    /* Gradient overlay at bottom */
+    .vault-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(12,7,20,0.97) 0%, rgba(12,7,20,0.3) 50%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.8rem;
+    }
+
+    .vault-card-cat {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.4rem;
+      transform: translateY(6px);
+      transition: transform 0.4s, opacity 0.4s;
+    }
+    .vault-card-title {
+      font-family: var(--sans);
+      font-weight: 900;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      transform: translateY(8px);
+      transition: transform 0.4s 0.04s;
+    }
+    .vault-card-desc {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-top: 0.6rem;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s 0.08s, transform 0.4s 0.08s;
+      letter-spacing: 0.02em;
+    }
+    .vault-card-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      margin-top: 0.8rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s 0.12s, transform 0.4s 0.12s;
+      color: var(--pink);
+    }
+
+    .vault-card:hover .vault-card-cat,
+    .vault-card:hover .vault-card-title { transform: translateY(0); }
+    .vault-card:hover .vault-card-desc,
+    .vault-card:hover .vault-card-arrow { opacity: 1; transform: translateY(0); }
+
+    /* ================================================================
+       THE RATE CARD — #rates
+    ================================================================ */
+    #rates { background: linear-gradient(to bottom, transparent, rgba(255,0,127,0.02), transparent); }
+
+    .rates-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .rates-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .rate-card {
+      position: relative;
+      padding: 2.4rem 1.8rem;
+      border: 1px solid rgba(255,0,127,0.18);
+      background: rgba(17, 10, 30, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s, border-color 0.4s;
+    }
+    .rate-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--pink), transparent);
+      transition: opacity 0.4s;
+    }
+    .rate-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--pink);
+      box-shadow: 0 0 40px rgba(255,0,127,0.15), 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .rate-card.featured {
+      border-color: rgba(0,240,255,0.3);
+      background: rgba(0,240,255,0.03);
+    }
+    .rate-card.featured::before {
+      background: linear-gradient(to right, transparent, var(--cyan), transparent);
+    }
+    .rate-card.featured:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 40px rgba(0,240,255,0.18), 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .rate-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      padding: 0.28rem 0.8rem;
+      margin-bottom: 1.4rem;
+      text-transform: uppercase;
+    }
+    .badge-pink { border: 1px solid var(--pink); color: var(--pink); background: rgba(255,0,127,0.08); }
+    .badge-cyan  { border: 1px solid var(--cyan);  color: var(--cyan);  background: rgba(0,240,255,0.08); }
+    .badge-purple { border: 1px solid var(--purple); color: #b87fff; background: rgba(123,0,255,0.08); }
+
+    .rate-name {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.3rem;
+      color: var(--text-muted);
+    }
+    .rate-price {
+      font-family: var(--mono);
+      font-size: 3.2rem;
+      line-height: 1;
+      margin: 0.6rem 0 0.2rem;
+    }
+    .rate-price-sup { font-size: 1.3rem; vertical-align: super; line-height: 1; }
+    .rate-price-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .rate-divider {
+      height: 1px;
+      background: rgba(224,215,255,0.08);
+      margin: 1.4rem 0;
+    }
+
+    .rate-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .rate-features li {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: rgba(224,215,255,0.65);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .rate-features li i { color: var(--cyan); font-size: 0.65rem; flex-shrink: 0; }
+
+    .rate-btn {
+      display: block;
+      width: 100%;
+      margin-top: 2rem;
+      padding: 0.85rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .rate-btn span { position: relative; z-index: 1; }
+    .rate-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .rate-btn:hover::before { transform: scaleX(1); }
+
+    .rate-card:not(.featured) .rate-btn { border-color: var(--pink); color: var(--pink); }
+    .rate-card:not(.featured) .rate-btn::before { background: var(--pink); }
+    .rate-card:not(.featured) .rate-btn:hover { color: var(--bg); box-shadow: 0 0 20px rgba(255,0,127,0.4); }
+
+    .rate-card.featured .rate-btn { border-color: var(--cyan); color: var(--cyan); }
+    .rate-card.featured .rate-btn::before { background: var(--cyan); }
+    .rate-card.featured .rate-btn:hover { color: var(--bg); box-shadow: 0 0 20px rgba(0,240,255,0.4); }
+
+    /* Bundle strip */
+    .bundle-strip {
+      margin-top: 2rem;
+      padding: 2rem 2.2rem;
+      border: 1px solid rgba(123,0,255,0.3);
+      background: rgba(123,0,255,0.04);
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      overflow: hidden;
+    }
+    .bundle-strip::before {
+      content: 'BUNDLE DEAL';
+      position: absolute;
+      top: 0; right: 0;
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.4em;
+      background: var(--purple);
+      color: #fff;
+      padding: 0.25rem 0.9rem;
+    }
+    .bundle-strip-left {}
+    .bundle-strip-title {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .bundle-strip-sub {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      letter-spacing: 0.08em;
+    }
+    .bundle-tags { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1.2rem; }
+    .bundle-tag {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid rgba(123,0,255,0.35);
+      color: #b87fff;
+    }
+    .bundle-strip-price {
+      text-align: right;
+    }
+    .bundle-price-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      color: #b87fff;
+      text-transform: uppercase;
+    }
+    .bundle-price-value {
+      font-family: var(--sans);
+      font-weight: 900;
+      font-size: 2.2rem;
+      color: #b87fff;
+      text-shadow: 0 0 15px rgba(123,0,255,0.6);
+    }
+
+    /* ================================================================
+       THE TERMINAL — #terminal  (Contact)
+    ================================================================ */
+    #terminal { }
+
+    .terminal-window {
+      margin-top: 4rem;
+      border: 1px solid rgba(0,240,255,0.25);
+      box-shadow: 0 0 50px rgba(0,240,255,0.08);
+    }
+
+    .terminal-titlebar {
+      background: rgba(0,240,255,0.06);
+      border-bottom: 1px solid rgba(0,240,255,0.15);
+      padding: 0.75rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot-red   { background: #ff5f57; }
+    .t-dot-amber { background: #febc2e; }
+    .t-dot-green { background: #28c840; }
+    .t-title {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      color: var(--cyan);
+      margin: 0 auto;
+    }
+
+    .terminal-body {
+      padding: 2.2rem 2.5rem 2.5rem;
+      background: rgba(12,7,20,0.92);
+    }
+
+    .t-line {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      margin-bottom: 0.4rem;
+      line-height: 1.5;
+    }
+    .t-prompt { color: var(--pink); }
+    .t-cmd    { color: var(--cyan); }
+    .t-out    { color: var(--text-muted); }
+    .t-cursor {
+      display: inline-block;
+      width: 8px; height: 1em;
+      background: var(--cyan);
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* Social Links */
+    .socials {
+      display: flex;
+      gap: 1rem;
+      margin: 1.8rem 0;
+      flex-wrap: wrap;
+    }
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      padding: 0.75rem 1.4rem;
+      border: 1px solid rgba(255,0,127,0.25);
+      color: var(--text);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .social-btn:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+      box-shadow: 0 0 18px rgba(255,0,127,0.25);
+    }
+    .social-btn i { font-size: 1rem; }
+
+    /* Contact Form */
+    .contact-form {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+
+    .form-label {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      color: var(--cyan);
+      text-transform: uppercase;
+    }
+    .form-label::before { content: '> '; color: var(--pink); }
+
+    .form-input, .form-textarea {
+      background: rgba(0,240,255,0.02);
+      border: 1px solid rgba(0,240,255,0.18);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+      letter-spacing: 0.04em;
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: rgba(224,215,255,0.2); }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 18px rgba(0,240,255,0.1);
+    }
+    .form-textarea { resize: vertical; min-height: 110px; }
+
+    .form-footer {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
+    }
+    .form-submit {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.4rem;
+      background: transparent;
+      border: 1px solid var(--pink);
+      color: var(--pink);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s, box-shadow 0.3s;
+    }
+    .form-submit span { position: relative; z-index: 1; }
+    .form-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--pink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .form-submit:hover { color: var(--bg); box-shadow: 0 0 25px var(--pink); }
+    .form-submit:hover::before { transform: scaleX(1); }
+    .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .form-note {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+    }
+
+    #form-success {
+      display: none;
+      margin-top: 1rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--cyan);
+      letter-spacing: 0.08em;
+    }
+
+    /* ================================================================
+       CASSETTE PLAYER  (fixed bottom-right)
+    ================================================================ */
+    #cassette-player {
+      position: fixed;
+      bottom: 1.8rem;
+      right: 1.8rem;
+      z-index: 500;
+      width: 272px;
+      font-size: 0; /* collapse whitespace */
+    }
+
+    .cassette-deck {
+      background: linear-gradient(160deg, #1c1030, #110826);
+      border: 2px solid rgba(255,0,127,0.35);
+      box-shadow: 0 0 40px rgba(255,0,127,0.18), inset 0 0 30px rgba(0,0,0,0.5);
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* scanlines on player */
+    .cassette-deck::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .cassette-header {
+      padding: 0.6rem 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cassette-brand {
+      font-family: var(--mono);
+      font-size: 0.52rem;
+      letter-spacing: 0.4em;
+      color: var(--pink);
+      text-transform: uppercase;
+    }
+    .cassette-minimize {
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      background: none;
+      border: 1px solid rgba(255,0,127,0.3);
+      color: rgba(255,0,127,0.5);
+      padding: 0.15rem 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cassette-minimize:hover { color: var(--pink); border-color: var(--pink); }
+
+    .cassette-body-wrap { padding: 0.7rem 1rem 0; }
+
+    /* The cassette tape visual */
+    .cassette-tape {
+      background: linear-gradient(135deg, #25153c, #140920);
+      border: 1px solid rgba(255,0,127,0.2);
+      border-radius: 3px;
+      padding: 0.7rem 0.8rem 0.55rem;
+      position: relative;
+    }
+    .tape-label-strip {
+      background: linear-gradient(135deg, #1c0b30, #0e0519);
+      border: 1px solid rgba(255,0,127,0.25);
+      border-radius: 2px;
+      padding: 0.4rem 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .tape-track-title {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--pink);
+    }
+    .tape-track-artist {
+      font-family: var(--mono);
+      font-size: 0.48rem;
+      color: rgba(224,215,255,0.3);
+      letter-spacing: 0.06em;
+    }
+    .tape-side {
+      font-family: var(--mono);
+      font-size: 0.48rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,0,127,0.4);
+    }
+
+    /* Spools */
+    .tape-spools {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0.2rem 0.5rem;
+    }
+    .spool {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,0,127,0.3);
+      background: radial-gradient(circle at center, #1a0a28, #0c0714);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .spool-hub {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 8px var(--pink);
+      z-index: 2;
+    }
+    .spool-spokes {
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background:
+        linear-gradient(0deg,   transparent 46%, rgba(255,0,127,0.35) 46%, rgba(255,0,127,0.35) 54%, transparent 54%),
+        linear-gradient(60deg,  transparent 46%, rgba(255,0,127,0.35) 46%, rgba(255,0,127,0.35) 54%, transparent 54%),
+        linear-gradient(120deg, transparent 46%, rgba(255,0,127,0.35) 46%, rgba(255,0,127,0.35) 54%, transparent 54%);
+    }
+    @keyframes spin-cw  { to { transform: rotate(360deg);  } }
+    @keyframes spin-ccw { to { transform: rotate(-360deg); } }
+    .spool.spinning-l .spool-spokes { animation: spin-cw  1.8s linear infinite; }
+    .spool.spinning-r .spool-spokes { animation: spin-ccw 1.8s linear infinite; }
+
+    .tape-mid-label {
+      font-family: var(--mono);
+      font-size: 0.46rem;
+      letter-spacing: 0.25em;
+      color: rgba(224,215,255,0.2);
+      text-align: center;
+      line-height: 1;
+    }
+
+    /* Equalizer */
+    .eq-wrap { padding: 0 0.1rem; margin: 0.7rem 0 0.5rem; }
+    .equalizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 28px;
+      opacity: 0.3;
+      transition: opacity 0.4s;
+    }
+    .equalizer.playing { opacity: 1; }
+    .eq-bar {
+      flex: 1;
+      background: var(--cyan);
+      box-shadow: 0 0 4px var(--cyan);
+      min-height: 2px;
+      border-radius: 1px 1px 0 0;
+    }
+
+    /* Controls */
+    .cassette-controls {
+      padding: 0 1rem 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .ctrl-btn {
+      background: transparent;
+      border: 1px solid rgba(255,0,127,0.3);
+      color: var(--pink);
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 3px;
+      font-size: 0.68rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .ctrl-btn:hover {
+      background: var(--pink);
+      color: var(--bg);
+      box-shadow: 0 0 14px var(--pink);
+    }
+    .play-btn { width: 40px; height: 40px; border-color: var(--pink); box-shadow: 0 0 12px rgba(255,0,127,0.3); }
+
+    .vol-row {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .vol-icon { font-size: 0.58rem; color: rgba(224,215,255,0.35); }
+    .vol-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 2px;
+      background: rgba(255,0,127,0.25);
+      outline: none;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    .vol-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 6px var(--pink);
+      cursor: pointer;
+    }
+    .vol-slider::-moz-range-thumb {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 6px var(--pink);
+      border: none;
+      cursor: pointer;
+    }
+
+    .cassette-collapsed { display: none; }
+
+    /* ================================================================
+       FOOTER
+    ================================================================ */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 2.5rem 2.5rem;
+      text-align: center;
+      border-top: 1px solid rgba(0,240,255,0.08);
+    }
+    .footer-wordmark {
+      font-family: var(--sans);
+      font-weight: 900;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .footer-rule {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 600px;
+      margin: 0 auto 1.5rem;
+    }
+    .footer-rule::before, .footer-rule::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(0,240,255,0.25), transparent);
+    }
+    .footer-rule span {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.4em;
+      color: rgba(0,240,255,0.35);
+    }
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      color: rgba(224,215,255,0.2);
+      text-transform: uppercase;
+    }
+
+    /* ================================================================
+       RESPONSIVE
+    ================================================================ */
+    @media (max-width: 900px) {
+      .vault-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 260px 180px 180px;
+      }
+      .vault-card:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+      .vault-card:nth-child(2) { grid-column: 1; grid-row: 2; }
+      .vault-card:nth-child(3) { grid-column: 2; grid-row: 2; }
+      .vault-card:nth-child(4) { grid-column: 1 / 3; grid-row: 3; }
+
+      .rates-grid { grid-template-columns: 1fr; }
+      .rate-card.featured { order: -1; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      #nav-toggle { display: flex; }
+
+      section { padding: 6rem 1.5rem 5rem; }
+
+      .vault-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .vault-card { min-height: 220px; }
+      .vault-card:nth-child(1),
+      .vault-card:nth-child(2),
+      .vault-card:nth-child(3),
+      .vault-card:nth-child(4) {
+        grid-column: auto;
+        grid-row: auto;
+      }
+      .vault-card-desc { opacity: 1; transform: translateY(0); }
+      .vault-card-arrow { opacity: 1; transform: translateY(0); }
+
+      .form-row { grid-template-columns: 1fr; }
+
+      #cassette-player { width: 240px; bottom: 1rem; right: 1rem; }
+
+      .hero-cta { flex-direction: column; align-items: center; }
+      .hero-cta .btn { width: 100%; max-width: 280px; justify-content: center; }
+
+      .rates-header { flex-direction: column; }
+      .bundle-strip { flex-direction: column; }
+      .bundle-strip-price { text-align: left; }
+    }
+
+    @media (max-width: 480px) {
+      #cassette-player { width: 220px; }
+    }
+  </style>
 </head>
-<body class="min-h-screen relative pb-24">
+<body>
 
-    <div id="enter-screen" onclick="initializeVault()">
-        <span class="text-xs text-zinc-600 mb-2 tracking-widest font-mono">CORE_SYSTEM_ONLINE v867</span>
-        <h2 class="text-xl md:text-2xl font-black text-cyan-400 tracking-widest font-retro select-none animate-pulse">
-            [ CLICK TO ENTER THE VAULT ]
-        </h2>
+<!-- ============================================================
+     CURSOR
+============================================================ -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ============================================================
+     CRT + SCANLINES
+============================================================ -->
+<div id="crt" aria-hidden="true"></div>
+
+<!-- ============================================================
+     BACKGROUND GRID (Canvas)
+============================================================ -->
+<canvas id="grid-canvas" aria-hidden="true"></canvas>
+
+<!-- ============================================================
+     NAVIGATION
+============================================================ -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#home" class="nav-logo" aria-label="Tornovis home">
+    <div class="nav-logo-dot"></div>
+    <span class="neon-pink flicker">TORNOVIS</span>
+  </a>
+
+  <ul class="nav-links" id="nav-links" role="list">
+    <li><a href="#home"     class="nav-link" data-section="home">// HOME</a></li>
+    <li><a href="#vault"    class="nav-link" data-section="vault">// VAULT</a></li>
+    <li><a href="#rates"    class="nav-link" data-section="rates">// RATES</a></li>
+    <li><a href="#terminal" class="nav-link" data-section="terminal">// TERMINAL</a></li>
+  </ul>
+
+  <button id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="toggleNav()">
+    <span id="toggle-1"></span>
+    <span id="toggle-2"></span>
+    <span id="toggle-3"></span>
+  </button>
+</nav>
+
+<!-- Mobile Nav Overlay -->
+<nav id="mobile-nav" role="navigation" aria-label="Mobile navigation">
+  <a href="#home"     onclick="closeNav()">// HOME</a>
+  <a href="#vault"    onclick="closeNav()">// VAULT</a>
+  <a href="#rates"    onclick="closeNav()">// RATES</a>
+  <a href="#terminal" onclick="closeNav()">// TERMINAL</a>
+</nav>
+
+<!-- ============================================================
+     HERO — HOME
+============================================================ -->
+<section id="home" aria-label="Home">
+  <span class="hero-tag">// Graphic Designer · Retro-Futurist · Visual Alchemist</span>
+
+  <h1 class="hero-name">
+    <span class="line-1 glitch neon-pink" data-text="TORN">TORN</span>
+    <span class="line-2" style="color:var(--text);">OVIS</span>
+  </h1>
+
+  <div class="hero-handle flicker-slow">dsn_ajn</div>
+
+  <p class="hero-sub">
+    Crafting identities that burn in neon.<br>
+    Automotive · Horror · Brands · Documentary
+  </p>
+
+  <div class="hero-cta">
+    <a href="#vault" class="btn btn-pink">
+      <span>ENTER THE VAULT</span>
+    </a>
+    <a href="#terminal" class="btn btn-cyan">
+      <span>INITIATE CONTACT</span>
+    </a>
+  </div>
+
+  <div class="scroll-down" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     THE VAULT — PORTFOLIO
+============================================================ -->
+<section id="vault" aria-label="Portfolio — The Vault">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">01 — THE VAULT</div>
+      <h2 class="section-title">
+        <span style="color:var(--text);">SELECTED</span>&nbsp;
+        <span class="neon-cyan flicker-slow">WORKS</span>
+      </h2>
     </div>
 
-    <div class="absolute top-4 right-4 z-50">
-        <button onclick="openLogin()" class="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-lg shadow-lg font-mono text-xs tracking-wider transition">
-            <i class="fas fa-lock mr-2"></i>ADMIN LOG IN
-        </button>
+    <div class="vault-grid">
+
+      <!-- Card 1 · Automotive -->
+      <article class="vault-card vc-automotive reveal reveal-delay-1" aria-label="Automotive designs">
+        <div class="vault-card-bg"></div>
+        <div class="vault-card-geo" aria-hidden="true">
+          <svg width="100%" height="100%" viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+            <polygon points="200,30 380,160 380,440 200,570 20,440 20,160" stroke="#ff007f" stroke-width="1" fill="none" opacity="0.6"/>
+            <polygon points="200,80 340,180 340,420 200,520 60,420 60,180" stroke="#ff007f" stroke-width="0.5" fill="none" opacity="0.4"/>
+            <circle cx="200" cy="300" r="80" stroke="#00f0ff" stroke-width="0.6" fill="none" opacity="0.5"/>
+            <line x1="0" y1="300" x2="400" y2="300" stroke="#ff007f" stroke-width="0.4" opacity="0.4"/>
+            <line x1="200" y1="0" x2="200" y2="600" stroke="#ff007f" stroke-width="0.4" opacity="0.4"/>
+            <circle cx="200" cy="300" r="20" stroke="#00f0ff" stroke-width="0.5" fill="none" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="vault-card-icon" aria-hidden="true">
+          <i class="fas fa-car" style="color:var(--pink);"></i>
+        </div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">CAT_01 · AUTOMOTIVE</div>
+          <h3 class="vault-card-title">SPEED<br>MACHINES</h3>
+          <p class="vault-card-desc">High-octane automotive branding. Racing aesthetics meets street credibility — posters, liveries, racing identity.</p>
+          <div class="vault-card-arrow">VIEW WORKS <i class="fas fa-arrow-right fa-xs"></i></div>
+        </div>
+      </article>
+
+      <!-- Card 2 · Horror -->
+      <article class="vault-card vc-horror reveal reveal-delay-2" aria-label="Horror designs">
+        <div class="vault-card-bg"></div>
+        <div class="vault-card-geo" aria-hidden="true">
+          <svg width="100%" height="100%" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice">
+            <path d="M150,20 L280,200 L20,200 Z" stroke="#7b00ff" stroke-width="1" fill="none" opacity="0.7"/>
+            <path d="M150,55 L247,190 L53,190 Z" stroke="#ff007f" stroke-width="0.6" fill="none" opacity="0.5"/>
+            <circle cx="150" cy="160" r="28" stroke="#7b00ff" stroke-width="0.6" fill="none" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="vault-card-icon" aria-hidden="true">
+          <i class="fas fa-skull" style="color:#9f40ff;"></i>
+        </div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat" style="color:#b87fff;">CAT_02 · HORROR</div>
+          <h3 class="vault-card-title">DARK<br>MATTER</h3>
+          <p class="vault-card-desc">Visceral horror movie posters and covers designed to haunt.</p>
+          <div class="vault-card-arrow" style="color:#b87fff;">VIEW WORKS <i class="fas fa-arrow-right fa-xs"></i></div>
+        </div>
+      </article>
+
+      <!-- Card 3 · Brands -->
+      <article class="vault-card vc-brands reveal reveal-delay-3" aria-label="Brand identity designs">
+        <div class="vault-card-bg"></div>
+        <div class="vault-card-geo" aria-hidden="true">
+          <svg width="100%" height="100%" viewBox="0 0 300 240" preserveAspectRatio="xMidYMid slice">
+            <rect x="20" y="20" width="260" height="200" stroke="#00f0ff" stroke-width="0.8" fill="none" opacity="0.5"/>
+            <rect x="50" y="50" width="200" height="140" stroke="#00f0ff" stroke-width="0.4" fill="none" opacity="0.4"/>
+            <circle cx="150" cy="120" r="45" stroke="#ff007f" stroke-width="0.5" fill="none" opacity="0.5"/>
+            <line x1="20" y1="120" x2="280" y2="120" stroke="#00f0ff" stroke-width="0.3" opacity="0.4"/>
+            <line x1="150" y1="20" x2="150" y2="220" stroke="#00f0ff" stroke-width="0.3" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="vault-card-icon" aria-hidden="true">
+          <i class="fas fa-gem" style="color:var(--cyan);"></i>
+        </div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">CAT_03 · BRANDS</div>
+          <h3 class="vault-card-title">IDENTITY<br>SYSTEM</h3>
+          <p class="vault-card-desc">Corporate identity and brand systems that leave a permanent mark.</p>
+          <div class="vault-card-arrow">VIEW WORKS <i class="fas fa-arrow-right fa-xs"></i></div>
+        </div>
+      </article>
+
+      <!-- Card 4 · Historical Documentaries -->
+      <article class="vault-card vc-historical reveal reveal-delay-4" aria-label="Historical documentary designs">
+        <div class="vault-card-bg"></div>
+        <div class="vault-card-geo" aria-hidden="true">
+          <svg width="100%" height="100%" viewBox="0 0 600 240" preserveAspectRatio="xMidYMid slice">
+            <rect x="20" y="20" width="560" height="200" stroke="rgba(255,160,0,0.6)" stroke-width="0.8" fill="none"/>
+            <rect x="50" y="50" width="500" height="140" stroke="rgba(0,240,255,0.4)" stroke-width="0.4" fill="none"/>
+            <line x1="20" y1="120" x2="580" y2="120" stroke="rgba(255,160,0,0.3)" stroke-width="0.4"/>
+            <line x1="300" y1="20" x2="300" y2="220" stroke="rgba(255,160,0,0.3)" stroke-width="0.4"/>
+            <circle cx="300" cy="120" r="50" stroke="rgba(0,240,255,0.35)" stroke-width="0.5" fill="none"/>
+            <polygon points="300,70 350,120 300,170 250,120" stroke="rgba(255,160,0,0.4)" stroke-width="0.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="vault-card-icon" aria-hidden="true">
+          <i class="fas fa-film" style="color:#ffa040;"></i>
+        </div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat" style="color:#ffa040;">CAT_04 · HISTORICAL DOCUMENTARIES</div>
+          <h3 class="vault-card-title">CHRONICLES</h3>
+          <p class="vault-card-desc">Epic documentary title sequences and promotional graphics that honour historical weight with cinematic gravitas.</p>
+          <div class="vault-card-arrow" style="color:#ffa040;">VIEW WORKS <i class="fas fa-arrow-right fa-xs"></i></div>
+        </div>
+      </article>
+
+    </div><!-- /vault-grid -->
+  </div>
+</section>
+
+<!-- ============================================================
+     THE RATE CARD — PRICING
+============================================================ -->
+<section id="rates" aria-label="Pricing — The Rate Card">
+  <div class="container">
+    <div class="rates-header reveal">
+      <div>
+        <div class="section-eyebrow">02 — THE RATE CARD</div>
+        <h2 class="section-title">
+          <span class="neon-pink flicker-slow">PRICING</span><br>
+          <span style="color:var(--text);">MATRIX</span>
+        </h2>
+      </div>
+      <div style="font-family:var(--mono); font-size:0.68rem; color:var(--text-muted); letter-spacing:0.08em; max-width:260px; line-height:1.7;">
+        All commissions handled via Discord.<br>
+        Revisions discussed upfront. No hidden fees.
+      </div>
     </div>
 
-    <div class="sun-bg"></div>
-    <div class="grid-floor"></div>
+    <div class="rates-grid">
 
-    <div class="relative z-10 text-center pt-20 px-4">
-        <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white mb-4">
-            Do you need <span class="neon-glow-cyan">a thumbnail</span>
-        </h1>
-        <h2 class="text-3xl md:text-5xl font-black text-white mb-6">
-            that boosts your CTR?
-        </h2>
-        
-        <div class="cassette-container">
-            <div class="text-left text-xs font-mono text-cyan-400 mb-4 flex justify-between">
-                <span>SYSTEM_AUDIO: Venger.mp3</span>
-                <span id="tape-status">● READY</span>
+      <!-- Standard -->
+      <div class="rate-card reveal reveal-delay-1">
+        <div class="rate-badge badge-pink">STANDARD</div>
+        <div class="rate-name">Single Design</div>
+        <div class="rate-price neon-pink"><span class="rate-price-sup">$</span>15</div>
+        <div class="rate-price-label">per piece</div>
+        <ul class="rate-features">
+          <li><i class="fas fa-check-circle"></i>1 design concept</li>
+          <li><i class="fas fa-check-circle"></i>2 revisions included</li>
+          <li><i class="fas fa-check-circle"></i>PNG + PSD delivery</li>
+          <li><i class="fas fa-check-circle"></i>5-day turnaround</li>
+        </ul>
+        <div class="rate-divider"></div>
+        <button class="rate-btn" onclick="scrollToContact()"><span>COMMISSION NOW</span></button>
+      </div>
+
+      <!-- Premium (featured) -->
+      <div class="rate-card featured reveal reveal-delay-2">
+        <div class="rate-badge badge-cyan">MOST POPULAR</div>
+        <div class="rate-name">Premium Design</div>
+        <div class="rate-price neon-cyan"><span class="rate-price-sup">$</span>20</div>
+        <div class="rate-price-label">per piece</div>
+        <ul class="rate-features">
+          <li><i class="fas fa-check-circle"></i>2 design concepts</li>
+          <li><i class="fas fa-check-circle"></i>4 revisions included</li>
+          <li><i class="fas fa-check-circle"></i>All formats + source files</li>
+          <li><i class="fas fa-check-circle"></i>3-day priority turnaround</li>
+          <li><i class="fas fa-check-circle"></i>Commercial use license</li>
+        </ul>
+        <div class="rate-divider"></div>
+        <button class="rate-btn" onclick="scrollToContact()"><span>COMMISSION NOW</span></button>
+      </div>
+
+      <!-- Elite -->
+      <div class="rate-card reveal reveal-delay-3">
+        <div class="rate-badge badge-pink">ELITE</div>
+        <div class="rate-name">Elite Package</div>
+        <div class="rate-price neon-pink"><span class="rate-price-sup">$</span>25</div>
+        <div class="rate-price-label">per piece</div>
+        <ul class="rate-features">
+          <li><i class="fas fa-check-circle"></i>3 design concepts</li>
+          <li><i class="fas fa-check-circle"></i>Unlimited revisions</li>
+          <li><i class="fas fa-check-circle"></i>All formats + source files</li>
+          <li><i class="fas fa-check-circle"></i>48h rush delivery available</li>
+          <li><i class="fas fa-check-circle"></i>Full commercial license</li>
+          <li><i class="fas fa-check-circle"></i>1-month post-delivery support</li>
+        </ul>
+        <div class="rate-divider"></div>
+        <button class="rate-btn" onclick="scrollToContact()"><span>COMMISSION NOW</span></button>
+      </div>
+
+    </div><!-- /rates-grid -->
+
+    <!-- Bundle Strip -->
+    <div class="bundle-strip reveal">
+      <div class="bundle-strip-left">
+        <div class="rate-badge badge-purple" style="margin-bottom:0.8rem;">PACK DEALS</div>
+        <div class="bundle-strip-title">Save on bulk commissions</div>
+        <div class="bundle-strip-sub">Order multiple pieces and unlock scaled discounts</div>
+        <div class="bundle-tags">
+          <div class="bundle-tag">3 DESIGNS · −10%</div>
+          <div class="bundle-tag">5 DESIGNS · −15%</div>
+          <div class="bundle-tag">10 DESIGNS · −25%</div>
+          <div class="bundle-tag">FULL BRAND KIT · NEGOTIATE</div>
+        </div>
+      </div>
+      <div class="bundle-strip-price">
+        <div class="bundle-price-label">CUSTOM PRICING</div>
+        <div class="bundle-price-value">ASK ME</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     THE TERMINAL — CONTACT
+============================================================ -->
+<section id="terminal" aria-label="Contact — The Terminal">
+  <div class="container" style="max-width:900px;">
+    <div class="reveal">
+      <div class="section-eyebrow">03 — THE TERMINAL</div>
+      <h2 class="section-title">
+        <span style="color:var(--text);">INITIATE</span><br>
+        <span class="neon-cyan flicker-slow">CONTACT_</span>
+      </h2>
+    </div>
+
+    <div class="terminal-window reveal reveal-delay-1">
+      <div class="terminal-titlebar">
+        <div class="t-dot t-dot-red"></div>
+        <div class="t-dot t-dot-amber"></div>
+        <div class="t-dot t-dot-green"></div>
+        <div class="t-title">TORNOVIS_TERMINAL v2.4.1 — root@dsn_ajn:~</div>
+      </div>
+
+      <div class="terminal-body">
+        <p class="t-line"><span class="t-prompt">tornovis@dsn_ajn</span>:<span class="t-cmd"> ~$ whoami</span></p>
+        <p class="t-line" style="margin-bottom:1rem;"><span class="t-out">// Graphic designer. Retro futurist. Visual alchemist. Based in the neon underground.</span></p>
+
+        <p class="t-line"><span class="t-prompt">tornovis@dsn_ajn</span>:<span class="t-cmd"> ~$ cat socials.txt</span></p>
+        <p class="t-line" style="margin-bottom:0.5rem;"><span class="t-out">// Active channels detected —</span></p>
+
+        <div class="socials">
+          <a href="https://discord.com/users/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Discord profile">
+            <i class="fab fa-discord" style="color:#5865f2;"></i>
+            <span>dsn_ajn · Discord</span>
+          </a>
+          <a href="https://instagram.com/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram profile">
+            <i class="fab fa-instagram" style="background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
+            <span>dsn_ajn · Instagram</span>
+          </a>
+        </div>
+
+        <p class="t-line"><span class="t-prompt">tornovis@dsn_ajn</span>:<span class="t-cmd"> ~$ compose_message --secure</span></p>
+        <p class="t-line" style="margin-bottom:1.5rem;"><span class="t-out">// Encrypted channel open. Fill the fields below. <span class="t-cursor"></span></span></p>
+
+        <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="field-name">YOUR_HANDLE</label>
+              <input type="text" id="field-name" name="name" class="form-input" placeholder="your username" required autocomplete="name">
             </div>
-            <button id="playBtn" class="w-full py-3 bg-cyan-400 hover:bg-pink-500 text-black hover:text-white font-bold uppercase rounded-md transition" onclick="toggleAudio()">
-                <i id="playIcon" class="fas fa-play mr-2"></i> <span id="playText">INSERT TAPE / PLAY</span>
+            <div class="form-group">
+              <label class="form-label" for="field-email">EMAIL_ADDR</label>
+              <input type="email" id="field-email" name="email" class="form-input" placeholder="addr@domain.com" required autocomplete="email">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="field-subject">SUBJECT_LINE</label>
+            <input type="text" id="field-subject" name="subject" class="form-input" placeholder="Commission / collab / inquiry" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="field-message">MESSAGE_BODY</label>
+            <textarea id="field-message" name="message" class="form-textarea" placeholder="Describe your project — style references, deliverables, timeline..." required></textarea>
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="form-submit" id="submit-btn">
+              <span id="submit-label">[ TRANSMIT MESSAGE ]</span>
             </button>
-            <audio id="bgAudio" src="Venger.mp3" loop></audio>
-        </div>
+            <span class="form-note">Response within 24–48h via Discord or email.</span>
+          </div>
+          <div id="form-success">
+            <span class="t-out" style="color:var(--cyan);">// MESSAGE_TRANSMITTED ✓ &nbsp;Check your inbox — response inbound.</span>
+          </div>
+        </form>
 
-        <div class="max-w-6xl mx-auto mt-16 px-4">
-            <h3 class="text-xl font-bold font-mono tracking-widest text-pink-500 mb-8 text-left border-b border-pink-500/30 pb-2">
-                <i class="fas fa-th-large mr-2"></i>AVAILABLE WORK & PRICING
-            </h3>
-            
-            <div id="itemsGallery" class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-                <div class="item-card">
-                    <div class="h-48 bg-zinc-800 flex items-center justify-center text-zinc-500 font-mono">Sample Thumbnail 1</div>
-                    <div class="p-4 flex justify-between items-center bg-black/40">
-                        <span class="font-bold text-white text-sm">Gaming Thumbnail</span>
-                        <span class="text-cyan-400 font-mono font-bold">$15.00</span>
-                    </div>
-                </div>
-                <div class="item-card">
-                    <div class="h-48 bg-zinc-800 flex items-center justify-center text-zinc-500 font-mono">Sample Thumbnail 2</div>
-                    <div class="p-4 flex justify-between items-center bg-black/40">
-                        <span class="font-bold text-white text-sm">Vlog Cinematic</span>
-                        <span class="text-cyan-400 font-mono font-bold">$20.00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div><!-- /terminal-body -->
+    </div><!-- /terminal-window -->
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-wordmark">
+    <span class="neon-pink flicker">TORN</span><span style="color:var(--text);">OVIS</span>
+  </div>
+  <div class="footer-rule"><span>dsn_ajn</span></div>
+  <p class="footer-copy">© 2025 Tornovis · All Rights Reserved · Built in the Neon Underground</p>
+</footer>
+
+<!-- ============================================================
+     CASSETTE AUDIO PLAYER
+============================================================ -->
+<div id="cassette-player" aria-label="Audio player">
+  <div class="cassette-deck">
+
+    <div class="cassette-header">
+      <span class="cassette-brand flicker">◈ AUDIO SYSTEM ◈</span>
+      <button class="cassette-minimize" id="minimize-btn" onclick="toggleMinimize()" aria-label="Minimize player">▼ MIN</button>
     </div>
 
-    <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100000] hidden flex items-center justify-center p-4">
-        <div class="bg-[#0f0a1c] border-2 solid border-pink-500 p-6 rounded-xl max-w-sm w-full font-mono text-sm">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-pink-500 font-bold"><i class="fas fa-terminal mr-2"></i>SECURE AUTH</span>
-                <button onclick="closeLogin()" class="text-zinc-500 hover:text-white"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">USER_ID</label>
-                    <input id="adminUser" type="text" class="w-full bg-black/50 border border-zinc-700 p-2 rounded text-white focus:outline-none focus:border-cyan-400">
-                </div>
-                <div>
-                    <label class="block text-xs text-zinc-400 mb-1">PASSWORD_HASH</label>
-                    <input id="adminPass" type="password" class="w-full bg-black/50 border border-zinc-700 p-2 rounded text-white focus:outline-none focus:border-cyan-400">
-                </div>
-                <button onclick="checkAdminAuth()" class="w-full py-2 bg-pink-600 hover:bg-pink-700 font-bold rounded text-white transition">EXECUTE LOGIN</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="adminPanel" class="fixed bottom-4 left-4 right-4 bg-[#0a0514]/95 border-2 border-green-500 rounded-xl p-4 z-50 hidden font-mono text-xs shadow-2xl">
-        <div class="flex justify-between items-center border-b border-green-500/30 pb-2 mb-4">
-            <span class="text-green-400 font-bold"><i class="fas fa-user-shield mr-2"></i>ADMIN PANEL ACTIVE</span>
-            <button onclick="document.getElementById('adminPanel').classList.add('hidden')" class="text-zinc-400 hover:text-red-500"><i class="fas fa-eye-slash"></i> HIDE</button>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Collapsible content -->
+    <div id="cassette-content">
+      <div class="cassette-body-wrap">
+        <div class="cassette-tape">
+          <div class="tape-label-strip">
             <div>
-                <label class="block text-zinc-400 mb-1">Upload Thumbnail Image</label>
-                <input id="uploadImg" type="file" accept="image/*" class="w-full bg-black/40 border border-zinc-700 p-1 rounded text-zinc-300">
+              <div class="tape-track-title">VENGER</div>
+              <div class="tape-track-artist">Perturbator</div>
             </div>
-            <div>
-                <label class="block text-zinc-400 mb-1">Thumbnail Title</label>
-                <input id="itemTitle" type="text" placeholder="e.g., Concept Art" class="w-full bg-black/40 border border-zinc-700 p-1.5 rounded text-white focus:outline-none">
+            <div class="tape-side">SIDE A</div>
+          </div>
+          <div class="tape-spools">
+            <div class="spool" id="spool-left">
+              <div class="spool-spokes"></div>
+              <div class="spool-hub"></div>
             </div>
-            <div class="flex items-end gap-2">
-                <div class="flex-1">
-                    <label class="block text-zinc-400 mb-1">Price ($)</label>
-                    <input id="itemPrice" type="text" placeholder="e.g., 25.00" class="w-full bg-black/40 border border-zinc-700 p-1.5 rounded text-white focus:outline-none">
-                </div>
-                <button onclick="addUploadedItem()" class="px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded text-black transition">PUBLISH</button>
+            <div class="tape-mid-label">[ TAPE ]</div>
+            <div class="spool" id="spool-right">
+              <div class="spool-spokes"></div>
+              <div class="spool-hub"></div>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <script>
-        const audio = document.getElementById('bgAudio');
-        const playBtn = document.getElementById('playBtn');
-        const playText = document.getElementById('playText');
-        const playIcon = document.getElementById('playIcon');
-        const tapeStatus = document.getElementById('tape-status');
+      <!-- Equalizer -->
+      <div class="eq-wrap">
+        <div class="equalizer" id="equalizer" aria-hidden="true"></div>
+      </div>
 
-        // بيانات الدخول الافتراضية (تقدر تبدلها)
-        const SYS_USER = "admin";
-        const SYS_HASH = "1234";
+      <!-- Controls -->
+      <div class="cassette-controls">
+        <button class="ctrl-btn play-btn" id="play-btn" onclick="togglePlay()" aria-label="Play/Pause">
+          <i class="fas fa-play" id="play-icon"></i>
+        </button>
+        <div class="vol-row">
+          <i class="fas fa-volume-down vol-icon" aria-hidden="true"></i>
+          <input type="range" class="vol-slider" id="volume-slider"
+                 min="0" max="1" step="0.04" value="0.7"
+                 oninput="setVolume(this.value)" aria-label="Volume">
+          <i class="fas fa-volume-up vol-icon" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div><!-- /cassette-content -->
 
-        function initializeVault() {
-            const screen = document.getElementById('enter-screen');
-            screen.style.opacity = '0';
-            setTimeout(() => { screen.style.display = 'none'; }, 800);
+  </div>
+</div>
 
-            // تشغيل الأغنية فوراً وبشكل صحيح عند الدخول للموقع
-            audio.play().then(() => {
-                tapeStatus.innerText = "● PLAYING";
-                playText.innerText = "PAUSE TAPE";
-                playIcon.className = "fas fa-pause mr-2";
-            }).catch(err => {
-                console.log("Audio waiting for explicit button click.");
-            });
-        }
+<!-- Hidden audio -->
+<audio id="bg-audio" loop preload="none">
+  <source src="Venger.mp3" type="audio/mpeg">
+</audio>
 
-        function toggleAudio() {
-            if (audio.paused) {
-                audio.play();
-                tapeStatus.innerText = "● PLAYING";
-                playText.innerText = "PAUSE TAPE";
-                playIcon.className = "fas fa-pause mr-2";
-            } else {
-                audio.pause();
-                tapeStatus.innerText = "● PAUSED";
-                playText.innerText = "PLAY TAPE";
-                playIcon.className = "fas fa-play mr-2";
-            }
-        }
+<!-- ============================================================
+     SCRIPTS
+============================================================ -->
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-        // دوال الـ Admin Login
-        function openLogin() { document.getElementById('loginModal').classList.remove('hidden'); }
-        function closeLogin() { document.getElementById('loginModal').classList.add('hidden'); }
+<script>
+/* ================================================================
+   CUSTOM CURSOR
+================================================================ */
+const cursor     = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
 
-        function checkAdminAuth() {
-            const user = document.getElementById('adminUser').value;
-            const pass = document.getElementById('adminPass').value;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top  = my + 'px';
+});
 
-            if (user === SYS_USER && pass === SYS_HASH) {
-                confetti({ particleCount: 100, spread: 60, colors: ['#ff007f', '#00f0ff'] });
-                closeLogin();
-                document.getElementById('adminPanel').classList.remove('hidden');
-            } else {
-                alert("🚨 INTRUDER REJECTED: CRITICAL AUTHENTICATION FAILURE.");
-            }
-        }
+(function trackRing() {
+  rx += (mx - rx) * 0.13;
+  ry += (my - ry) * 0.13;
+  cursorRing.style.left = rx + 'px';
+  cursorRing.style.top  = ry + 'px';
+  requestAnimationFrame(trackRing);
+})();
 
-        // دالة الـ Dynamic Upload للصور والأثمنة
-        function addUploadedItem() {
-            const title = document.getElementById('itemTitle').value;
-            const price = document.getElementById('itemPrice').value;
-            const fileInput = document.getElementById('uploadImg');
-            
-            if (!title || !price || !fileInput.files[0]) {
-                alert("Please fill all fields and select an image!");
-                return;
-            }
+document.querySelectorAll('a,button,.vault-card,.rate-card,input,textarea').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform     = 'translate(-50%,-50%) scale(2.2)';
+    cursorRing.style.width     = '64px';
+    cursorRing.style.height    = '64px';
+    cursorRing.style.borderColor = 'var(--cyan)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform     = 'translate(-50%,-50%) scale(1)';
+    cursorRing.style.width     = '38px';
+    cursorRing.style.height    = '38px';
+    cursorRing.style.borderColor = 'var(--pink)';
+  });
+});
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const gallery = document.getElementById('itemsGallery');
-                
-                // إنشاء كرت صورة جديد وإضافته للـ Gallery ديريكت
-                const newCard = document.createElement('div');
-                newCard.className = "item-card";
-                newCard.innerHTML = `
-                    <div class="h-48 bg-cover bg-center" style="background-image: url('${e.target.result}')"></div>
-                    <div class="p-4 flex justify-between items-center bg-black/40">
-                        <span class="font-bold text-white text-sm">${title}</span>
-                        <span class="text-cyan-400 font-mono font-bold">$${parseFloat(price).toFixed(2)}</span>
-                    </div>
-                `;
-                gallery.prepend(newCard); // يظهر فـ الأول
-                
-                // مسح الحقول بعد النشر الناجح
-                document.getElementById('itemTitle').value = '';
-                document.getElementById('itemPrice').value = '';
-                fileInput.value = '';
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-    </script>
+/* ================================================================
+   PERSPECTIVE GRID CANVAS
+================================================================ */
+const canvas = document.getElementById('grid-canvas');
+const ctx    = canvas.getContext('2d');
+let gridTick = 0;
+
+function resizeCanvas() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function drawGridFrame() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const hz   = H * 0.52;   // horizon Y
+  const vpx  = W / 2;      // vanishing point X
+  const spd  = 0.45;
+  gridTick  += spd;
+
+  const numH = 22;
+  const numV = 16;
+
+  /* — horizontal lines — */
+  for (let i = 0; i <= numH; i++) {
+    let t = ((i / numH) + (gridTick % (H / numH * 2)) / (H / numH * 2)) % 1;
+    const y   = hz + (H - hz) * (t * t);
+    const ext = 1 - (1 - t) * 0.82;
+    const lx  = vpx - vpx * ext;
+    const rx2 = vpx + (W - vpx) * ext;
+
+    ctx.beginPath();
+    ctx.moveTo(lx, y);
+    ctx.lineTo(rx2, y);
+    ctx.strokeStyle = `rgba(0,240,255,${t * 0.16})`;
+    ctx.lineWidth   = 0.8;
+    ctx.stroke();
+  }
+
+  /* — vertical perspective lines — */
+  for (let i = 0; i <= numV; i++) {
+    const t  = i / numV;
+    const gx = t * W;
+    const a  = 0.03 + Math.sin(Math.PI * t) * 0.08;
+    ctx.beginPath();
+    ctx.moveTo(vpx, hz);
+    ctx.lineTo(gx, H);
+    ctx.strokeStyle = `rgba(255,0,127,${a})`;
+    ctx.lineWidth   = 0.7;
+    ctx.stroke();
+  }
+
+  /* — horizon glow — */
+  const hGrad = ctx.createLinearGradient(0, 0, W, 0);
+  hGrad.addColorStop(0,   'transparent');
+  hGrad.addColorStop(0.25,'rgba(255,0,127,0.35)');
+  hGrad.addColorStop(0.5, 'rgba(0,240,255,0.55)');
+  hGrad.addColorStop(0.75,'rgba(255,0,127,0.35)');
+  hGrad.addColorStop(1,   'transparent');
+  ctx.beginPath();
+  ctx.moveTo(0, hz);
+  ctx.lineTo(W, hz);
+  ctx.strokeStyle = hGrad;
+  ctx.lineWidth   = 2;
+  ctx.stroke();
+
+  /* — synthwave sun — */
+  const sunY  = hz - 70;
+  const sunR  = 72;
+  const sunG  = ctx.createRadialGradient(vpx, sunY, 0, vpx, sunY, sunR);
+  sunG.addColorStop(0,   'rgba(255,0,127,0.55)');
+  sunG.addColorStop(0.45,'rgba(255,0,127,0.2)');
+  sunG.addColorStop(1,   'rgba(255,0,127,0)');
+  ctx.beginPath();
+  ctx.arc(vpx, sunY, sunR, 0, Math.PI * 2);
+  ctx.fillStyle = sunG;
+  ctx.fill();
+
+  /* sun horizontal stripes (Hotline Miami aesthetic) */
+  ctx.strokeStyle = 'rgba(12,7,20,0.9)';
+  ctx.lineWidth   = 4;
+  for (let k = 0; k < 7; k++) {
+    const ly = sunY + 10 + k * 9;
+    const hw = Math.sqrt(Math.max(0, sunR * sunR - Math.pow(ly - sunY, 2)));
+    if (hw <= 0) break;
+    ctx.beginPath();
+    ctx.moveTo(vpx - hw, ly);
+    ctx.lineTo(vpx + hw, ly);
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(drawGridFrame);
+}
+drawGridFrame();
+
+/* Parallax grid on scroll */
+window.addEventListener('scroll', () => {
+  canvas.style.transform = `translateY(${window.scrollY * 0.28}px)`;
+}, { passive: true });
+
+/* ================================================================
+   MOBILE NAV
+================================================================ */
+let navOpen = false;
+
+function toggleNav() {
+  navOpen = !navOpen;
+  document.getElementById('mobile-nav').classList.toggle('open', navOpen);
+  document.getElementById('nav-toggle').setAttribute('aria-expanded', navOpen);
+  document.getElementById('toggle-1').style.transform = navOpen ? 'rotate(45deg) translate(4.5px,4.5px)' : '';
+  document.getElementById('toggle-2').style.opacity   = navOpen ? '0' : '1';
+  document.getElementById('toggle-3').style.transform = navOpen ? 'rotate(-45deg) translate(4.5px,-4.5px)' : '';
+}
+
+function closeNav() {
+  if (navOpen) toggleNav();
+}
+
+/* ================================================================
+   GSAP SCROLL REVEAL
+================================================================ */
+gsap.registerPlugin(ScrollTrigger);
+
+document.querySelectorAll('.reveal').forEach(el => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 50 },
+    {
+      opacity: 1, y: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 88%',
+        toggleActions: 'play none none none'
+      }
+    }
+  );
+});
+
+/* Staggered vault cards */
+gsap.utils.toArray('.vault-card').forEach((card, i) => {
+  gsap.fromTo(card,
+    { opacity: 0, y: 60 },
+    {
+      opacity: 1, y: 0,
+      duration: 0.85,
+      delay: i * 0.12,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: '#vault .vault-grid',
+        start: 'top 82%',
+        toggleActions: 'play none none none'
+      }
+    }
+  );
+});
+
+/* Nav active link tracking */
+const sectIds = ['home', 'vault', 'rates', 'terminal'];
+window.addEventListener('scroll', () => {
+  const sp = window.scrollY + 120;
+  sectIds.forEach(id => {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    const top = sec.offsetTop, bot = top + sec.offsetHeight;
+    const lnk = document.querySelector(`.nav-link[data-section="${id}"]`);
+    if (lnk) lnk.classList.toggle('active', sp >= top && sp < bot);
+  });
+}, { passive: true });
+
+/* ================================================================
+   CASSETTE AUDIO PLAYER
+================================================================ */
+const audio      = document.getElementById('bg-audio');
+const playBtn    = document.getElementById('play-btn');
+const playIcon   = document.getElementById('play-icon');
+const spoolLeft  = document.getElementById('spool-left');
+const spoolRight = document.getElementById('spool-right');
+const eqEl       = document.getElementById('equalizer');
+
+let playing      = false;
+let audioCtx     = null;
+let analyser     = null;
+let sourceNode   = null;
+let eqAnimId     = null;
+const NUM_BARS   = 20;
+
+/* Build eq bars */
+const bars = [];
+for (let i = 0; i < NUM_BARS; i++) {
+  const b = document.createElement('div');
+  b.className = 'eq-bar';
+  eqEl.appendChild(b);
+  bars.push(b);
+}
+
+function initAudio() {
+  if (audioCtx) return;
+  try {
+    audioCtx  = new (window.AudioContext || window.webkitAudioContext)();
+    analyser  = audioCtx.createAnalyser();
+    analyser.fftSize = 64;
+    sourceNode = audioCtx.createMediaElementSource(audio);
+    sourceNode.connect(analyser);
+    analyser.connect(audioCtx.destination);
+  } catch(e) { /* no audio context support */ }
+}
+
+function animateEQ() {
+  if (analyser) {
+    const buf = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(buf);
+    bars.forEach((b, i) => {
+      const idx = Math.floor(i * buf.length / NUM_BARS);
+      const v   = buf[idx] / 255;
+      const h   = 2 + v * 24;
+      b.style.height     = h + 'px';
+      b.style.background = h > 14 ? 'var(--pink)' : 'var(--cyan)';
+      b.style.boxShadow  = h > 14 ? '0 0 4px var(--pink)' : '0 0 4px var(--cyan)';
+    });
+  } else {
+    /* Fake animated EQ when audio file unavailable */
+    const now = Date.now();
+    bars.forEach((b, i) => {
+      const h = 2 + (Math.sin(now / 180 + i * 0.62) * 0.5 + 0.5) * 24 + Math.random() * 3;
+      b.style.height     = h + 'px';
+      b.style.background = h > 14 ? 'var(--pink)' : 'var(--cyan)';
+      b.style.boxShadow  = h > 14 ? '0 0 4px var(--pink)' : '0 0 4px var(--cyan)';
+    });
+  }
+  eqAnimId = requestAnimationFrame(animateEQ);
+}
+
+async function togglePlay() {
+  if (!playing) {
+    initAudio();
+    if (audioCtx && audioCtx.state === 'suspended') {
+      await audioCtx.resume().catch(() => {});
+    }
+    try {
+      await audio.play();
+    } catch(e) {
+      /* audio file missing — animate anyway */
+    }
+    playing = true;
+    playIcon.className = 'fas fa-pause';
+    spoolLeft.classList.add('spinning-l');
+    spoolRight.classList.add('spinning-r');
+    eqEl.classList.add('playing');
+    animateEQ();
+  } else {
+    audio.pause();
+    playing = false;
+    playIcon.className = 'fas fa-play';
+    spoolLeft.classList.remove('spinning-l');
+    spoolRight.classList.remove('spinning-r');
+    eqEl.classList.remove('playing');
+    if (eqAnimId) { cancelAnimationFrame(eqAnimId); eqAnimId = null; }
+    bars.forEach(b => { b.style.height = '2px'; });
+  }
+}
+
+function setVolume(val) {
+  audio.volume = parseFloat(val);
+}
+
+let minimized = false;
+function toggleMinimize() {
+  minimized = !minimized;
+  const content = document.getElementById('cassette-content');
+  content.style.display = minimized ? 'none' : '';
+  document.getElementById('minimize-btn').textContent = minimized ? '▲ MAX' : '▼ MIN';
+}
+
+/* ================================================================
+   CONTACT FORM
+================================================================ */
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn   = document.getElementById('submit-btn');
+  const label = document.getElementById('submit-label');
+  btn.disabled = true;
+  label.textContent = '[ TRANSMITTING... ]';
+
+  setTimeout(() => {
+    e.target.reset();
+    document.getElementById('form-success').style.display = 'block';
+    label.textContent = '[ TRANSMITTED ✓ ]';
+  }, 1600);
+}
+
+function scrollToContact() {
+  document.getElementById('terminal').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+
 </body>
 </html>
