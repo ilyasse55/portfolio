@@ -1404,8 +1404,7 @@
   <span class="hero-tag">// Graphic Designer · Retro-Futurist · Visual Alchemist</span>
 
   <h1 class="hero-name">
-    <span class="line-1 glitch neon-pink" data-text="TORN">TORN</span>
-    <span class="line-2" style="color:var(--text);">OVIS</span>
+    <span class="line-1 glitch neon-pink" data-text="AJN">AJN</span>
   </h1>
 
   <div class="hero-handle flicker-slow">dsn_ajn</div>
@@ -1719,32 +1718,24 @@
 ============================================================ -->
 <footer>
   <div class="footer-wordmark">
-    <span class="neon-pink flicker">TORN</span><span style="color:var(--text);">OVIS</span>
+    <span class="neon-pink flicker">AJN</span>
   </div>
   <div class="footer-rule"><span>dsn_ajn</span></div>
   <p class="footer-copy">© 2025 AJN · All Rights Reserved · Built in the Heart of Agadir</p>
 </footer>
 
 <!-- ============================================================
-     CASSETTE AUDIO PLAYER
+     CASSETTE AUDIO PLAYER (DIRECT STREAM)
 ============================================================ -->
-<div id="cassette-player" aria-label="Audio player" style="position: relative;">
-  
-  <iframe src="https://open.spotify.com/embed/track/6Uel7q6fLw8v7ubwI5TLis?utm_source=generator&theme=0" 
-          width="100%" 
-          height="100%" 
-          frameBorder="0" 
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.01; z-index: 99; cursor: pointer;">
-  </iframe>
-
+<div id="cassette-player" aria-label="Audio player">
   <div class="cassette-deck">
 
     <div class="cassette-header">
       <span class="cassette-brand flicker">◈ AUDIO SYSTEM ◈</span>
-      <button class="cassette-minimize" id="minimize-btn" onclick="toggleMinimize()" aria-label="Minimize player" style="position: relative; z-index: 100;">▼ MIN</button>
+      <button class="cassette-minimize" id="minimize-btn" onclick="toggleMinimize()" aria-label="Minimize player">▼ MIN</button>
     </div>
 
+    <!-- Collapsible content -->
     <div id="cassette-content">
       <div class="cassette-body-wrap">
         <div class="cassette-tape">
@@ -1769,22 +1760,32 @@
         </div>
       </div>
 
+      <!-- Equalizer -->
       <div class="eq-wrap">
         <div class="equalizer" id="equalizer" aria-hidden="true"></div>
       </div>
 
+      <!-- Controls -->
       <div class="cassette-controls">
-        <button class="ctrl-btn play-btn" id="play-btn" aria-label="Play/Pause">
+        <!-- عيطنا على الدالة togglePlay() فاش يضغط العميل -->
+        <button class="ctrl-btn play-btn" id="play-btn" onclick="togglePlay()" aria-label="Play/Pause">
           <i class="fas fa-play" id="play-icon"></i>
         </button>
         <div class="vol-row">
           <i class="fas fa-volume-down vol-icon" aria-hidden="true"></i>
-          <input type="range" class="vol-slider" id="volume-slider" min="0" max="1" step="0.04" value="0.7" aria-label="Volume">
+          <input type="range" class="vol-slider" id="volume-slider" min="0" max="1" step="0.04" value="0.7" oninput="setVolume(this.value)" aria-label="Volume">
           <i class="fas fa-volume-up vol-icon" aria-hidden="true"></i>
         </div>
       </div>
 
-    </div></div></div>```
+    </div><!-- /cassette-content -->
+  </div><!-- /cassette-deck -->
+</div><!-- /cassette-player -->
+
+<!-- الصوت السري: رابط مباشر ومفتوح للأغنية بلا مشاكل سبوتيفاي -->
+<audio id="bg-audio" loop preload="auto">
+  <source src="https://scummbar.com/mi2/MI1-CD/01%20-%20Opening%20Themes%20-%20Introduction.mp3" type="audio/mpeg">
+</audio>
 <!-- ============================================================
      SCRIPTS
 ============================================================ -->
