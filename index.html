@@ -73,17 +73,18 @@
         }
 
         /* LOWERED SYNTHWAVE SUN (هبطات لتحت باش متغطيش الكلمة الأولى) */
-        .synthwave-sun {
-            position: absolute;
-            top: 360px; left: 50%; transform: translateX(-50%);
-            width: 450px; height: 450px;
-            background: linear-gradient(to bottom, var(--neon-pink), #ff7700);
-            border-radius: 50%;
-            z-index: -2;
-            box-shadow: 0 0 100px rgba(255, 0, 127, 0.5);
-            clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 70%, 0% 72%, 100% 72%, 100% 76%, 0% 76%, 0% 79%, 100% 79%, 100% 84%, 0% 84%, 0% 87%, 100% 87%, 100% 92%, 0% 92%, 0% 100%, 100% 100%);
-            opacity: 0.85;
-        }
+        .sun-bg {
+              position: fixed;
+              bottom: -10%; /* هبطناها لتحت بزاف */
+              left: 50%;
+              transform: translateX(-50%);
+              width: 900px; /* كبرناها */
+              height: 900px;
+              background: linear-gradient(to bottom, #ff007f, #ffcc00);
+              border-radius: 50%;
+              box-shadow: 0 0 200px #ff007f;
+              z-index: -2;
+         }
 
         /* MAGENETA SPACE CONTAINER (فضاء ماجينتا معزول ومضيء) */
         .magenta-neon-zone {
@@ -118,8 +119,30 @@
 
         .tape-wheel { animation: spin 3s linear infinite; animation-play-state: paused; }
         .playing .tape-wheel { animation-play-state: running; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+      @keyframes spin { 100% { transform: rotate(360deg); } }
         .bar { width: 4px; background-color: var(--neon-cyan); height: 5px; transition: 0.1s; }
+        /* الشبكة المتحركة (تأثير الطريق) */
+        .grid-floor {
+         position: fixed; bottom: 0; width: 100%; height: 50%;
+         background-image: linear-gradient(to right, #ff00ff 2px, transparent 2px), linear-gradient(to bottom, #ff00ff 2px, transparent 2px);
+         background-size: 50px 50px;
+         transform: perspective(500px) rotateX(60deg);
+         z-index: -1;
+         animation: moveGrid 2s linear infinite;
+       }
+      @keyframes moveGrid { from { background-position: 0 0; } to { background-position: 0 50px; } }
+
+/* تنسيق النص ليكون واضح جداً */
+.text-container { 
+    position: relative; z-index: 10; text-align: center; padding-top: 100px; 
+}
+h1 span { 
+    color: #00f0ff; 
+    background: rgba(0, 0, 0, 0.6); /* خلفية داكنة للوضوح */
+    padding: 0 10px; 
+    border: 1px solid #00f0ff; 
+    border-radius: 8px;
+}
     </style>
 </head>
 <body class="min-h-screen relative pb-24 selection:bg-pink-500 selection:text-black">
@@ -446,6 +469,19 @@
             renderVault();
             gsap.from("header", { y: -50, opacity: 0, duration: 1 });
         });
+        <script>
+    const audio = document.getElementById('bgAudio');
+    const playBtn = document.getElementById('playBtn');
+
+    function toggleAudio() {
+        if (audio.paused) {
+            audio.play();
+            playBtn.innerText = "PAUSE TAPE";
+        } else {
+            audio.pause();
+            playBtn.innerText = "PLAY TAPE";
+        }
+    }
     </script>
 </body>
 </html>
