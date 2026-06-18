@@ -485,8 +485,8 @@
       50% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
     }
 
-    /* ================================================================
-       THE VAULT — #vault  (Portfolio)
+   /* ================================================================
+       THE VAULT — #vault  (Art Gallery Portfolio)
     ================================================================ */
     #vault {
       background: linear-gradient(to bottom, transparent, rgba(0,240,255,0.02), transparent);
@@ -527,29 +527,33 @@
     }
     .vault-card:hover .vault-card-bg { transform: scale(1.08); }
 
-    .vc-automotive .vault-card-bg {
+    /* الكلاس الأول: رجعناه لـ الخيمياء الفنية الرقمية */
+    .vc-digital-alchemy .vault-card-bg {
       background:
         linear-gradient(135deg, rgba(255,0,127,0.35) 0%, transparent 55%),
         linear-gradient(315deg, rgba(0,240,255,0.18) 0%, transparent 55%),
-        #180828;
+        #12041c;
     }
-    .vc-horror .vault-card-bg {
+    /* الكلاس الثاني: التحف السريالية المظلمة */
+    .vc-dark-artifacts .vault-card-bg {
       background:
         linear-gradient(135deg, rgba(123,0,255,0.45) 0%, transparent 55%),
         linear-gradient(315deg, rgba(255,0,127,0.18) 0%, transparent 55%),
-        #100518;
+        #0b0212;
     }
-    .vc-brands .vault-card-bg {
+    /* الكلاس الثالث: الهندسة المقدسة والشعارات النادرة */
+    .vc-sacred-emblems .vault-card-bg {
       background:
         linear-gradient(45deg, rgba(0,240,255,0.3) 0%, transparent 55%),
         linear-gradient(225deg, rgba(123,0,255,0.18) 0%, transparent 55%),
-        #07101a;
+        #050c14;
     }
-    .vc-historical .vault-card-bg {
+    /* الكلاس الرابع: الأرشيف التاريخي والأثري */
+    .vc-historical-relics .vault-card-bg {
       background:
-        linear-gradient(135deg, rgba(255,160,0,0.22) 0%, transparent 55%),
+        linear-gradient(135deg, rgba(212,143,56,0.25) 0%, transparent 55%),
         linear-gradient(315deg, rgba(0,240,255,0.15) 0%, transparent 55%),
-        #100d02;
+        #0d0b03;
     }
 
     /* Geometric SVG decoration inside each card */
@@ -637,8 +641,9 @@
     .vault-card:hover .vault-card-cat,
     .vault-card:hover .vault-card-title { transform: translateY(0); }
     .vault-card:hover .vault-card-desc,
-    .vault-card:hover .vault-card-arrow { opacity: 1; transform: translateY(0); }
-
+    .vault-card:hover .vault-card-arrow { opacity: 1; transform: translateY(0); 
+    }
+    
     /* ================================================================
        THE RATE CARD — #rates
     ================================================================ */
