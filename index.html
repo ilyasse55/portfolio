@@ -485,96 +485,155 @@
       50% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
     }
 
-   /* ================================================================
-   THE VAULT — 10 Masterpieces Layout with Direct Page Links
-================================================================ */
-#vault {
-  background: linear-gradient(to bottom, transparent, rgba(0,240,255,0.01), transparent);
-}
-
-.vault-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 4rem;
-}
-
-.vault-card {
+  /* ============================================================
+   THE VAULT — PORTFOLIO STYLES
+============================================================ */
+#Masterpeices {
+  padding: 8rem 2rem 6rem;
+  background: #06020f; /* خلفية داكنة جداً تبرز ألوان النيون */
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0,240,255,0.1);
-  height: 400px;
-  transition: border-color 0.4s, box-shadow 0.4s;
-}
-.vault-card:hover {
-  border-color: rgba(0,240,255,0.5);
-  box-shadow: 0 0 40px rgba(0,240,255,0.15);
 }
 
+/* Container */
+#Masterpeices .container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Grid Layout */
+.vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3.5rem;
+}
+
+/* Vault Card Base */
+.vault-card {
+  position: relative;
+  height: 380px;
+  border: 1px solid rgba(0, 240, 255, 0.15); /* حدود نيون خفيفة */
+  background: #110a1e;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Background Image Control */
 .vault-card-bg {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1;
 }
-.vault-card:hover .vault-card-bg { transform: scale(1.06); }
 
+/* Dark Overlay with Neon Blend */
 .vault-card-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(12,7,20,0.98) 0%, rgba(12,7,20,0.4) 60%, transparent 100%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to top,
+    rgba(11, 7, 19, 0.95) 20%,
+    rgba(11, 7, 19, 0.6) 60%,
+    rgba(11, 7, 19, 0.2) 100%
+  );
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 1.8rem;
   z-index: 2;
+  transition: all 0.4s ease;
 }
 
+/* Card Information Elements */
 .vault-card-cat {
-  font-family: var(--mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.4em;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--cyan, #00f0ff);
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
-  color: var(--cyan);
-  margin-bottom: 0.4rem;
 }
+
 .vault-card-title {
-  font-family: var(--sans);
-  font-weight: 900;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
-  color: #fff;
 }
+
 .vault-card-desc {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  color: var(--text-muted);
+  font-size: 0.85rem;
+  color: #b0a7bc;
   line-height: 1.5;
-  margin-top: 0.5rem;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s, transform 0.3s;
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+  transform: translateY(0);
+  transition: all 0.4s ease;
 }
+
+/* Action Link / Button */
 .vault-card-arrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  margin-top: 0.8rem;
-  color: var(--pink);
+  gap: 0.5rem;
+  color: var(--pink, #ff007f);
   text-decoration: none;
-  width: fit-content;
+  font-family: monospace;
+  font-size: 0.8rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  align-self: flex-start;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
 }
 
-.vault-card:hover .vault-card-desc { 
-  opacity: 1; 
-  transform: translateY(0); 
+.vault-card-arrow span {
+  transition: transform 0.3s ease;
+}
+
+/* ============================================================
+   HOVER EFFECTS (تأثيرات تمرير الماوس النيونية)
+============================================================ */
+.vault-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--pink, #ff007f);
+  box-shadow: 0 10px 25px rgba(255, 0, 127, 0.2);
+}
+
+.vault-card:hover .vault-card-bg {
+  transform: scale(1.05); /* تكبير خفيف وصافي للصورة عند الحوم */
+}
+
+.vault-card:hover .vault-card-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(11, 7, 19, 0.98) 30%,
+    rgba(11, 7, 19, 0.7) 70%,
+    rgba(255, 0, 127, 0.05) 100%
+  );
+}
+
+.vault-card:hover .vault-card-arrow {
+  color: #ffffff;
+  border-color: var(--cyan, #00f0ff);
+}
+
+.vault-card:hover .vault-card-arrow span {
+  transform: translateX(4px); /* دفع السهم للأمام بسلاسة */
 }
     /* ================================================================
        THE RATE CARD — #rates
