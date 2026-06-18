@@ -8,10 +8,10 @@
 
 ---
 
-## ⚡ OVERVIEW (البلان ديالي)
+## ⚡ OVERVIEW 
 Welcome to the official deployment of **AJN DSN** (The Vault v867). This is a highly immersive, interactive portfolio engineered for digital creators, streamers, and high-end brands. Inspired by the legendary **guns.lol** landing sequence and 80s arcade interfaces, this platform features a full-screen audio authorization gate, CRT scanline effects, dynamic audio spectrum analysis, and a local-storage dashboard for live assets.
 
-> **⚠️ WARNING:** Unauthorized access attempts to the core terminal will trigger security protocols. *We know where you live.* 😉
+> **⚠️ WARNING:** Unauthorized access attempts to the core terminal will trigger security protocols. *We know where you live.* 
 
 ---
 
