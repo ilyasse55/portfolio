@@ -630,29 +630,66 @@
     }
 
     /* ================================================================
-       RETRO CASSETTE PLAYER STYLES (FIX 5: Added complete cassette CSS)
+       FLOATING CASSETTE PLAYER - CUSTOM POSITION
     ================================================================ */
-    #cassette-section {
-      padding: 4rem 2rem 6rem;
-      background: linear-gradient(to bottom, transparent, rgba(255,0,127,0.02), transparent);
-      position: relative;
-      z-index: 1;
+    
+    /* Cassette Container - Floating & Draggable */
+    #cassette-float-container {
+      position: fixed;
+      z-index: 5000;
+      top: 120px;
+      right: 30px;
+      width: 320px;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: filter 0.3s ease, opacity 0.3s ease;
     }
 
-    .cassette-deck {
-      max-width: 500px;
-      margin: 3rem auto 0;
+    #cassette-float-container:active {
+      cursor: grabbing;
+    }
+
+    #cassette-float-container.dragging {
+      filter: drop-shadow(0 0 30px rgba(255, 0, 127, 0.3));
+      opacity: 0.9;
+    }
+
+    #cassette-float-container.minimized .cassette-deck-body {
+      max-height: 0;
+      padding: 0 1.5rem;
+      opacity: 0;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    #cassette-float-container.minimized .cassette-deck-body {
+      padding: 0 1.5rem;
+    }
+
+    #cassette-float-container:not(.minimized) .cassette-deck-body {
+      max-height: 500px;
+      padding: 1.5rem;
+      opacity: 1;
+      transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Cassette Deck */
+    .cassette-deck-float {
       background: linear-gradient(145deg, #1a1028, #0d0819);
       border: 2px solid rgba(0, 240, 255, 0.2);
       border-radius: 12px;
-      padding: 2rem 2rem 1.5rem;
-      box-shadow: 0 0 40px rgba(0, 240, 255, 0.08), inset 0 0 40px rgba(0, 240, 255, 0.02);
-      position: relative;
+      box-shadow: 
+        0 0 40px rgba(0, 240, 255, 0.08),
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        inset 0 0 40px rgba(0, 240, 255, 0.02);
       overflow: hidden;
       transition: border-color 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
     }
 
-    .cassette-deck::before {
+    .cassette-deck-float::before {
       content: '';
       position: absolute;
       top: -2px;
@@ -664,14 +701,99 @@
       pointer-events: none;
     }
 
-    .cassette-deck.playing {
-      border-color: var(--pink);
-      box-shadow: 0 0 60px rgba(255, 0, 127, 0.15), inset 0 0 60px rgba(255, 0, 127, 0.03);
-    }
-
-    .cassette-deck > * {
+    .cassette-deck-float > * {
       position: relative;
       z-index: 1;
+    }
+
+    .cassette-deck-float.playing {
+      border-color: var(--pink);
+      box-shadow: 
+        0 0 60px rgba(255, 0, 127, 0.15),
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        inset 0 0 60px rgba(255, 0, 127, 0.03);
+    }
+
+    /* Cassette Header - Drag Handle + Controls */
+    .cassette-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      background: rgba(0, 0, 0, 0.4);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.08);
+      cursor: grab;
+    }
+
+    .cassette-header:active {
+      cursor: grabbing;
+    }
+
+    .cassette-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .cassette-drag-icon {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      opacity: 0.3;
+      transition: opacity 0.3s ease;
+    }
+
+    .cassette-header:hover .cassette-drag-icon {
+      opacity: 0.7;
+    }
+
+    .cassette-header-title {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--cyan);
+      text-transform: uppercase;
+    }
+
+    .cassette-header-title .dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: var(--pink);
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    .cassette-header-controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .cassette-header-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .cassette-header-btn:hover {
+      color: var(--cyan);
+      background: rgba(0, 240, 255, 0.1);
+    }
+
+    .cassette-header-btn.close-btn:hover {
+      color: var(--pink);
+      background: rgba(255, 0, 127, 0.1);
+    }
+
+    /* Cassette Body */
+    .cassette-deck-body {
+      padding: 1.5rem;
+      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     /* Tape Window */
@@ -752,7 +874,7 @@
       transition: opacity 0.4s ease;
     }
 
-    .cassette-deck.playing .tape-between {
+    .cassette-deck-float.playing .tape-between {
       opacity: 0.4;
       animation: tape-pulse 1.5s ease-in-out infinite;
     }
@@ -785,7 +907,7 @@
       opacity: 1;
     }
 
-    .cassette-deck.playing .eq-bar {
+    .cassette-deck-float.playing .eq-bar {
       background: var(--cyan);
     }
 
@@ -855,7 +977,7 @@
     .cassette-status {
       text-align: center;
       font-family: var(--mono);
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       letter-spacing: 0.3em;
       color: var(--text-muted);
       margin-top: 1rem;
@@ -866,8 +988,129 @@
       transition: color 0.3s ease;
     }
 
-    .cassette-deck.playing .cassette-status .status-text {
+    .cassette-deck-float.playing .cassette-status .status-text {
       color: var(--pink);
+    }
+
+    /* Position Presets */
+    .position-presets {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5001;
+      display: flex;
+      gap: 0.8rem;
+      background: rgba(12, 7, 20, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      border: 1px solid rgba(0, 240, 255, 0.1);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .preset-btn {
+      background: transparent;
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      color: var(--text-muted);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+    }
+
+    .preset-btn.active {
+      border-color: var(--pink);
+      color: var(--pink);
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.15);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      #cassette-float-container {
+        width: 280px;
+        top: 80px;
+        right: 10px;
+      }
+
+      .spool {
+        width: 45px;
+        height: 45px;
+      }
+
+      .spool-inner {
+        width: 18px;
+        height: 18px;
+      }
+
+      .equalizer {
+        height: 30px;
+        gap: 2px;
+      }
+
+      .eq-bar {
+        width: 4px;
+      }
+
+      .position-presets {
+        bottom: 10px;
+        padding: 0.5rem 1rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 90%;
+      }
+
+      .preset-btn {
+        font-size: 0.5rem;
+        padding: 0.3rem 0.7rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #cassette-float-container {
+        width: 240px;
+        top: 70px;
+        right: 5px;
+      }
+
+      .tape-window {
+        padding: 1rem 0.5rem;
+        gap: 1.5rem;
+      }
+
+      .spool {
+        width: 35px;
+        height: 35px;
+      }
+
+      .spool-inner {
+        width: 14px;
+        height: 14px;
+      }
+
+      .cassette-controls {
+        gap: 1rem;
+      }
+
+      .cassette-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      .cassette-header-title {
+        font-size: 0.55rem;
+      }
     }
 
     /* ================================================================
@@ -1286,7 +1529,7 @@
     }
 
     /* ================================================================
-       RESPONSIVE (FIX 6: Properly closed media query)
+       RESPONSIVE
     ================================================================ */
     @media (max-width: 768px) {
       .nav-links { display: none; }
@@ -1310,46 +1553,11 @@
 
       .bundle-strip { flex-direction: column; }
       .bundle-strip-price { text-align: left; }
-
-      .cassette-deck {
-        padding: 1.5rem 1rem 1rem;
-        max-width: 100%;
-      }
-
-      .tape-window {
-        padding: 1rem 0.5rem;
-        gap: 1.5rem;
-      }
-
-      .spool {
-        width: 45px;
-        height: 45px;
-      }
-
-      .spool-inner {
-        width: 18px;
-        height: 18px;
-      }
-
-      .equalizer {
-        height: 30px;
-        gap: 2px;
-      }
-
-      .eq-bar {
-        width: 4px;
-      }
     }
 
     @media (max-width: 480px) {
       .section-title { font-size: 2rem; }
-      .cassette-deck { padding: 1rem; }
-      .tape-window { gap: 1rem; }
-      .spool { width: 35px; height: 35px; }
-      .spool-inner { width: 14px; height: 14px; }
-      .cassette-controls { gap: 1rem; }
-      .cassette-btn { width: 40px; height: 40px; font-size: 1rem; }
-    } /* FIX 6: Media query properly closed */
+    }
   </style>
 </head>
 <body>
@@ -1377,7 +1585,6 @@
     <li><a href="#home"     class="nav-link" data-section="home">// HOME</a></li>
     <li><a href="#vault"    class="nav-link" data-section="vault">// VAULT</a></li>
     <li><a href="#rates"    class="nav-link" data-section="rates">// RATES</a></li>
-    <li><a href="#cassette-section" class="nav-link" data-section="cassette">// CASSETTE</a></li>
     <li><a href="#terminal" class="nav-link" data-section="terminal">// TERMINAL</a></li>
   </ul>
 
@@ -1393,7 +1600,6 @@
   <a href="#home"     onclick="closeNav()">// HOME</a>
   <a href="#vault"    onclick="closeNav()">// VAULT</a>
   <a href="#rates"    onclick="closeNav()">// RATES</a>
-  <a href="#cassette-section" onclick="closeNav()">// CASSETTE</a>
   <a href="#terminal" onclick="closeNav()">// TERMINAL</a>
 </nav>
 
@@ -1547,22 +1753,33 @@
 </section>
 
 <!-- ============================================================
-     RETRO CASSETTE PLAYER (FIX 7: Properly structured with no unclosed tags)
+     FLOATING CASSETTE PLAYER - COMPLETE WITH DRAG & POSITION PRESETS
 ============================================================ -->
-<section id="cassette-section" aria-label="Retro Cassette Player">
-  <div class="container">
-    <div class="reveal">
-      <div class="section-eyebrow">04 — THE CASSETTE</div>
-      <h2 class="section-title">
-        <span style="color:var(--text);">RETRO</span><br>
-        <span class="neon-pink flicker-slow">PLAYER_</span>
-      </h2>
+<div id="cassette-float-container" class="" data-position="top-right">
+  <div class="cassette-deck-float" id="cassette-deck">
+    <!-- Audio Element -->
+    <audio id="audio-player" src="Venger.mp3" loop preload="metadata"></audio>
+
+    <!-- Cassette Header - Drag Handle -->
+    <div class="cassette-header" id="cassette-drag-handle">
+      <div class="cassette-header-left">
+        <span class="cassette-drag-icon"><i class="fas fa-grip-lines"></i></span>
+        <span class="cassette-header-title">
+          <span class="dot"></span> RETRO PLAYER
+        </span>
+      </div>
+      <div class="cassette-header-controls">
+        <button class="cassette-header-btn" id="minimize-btn" aria-label="Minimize/Maximize">
+          <i class="fas fa-window-minimize"></i>
+        </button>
+        <button class="cassette-header-btn close-btn" id="close-cassette-btn" aria-label="Close cassette">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     </div>
 
-    <div class="cassette-deck" id="cassette-deck">
-      <!-- Audio Element -->
-      <audio id="audio-player" src="Venger.mp3" loop preload="metadata"></audio>
-
+    <!-- Cassette Body -->
+    <div class="cassette-deck-body">
       <!-- Tape Window -->
       <div class="tape-window">
         <div class="spool spool-left" id="spool-left">
@@ -1601,7 +1818,16 @@
       </div>
     </div>
   </div>
-</section>
+</div>
+
+<!-- Position Presets -->
+<div class="position-presets" id="position-presets">
+  <button class="preset-btn active" data-position="top-right">↗ TR</button>
+  <button class="preset-btn" data-position="top-left">↖ TL</button>
+  <button class="preset-btn" data-position="bottom-right">↘ BR</button>
+  <button class="preset-btn" data-position="bottom-left">↙ BL</button>
+  <button class="preset-btn" data-position="center">⊕ Center</button>
+</div>
 
 <!-- ============================================================
      THE PRICING — RATES
@@ -1772,7 +1998,7 @@
 </footer>
 
 <!-- ============================================================
-     SINGLE UNIFIED SCRIPT BLOCK (FIX 8: All JS combined, no duplicate tags)
+     SINGLE UNIFIED SCRIPT BLOCK
 ============================================================ -->
 <script>
 /* ================================================================
@@ -1799,7 +2025,7 @@
   }
   trackRing();
 
-  document.querySelectorAll('a,button,.vault-card,.rate-card,input,textarea,.cassette-btn').forEach(function(el) {
+  document.querySelectorAll('a,button,.vault-card,.rate-card,input,textarea,.cassette-btn,.preset-btn,.cassette-header-btn').forEach(function(el) {
     el.addEventListener('mouseenter', function() {
       cursor.style.transform = 'translate(-50%,-50%) scale(2.2)';
       cursorRing.style.width = '64px';
@@ -1915,29 +2141,195 @@
 })();
 
 /* ================================================================
-   RETRO CASSETTE PLAYER CONTROLLER (FIX 9: Bulletproof sandboxed logic)
+   FLOATING CASSETTE PLAYER - FULL CONTROLLER
 ================================================================ */
-(function initCassette() {
+(function initFloatingCassette() {
+  // --- DOM refs ---
+  const container = document.getElementById('cassette-float-container');
+  const deck = document.getElementById('cassette-deck');
   const audio = document.getElementById('audio-player');
   const playBtn = document.getElementById('play-btn');
   const playIcon = document.getElementById('play-icon');
   const statusText = document.getElementById('status-text');
-  const deck = document.getElementById('cassette-deck');
   const spoolLeft = document.getElementById('spool-left');
   const spoolRight = document.getElementById('spool-right');
-  const eqBars = document.querySelectorAll('.eq-bar');
+  const eqBars = document.querySelectorAll('#equalizer .eq-bar');
+  const dragHandle = document.getElementById('cassette-drag-handle');
+  const minimizeBtn = document.getElementById('minimize-btn');
+  const closeBtn = document.getElementById('close-cassette-btn');
+  const presetBtns = document.querySelectorAll('.preset-btn');
 
+  // --- State ---
   let isPlaying = false;
   let eqAnimation = null;
   let audioContext = null;
   let audioInitialized = false;
+  let isDragging = false;
+  let isMinimized = false;
+  let isVisible = true;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+  let currentPosition = 'top-right';
 
-  // Safe AudioContext initialization
+  // --- Position Presets ---
+  const positions = {
+    'top-right': { top: '120px', right: '30px', left: 'auto', bottom: 'auto' },
+    'top-left': { top: '120px', left: '30px', right: 'auto', bottom: 'auto' },
+    'bottom-right': { bottom: '30px', right: '30px', top: 'auto', left: 'auto' },
+    'bottom-left': { bottom: '30px', left: '30px', top: 'auto', right: 'auto' },
+    'center': { top: '50%', left: '50%', right: 'auto', bottom: 'auto', transform: 'translate(-50%, -50%)' }
+  };
+
+  function applyPosition(position) {
+    const pos = positions[position];
+    if (!pos) return;
+    currentPosition = position;
+    
+    // Reset transform if not center
+    if (position !== 'center') {
+      container.style.transform = 'none';
+    }
+    
+    Object.keys(pos).forEach(function(key) {
+      container.style[key] = pos[key];
+    });
+    
+    // Update active preset
+    presetBtns.forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.position === position);
+    });
+    
+    // Save preference
+    try {
+      localStorage.setItem('cassette-position', position);
+    } catch (e) {}
+  }
+
+  // --- Drag functionality ---
+  function initDrag() {
+    let startX, startY, startLeft, startTop, startRight, startBottom;
+
+    function onStart(e) {
+      e.preventDefault();
+      const touch = e.touches ? e.touches[0] : e;
+      
+      // Get current position
+      const rect = container.getBoundingClientRect();
+      const style = window.getComputedStyle(container);
+      
+      startX = touch.clientX;
+      startY = touch.clientY;
+      
+      // Store current position values
+      startLeft = parseFloat(style.left) || 0;
+      startTop = parseFloat(style.top) || 0;
+      startRight = parseFloat(style.right) || 0;
+      startBottom = parseFloat(style.bottom) || 0;
+      
+      isDragging = true;
+      container.classList.add('dragging');
+      
+      // Disable transitions during drag
+      container.style.transition = 'none';
+    }
+
+    function onMove(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      
+      const touch = e.touches ? e.touches[0] : e;
+      const dx = touch.clientX - startX;
+      const dy = touch.clientY - startY;
+      
+      // Determine which positioning to use
+      const style = window.getComputedStyle(container);
+      const useLeft = style.left !== 'auto';
+      const useTop = style.top !== 'auto';
+      
+      if (useLeft && useTop) {
+        container.style.left = (startLeft + dx) + 'px';
+        container.style.top = (startTop + dy) + 'px';
+        container.style.right = 'auto';
+        container.style.bottom = 'auto';
+      } else if (useRight && useTop) {
+        container.style.right = (startRight - dx) + 'px';
+        container.style.top = (startTop + dy) + 'px';
+        container.style.left = 'auto';
+        container.style.bottom = 'auto';
+      } else if (useLeft && useBottom) {
+        container.style.left = (startLeft + dx) + 'px';
+        container.style.bottom = (startBottom - dy) + 'px';
+        container.style.right = 'auto';
+        container.style.top = 'auto';
+      } else {
+        container.style.right = (startRight - dx) + 'px';
+        container.style.bottom = (startBottom - dy) + 'px';
+        container.style.left = 'auto';
+        container.style.top = 'auto';
+      }
+      
+      // Remove center transform if applied
+      container.style.transform = 'none';
+      
+      // Update preset buttons
+      presetBtns.forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+    }
+
+    function onEnd(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      container.classList.remove('dragging');
+      
+      // Re-enable transitions
+      container.style.transition = '';
+      
+      // Save position
+      try {
+        const rect = container.getBoundingClientRect();
+        localStorage.setItem('cassette-left', rect.left);
+        localStorage.setItem('cassette-top', rect.top);
+      } catch (err) {}
+    }
+
+    // Mouse events
+    dragHandle.addEventListener('mousedown', onStart);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+    
+    // Touch events
+    dragHandle.addEventListener('touchstart', onStart, { passive: false });
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onEnd);
+  }
+
+  // --- Minimize / Maximize ---
+  function toggleMinimize() {
+    isMinimized = !isMinimized;
+    container.classList.toggle('minimized', isMinimized);
+    minimizeBtn.innerHTML = isMinimized ? '<i class="fas fa-window-maximize"></i>' : '<i class="fas fa-window-minimize"></i>';
+    
+    try {
+      localStorage.setItem('cassette-minimized', isMinimized ? 'true' : 'false');
+    } catch (e) {}
+  }
+
+  // --- Close / Show ---
+  function toggleVisibility() {
+    isVisible = !isVisible;
+    container.style.display = isVisible ? 'block' : 'none';
+    
+    try {
+      localStorage.setItem('cassette-visible', isVisible ? 'true' : 'false');
+    } catch (e) {}
+  }
+
+  // --- Audio Controls ---
   function initAudioContext() {
     try {
       if (!audioContext) {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        // Resume context on user interaction
         if (audioContext.state === 'suspended') {
           audioContext.resume();
         }
@@ -1949,7 +2341,6 @@
     }
   }
 
-  // Equalizer animation - visual only (fallback if audio fails)
   function animateEqualizer() {
     if (eqAnimation) {
       cancelAnimationFrame(eqAnimation);
@@ -1958,7 +2349,6 @@
 
     function updateEq() {
       if (!isPlaying) {
-        // Flatten bars
         eqBars.forEach(function(bar) {
           bar.style.height = '2px';
           bar.classList.remove('active');
@@ -1980,14 +2370,11 @@
     updateEq();
   }
 
-  // Play/Pause toggle with error handling
   function togglePlay() {
     try {
-      // Initialize AudioContext on first user interaction
       if (!audioInitialized) {
         const ctxOk = initAudioContext();
         if (!ctxOk) {
-          // Fallback: Visual-only mode
           audioInitialized = true;
           isPlaying = !isPlaying;
           updateUI();
@@ -1999,14 +2386,12 @@
       }
 
       if (isPlaying) {
-        // Pause
         audio.pause();
         isPlaying = false;
         updateUI();
         animateEqualizer();
         updateStatus('⏹ PAUSED');
       } else {
-        // Play with error handling
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.then(function() {
@@ -2016,14 +2401,12 @@
             updateStatus('▶ PLAYING');
           }).catch(function(error) {
             console.warn('Audio playback blocked:', error);
-            // Fallback: Visual-only mode
             isPlaying = true;
             updateUI();
             animateEqualizer();
             updateStatus('▶ PLAYING (visual mode)');
           });
         } else {
-          // Older browsers
           isPlaying = true;
           updateUI();
           animateEqualizer();
@@ -2032,7 +2415,6 @@
       }
     } catch (error) {
       console.warn('Audio controller error:', error);
-      // Graceful fallback - toggle visual state only
       isPlaying = !isPlaying;
       updateUI();
       animateEqualizer();
@@ -2053,7 +2435,6 @@
       deck.classList.remove('playing');
       spoolLeft.classList.remove('spinning-l');
       spoolRight.classList.remove('spinning-r');
-      // Flatten equalizer
       eqBars.forEach(function(bar) {
         bar.style.height = '2px';
         bar.classList.remove('active');
@@ -2071,21 +2452,58 @@
     }
   }
 
-  // Event listener
+  // --- Load saved state ---
+  function loadSavedState() {
+    try {
+      const pos = localStorage.getItem('cassette-position');
+      if (pos && positions[pos]) {
+        applyPosition(pos);
+      }
+      
+      const minimized = localStorage.getItem('cassette-minimized');
+      if (minimized === 'true') {
+        isMinimized = true;
+        container.classList.add('minimized');
+        minimizeBtn.innerHTML = '<i class="fas fa-window-maximize"></i>';
+      }
+      
+      const visible = localStorage.getItem('cassette-visible');
+      if (visible === 'false') {
+        isVisible = false;
+        container.style.display = 'none';
+      }
+    } catch (e) {}
+  }
+
+  // --- Event Listeners ---
   if (playBtn) {
     playBtn.addEventListener('click', togglePlay);
   }
 
-  // Handle audio ended (loop is on, but just in case)
+  if (minimizeBtn) {
+    minimizeBtn.addEventListener('click', toggleMinimize);
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', toggleVisibility);
+  }
+
+  // Preset buttons
+  presetBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const pos = this.dataset.position;
+      applyPosition(pos);
+    });
+  });
+
+  // Audio events
   if (audio) {
     audio.addEventListener('ended', function() {
       if (isPlaying) {
-        // Loop is enabled, but if it fails, we reset
         isPlaying = false;
         updateUI();
         animateEqualizer();
         updateStatus('⏹ ENDED');
-        // Try to play again
         try {
           audio.currentTime = 0;
           audio.play().catch(function(e) {});
@@ -2096,11 +2514,10 @@
     audio.addEventListener('error', function(e) {
       console.warn('Audio loading error:', e);
       updateStatus('⚠️ AUDIO ERROR (visual mode)');
-      // Keep UI interactive with visual feedback
     });
   }
 
-  // Clean up on page unload
+  // Clean up
   window.addEventListener('beforeunload', function() {
     if (eqAnimation) {
       cancelAnimationFrame(eqAnimation);
@@ -2110,7 +2527,9 @@
     }
   });
 
-  // Initial state
+  // --- Init ---
+  loadSavedState();
+  initDrag();
   updateStatus('⏹ READY');
   updateUI();
 })();
@@ -2175,7 +2594,6 @@
       );
     });
   } else {
-    // Fallback: Show all elements
     document.querySelectorAll('.reveal, .vault-card').forEach(function(el) {
       el.style.opacity = '1';
       el.style.transform = 'translateY(0)';
@@ -2187,7 +2605,7 @@
    NAV ACTIVE LINK TRACKING
 ================================================================ */
 (function initNavTracking() {
-  const sectIds = ['home', 'vault', 'cassette-section', 'rates', 'terminal'];
+  const sectIds = ['home', 'vault', 'rates', 'terminal'];
   window.addEventListener('scroll', function() {
     const sp = window.scrollY + 120;
     sectIds.forEach(function(id) {
