@@ -1664,7 +1664,6 @@
       <button class="cassette-minimize" id="minimize-btn" onclick="toggleMinimize()" aria-label="Minimize player">▼ MIN</button>
     </div>
 
-    <!-- Collapsible content -->
     <div id="cassette-content">
       <div class="cassette-body-wrap">
         <div class="cassette-tape">
@@ -1689,14 +1688,11 @@
         </div>
       </div>
 
-      <!-- Equalizer -->
       <div class="eq-wrap">
         <div class="equalizer" id="equalizer" aria-hidden="true"></div>
       </div>
 
-      <!-- Controls -->
       <div class="cassette-controls">
-        <!-- عيطنا على الدالة togglePlay() فاش يضغط العميل -->
         <button class="ctrl-btn play-btn" id="play-btn" onclick="togglePlay()" aria-label="Play/Pause">
           <i class="fas fa-play" id="play-icon"></i>
         </button>
@@ -1707,20 +1703,67 @@
         </div>
       </div>
 
-    </div><!-- /cassette-content -->
-  </div><!-- /cassette-deck -->
-</div><!-- /cassette-player -->
+    </div></div></div><audio id="audio-player" src="Venger.mp3" preload="auto" loop></audio>
 
-<!-- الصوت السري: رابط مباشر ومفتوح للأغنية بلا مشاكل سبوتيفاي -->
-<audio id="audio-player" src="Venger.mp3" preload="auto" loop></audio>
-<!-- ============================================================
-     SCRIPTS
-============================================================ -->
-<!-- GSAP + ScrollTrigger -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <script>
+// ============================================================
+// CASSETTE PLAYER LOGIC (SAFE INLINE)
+// ============================================================
+function togglePlay() {
+  const audio = document.getElementById('audio-player');
+  const playIcon = document.getElementById('play-icon');
+  const spoolLeft = document.getElementById('spool-left');
+  const spoolRight = document.getElementById('spool-right');
+  
+  if (!audio) return;
+
+  if (audio.paused) {
+    audio.play()
+      .then(() => {
+        if (playIcon) playIcon.className = 'fas fa-pause';
+        if (spoolLeft) spoolLeft.style.animation = 'spin 3s linear infinite';
+        if (spoolRight) spoolRight.style.animation = 'spin 3s linear infinite';
+      })
+      .catch(error => {
+        console.error("Autoplay blocked:", error);
+      });
+  } else {
+    audio.pause();
+    if (playIcon) playIcon.className = 'fas fa-play';
+    if (spoolLeft) spoolLeft.style.animation = 'none';
+    if (spoolRight) spoolRight.style.animation = 'none';
+  }
+}
+
+function setVolume(value) {
+  const audio = document.getElementById('audio-player');
+  if (audio) audio.volume = value;
+}
+
+function toggleMinimize() {
+  const cassetteContent = document.getElementById('cassette-content');
+  const minimizeBtn = document.getElementById('minimize-btn');
+  if (cassetteContent && minimizeBtn) {
+    if (cassetteContent.style.display === 'none') {
+      cassetteContent.style.display = 'block';
+      minimizeBtn.innerText = '▼ MIN';
+    } else {
+      cassetteContent.style.display = 'none';
+      minimizeBtn.innerText = '▲ MAX';
+    }
+  }
+}
+
+// ربط قيم السلايدر عند أول تشغيل
+const initialAudio = document.getElementById('audio-player');
+const initialSlider = document.getElementById('volume-slider');
+if (initialAudio && initialSlider) {
+  initialAudio.volume = initialSlider.value;
+}
+
 /* ================================================================
    CUSTOM CURSOR
 ================================================================ */
