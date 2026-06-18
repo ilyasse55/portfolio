@@ -486,97 +486,96 @@
     }
 
    /* ================================================================
-       THE VAULT — 10 Masterpieces Layout with Direct Page Links
-    ================================================================ */
-    #vault {
-      background: linear-gradient(to bottom, transparent, rgba(0,240,255,0.01), transparent);
-    }
+   THE VAULT — 10 Masterpieces Layout with Direct Page Links
+================================================================ */
+#vault {
+  background: linear-gradient(to bottom, transparent, rgba(0,240,255,0.01), transparent);
+}
 
-    /* تقسيم ذكي: عمودين ف الموبايل، و3 أعمدة ف الشاشات الكبيرة */
-    .vault-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-top: 4rem;
-    }
+.vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
 
-    .vault-card {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid rgba(0,240,255,0.1);
-      height: 400px; /* طول مثالي لعرض البوسترات */
-      transition: border-color 0.4s, box-shadow 0.4s;
-    }
-    .vault-card:hover {
-      border-color: rgba(0,240,255,0.5);
-      box-shadow: 0 0 40px rgba(0,240,255,0.15);
-    }
+.vault-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0,240,255,0.1);
+  height: 400px;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.vault-card:hover {
+  border-color: rgba(0,240,255,0.5);
+  box-shadow: 0 0 40px rgba(0,240,255,0.15);
+}
 
-    .vault-card-bg {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
-      z-index: 1;
-    }
-    .vault-card:hover .vault-card-bg { transform: scale(1.06); }
+.vault-card-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  z-index: 1;
+}
+.vault-card:hover .vault-card-bg { transform: scale(1.06); }
 
-    /* فلتر ملون سينمائي فوق الصور كيتفاعل مع الـ Hover */
-    .vault-card-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(12,7,20,0.98) 0%, rgba(12,7,20,0.5) 50%, transparent 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.8rem;
-      z-index: 2;
-    }
+.vault-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(12,7,20,0.98) 0%, rgba(12,7,20,0.4) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.8rem;
+  z-index: 2;
+}
 
-    .vault-card-cat {
-      font-family: var(--mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: 0.4rem;
-    }
-    .vault-card-title {
-      font-family: var(--sans);
-      font-weight: 900;
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: -0.01em;
-      line-height: 1.1;
-      color: #fff;
-    }
-    .vault-card-desc {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-      margin-top: 0.5rem;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.3s, transform 0.3s;
-    }
-    .vault-card-arrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      margin-top: 0.8rem;
-      color: var(--pink);
-      text-decoration: none;
-      width: fit-content;
-    }
+.vault-card-cat {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 0.4rem;
+}
+.vault-card-title {
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: #fff;
+}
+.vault-card-desc {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 0.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.vault-card-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  margin-top: 0.8rem;
+  color: var(--pink);
+  text-decoration: none;
+  width: fit-content;
+}
 
-    /* تأثير الـ Hover لعرض الوصف */
-    .vault-card:hover .vault-card-desc { opacity: 1; transform: translateY(0); 
-    }
+.vault-card:hover .vault-card-desc { 
+  opacity: 1; 
+  transform: translateY(0); 
+}
     /* ================================================================
        THE RATE CARD — #rates
     ================================================================ */
@@ -1385,9 +1384,9 @@
       <div class="vault-card-bg" style="background-image: url('images/suzuki with noise.png');"></div>
       <div class="vault-card-overlay">
         <div class="vault-card-cat">ART_01 . AUTOMOTIVE</div>
-        <div class="vault-card-title">SUZUKI WITH NOISE</div>
+        <div class="vault-card-title">SUZUKI POSTER</div>
         <div class="vault-card-desc">High-octane cybernetic motorcycle layout with premium noise texture.</div>
-        <a href="suzuki with noise.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/suzuki with noise.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
@@ -1395,9 +1394,9 @@
       <div class="vault-card-bg" style="background-image: url('images/horror.png');"></div>
       <div class="vault-card-overlay">
         <div class="vault-card-cat">ART_02 . SURREALISM</div>
-        <div class="vault-card-title">HORROR REALM</div>
+        <div class="vault-card-title">HORROR</div>
         <div class="vault-card-desc">Gothic cyber composition featuring neon tones and dark surreal atmosphere.</div>
-        <a href="horror.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/horror.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
@@ -1405,9 +1404,9 @@
       <div class="vault-card-bg" style="background-image: url('images/travis edited.png');"></div>
       <div class="vault-card-overlay">
         <div class="vault-card-cat">ART_03 . MUSIC_POSTER</div>
-        <div class="vault-card-title">TRAVIS EDITED</div>
+        <div class="vault-card-title">TRAVIS SCOTT</div>
         <div class="vault-card-desc">Cactus Jack inspired high-tier graphic manipulation.</div>
-        <a href="travis edited.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/travis edited.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
@@ -1417,7 +1416,7 @@
         <div class="vault-card-cat">ART_04 . MILITARY</div>
         <div class="vault-card-title">SR71 BLACKBIRD</div>
         <div class="vault-card-desc">Cinematic studio lighting showcase featuring the legendary stealth aircraft.</div>
-        <a href="sr71 with the signature.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/sr71 with the signature.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
@@ -1427,7 +1426,7 @@
         <div class="vault-card-cat">ART_05 . SPORT</div>
         <div class="vault-card-title">THE FATHER OF SURFING</div>
         <div class="vault-card-desc">Retro aesthetics blended with high-resolution ocean waves.</div>
-        <a href="surfing.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/surfing.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
@@ -1437,7 +1436,7 @@
         <div class="vault-card-cat">ART_06 . CONCEPT</div>
         <div class="vault-card-title">HELL'S KITCHEN ALCHEMY</div>
         <div class="vault-card-desc">Fiery visual creation focusing on expressive surreal character art.</div>
-        <a href="gorden ramsy.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/gorden ramsy.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
@@ -1445,9 +1444,9 @@
       <div class="vault-card-bg" style="background-image: url('images/final result.png');"></div>
       <div class="vault-card-overlay">
         <div class="vault-card-cat">ART_07 . COLLAGE</div>
-        <div class="vault-card-title">THE BANANA WAR</div>
+        <div class="vault-card-title">THE DEVIL BANANA COMPANYC</div>
         <div class="vault-card-desc">Complex visual identity matching high-end professional layout.</div>
-        <a href="final result.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/final result.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
@@ -1455,9 +1454,9 @@
       <div class="vault-card-bg" style="background-image: url('images/doomed.png');"></div>
       <div class="vault-card-overlay">
         <div class="vault-card-cat">ART_08 . GLITCH</div>
-        <div class="vault-card-title">DOOMED CHRONICLES</div>
+        <div class="vault-card-title">DOOMED</div>
         <div class="vault-card-desc">VHS glitch artwork detailing the dark cyber aesthetic.</div>
-        <a href="doomed.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/doomed.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
@@ -1467,7 +1466,7 @@
         <div class="vault-card-cat">ART_09 . BREAKING_BAD</div>
         <div class="vault-card-title">WALTER WHITE</div>
         <div class="vault-card-desc">Cinematic layout highlighting crisp studio photorealism.</div>
-        <a href="dapikcha.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/dapikcha.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
@@ -1477,7 +1476,7 @@
         <div class="vault-card-cat">ART_10 . ABSTRACT</div>
         <div class="vault-card-title">SHATTERED COGNITION</div>
         <div class="vault-card-desc">Complex surreal portrait edit with breaking shards effect.</div>
-        <a href="11212.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        <a href="images/11212.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
       </div>
     </div>
 
