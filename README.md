@@ -1,155 +1,42 @@
+> INITIALIZING SYSTEM...
+> LOADING ASSETS... [██████████] 100%
+> ACCESS GRANTED: AJN_VIRTUAL_UNDERGROUND
 
-┌───────────────────────────────────────────────────────────────────┐
-│  🔮 RETRO-FUTURISTIC GRAPHIC DESIGN PORTFOLIO                   │
-│  ───────────────────────────────────────────────────────────────  │
-│  »  Guns.lol style entry screen with neon glitch animation      │
-│  »  Fully draggable retro cassette player                       │
-│  »  Embedded Pac-Man arcade cabinet                            │
-│  »  Cyberpunk/neon aesthetic with custom cursor                │
-│  »  Interactive portfolio vault with 10+ designs               │
-│  »  Terminal-style contact form                                │
-│  »  CRT scanline & vignette overlay effects                   │
-│  »  Animated perspective grid background                      │
-└───────────────────────────────────────────────────────────────────┘
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                              FEATURES
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
-  🚀 ENTRY SEQUENCE
-  ──────────────────
-  • Full-screen dark overlay with pulsating neon button
-  • Glitch text animation on "AJN" logo
-  • One-click unlock with AudioContext initialization
-  • Smooth fade transition to main content
-  • Enter key support for accessibility
 
-  📼 FLOATING CASSETTE PLAYER
-  ──────────────────────────
-  • Position: fixed in bottom-right corner
-  • Fully draggable (mouse + touch support)
-  • Animated spools with direction-specific rotation
-  • Real-time equalizer bars
-  • Play/Pause with icon toggle
-  • Minimize & close controls
-  • Sandboxed audio with error fallback
-  • Persistent state via localStorage
 
-  🕹️ ARCADE CABINET
-  ────────────────
-  • Embedded Pac-Man game (retrogames.cz)
-  • Neon purple cabinet with glow effects
-  • CRT scanline overlay
-  • Arcade-style marquee with "INSERT COIN"
-  • Fully responsive game container
 
-  🎨 DESIGN SYSTEM
-  ────────────────
-  • Color Palette: #ff007f (Pink) | #00f0ff (Cyan) | #7b00ff (Purple)
-  • Typography: Share Tech Mono + Montserrat
-  • Custom neon cursor with hover scaling
-  • CRT scanlines + vignette overlay
-  • Animated perspective grid (canvas)
-  • Flicker & glitch text effects
-  • GSAP scroll-triggered animations
 
-  🗂️ PORTFOLIO VAULT
-  ──────────────────
-  • 10 design projects with hover effects
-  • Automotive, Horror, Music, Military, Sport
-  • Image zoom on hover
-  • Neon glow border transitions
-  • "VIEW DESIGN" links to full artwork
 
-  💬 TERMINAL CONTACT
-  ──────────────────
-  • Retro terminal window with command-line aesthetic
-  • Discord & Instagram social links
-  • Form with transparent neon inputs
-  • Simulated message transmission
-  • Responsive design for all devices
+Welcome to the digital monolith.
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                           TECH STACK
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+This repository hosts the source code for my personal visual identity platform—a high-fidelity intersection between Cybernetic Design and Synthwave Aesthetics. This isn't just a portfolio; it's a living archive of visual alchemy, built for the neon underground.
 
-  Frontend:
-  ─────────
-  ✓ HTML5
-  ✓ CSS3 (Custom Properties, Flexbox, Grid)
-  ✓ Vanilla JavaScript (ES6)
-  ✓ GSAP + ScrollTrigger
-  ✓ FontAwesome Icons
-  ✓ Google Fonts
+[ 01 // ARCHITECTURAL CORE ]
+Every pixel is a tribute to the retro-future. The architecture is engineered to bypass standard web limitations, featuring:
 
-  Assets:
-  ───────
-  ✓ Custom SVG/Canvas animations
-  ✓ Local image gallery
-  ✓ Audio (Venger.mp3)
+The Vault: A high-octane responsive grid showcasing curated masterpieces—from high-resolution automotive layouts to dark surrealism.
 
-  Features:
-  ─────────
-  ✓ Drag & Drop (Vanilla JS)
-  ✓ Web Audio API
-  ✓ localStorage persistence
-  ✓ Touch events (mobile)
-  ✓ Responsive design
-  ✓ Custom cursor
+The Terminal: A command-line-inspired communication hub, providing a secure, encrypted channel to transmit your coordinates directly into my private vault.
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                        LIVE PREVIEW
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+The Audio Deck: A vintage-styled, sandboxed audio engine pumping Venger (Perturbator) at the heartbeat of every session.
 
-  🌐 https://ilyasse55.github.io/portfolio/
+[ 02 // SYSTEM CAPABILITIES ]
+Fluid Interaction: Custom cursor mechanics for a low-latency, immersive navigation experience.
 
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                        INSTALLATION
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+Adaptive Grid: Intelligent UI scaling that reconfigures the vault layout based on the user's viewport, from desktop workstations to mobile reconnaissance units.
 
-  1. Clone the repository:
-     $ git clone https://github.com/yourusername/AJN-Portfolio.git
+Secure Transmission: An asynchronous contact protocol designed to handle collaboration inquiries with maximum visual flair.
 
-  2. Navigate to the project:
-     $ cd AJN-Portfolio
+[ 03 // MISSION OBJECTIVE ]
+The goal is simple: To push the boundaries of visual identity through code. Whether it’s glitch-art, photorealism, or concept alchemy, this site acts as the primary transmission point for all high-tier graphic manipulation.
 
-  3. Open index.html in your browser:
-     $ open index.html
+[ 04 // ACCESS STATUS ]
+STATUS: OPERATIONAL
+ENCRYPTION: NEON_V1
+LOCATION: AGADIR // SOUSS-MASSA // SUB-LEVEL_01
 
-  ── OR ──
+[ TRANSMIT COORDINATES // CLONE REPO ]
 
-  Simply drag the index.html file into your browser.
-
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                       FILE STRUCTURE
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-
-  AJN-Portfolio/
-  ├── index.html              # Main HTML file
-  ├── images/                 # Portfolio artwork
-  │   ├── suzuki with noise.png
-  │   ├── horror.png
-  │   ├── travis edited.png
-  │   ├── sr71 with the signature.png
-  │   ├── surfing.png
-  │   ├── gorden ramsy.png
-  │   ├── final result.png
-  │   ├── doomed.png
-  │   ├── dapikcha.png
-  │   └── 11212.png
-  ├── Venger.mp3              # Cassette player audio
-  └── README.md              # This file
-
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                         CREDITS
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-
-  🎨 Design & Development: AJN (dsn_ajn)
-  📧 Email: xilyassexss@gmail.com
-  🎵 Music: Venger (for demo purposes)
-
-  ──────────────────────────────────────────────────────────────────
-
-  Built with ❤️ in Agadir, Morocco
-
-  © 2025 AJN · All Rights Reserved
+If you're here to collaborate, use the terminal, or simply observe—welcome to the grid.
