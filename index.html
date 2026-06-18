@@ -33,16 +33,16 @@
 
         /* GUNS.LOL STYLE ENTER SCREEN */
         #enter-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #05020a;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: opacity 0.8s ease-out, visibility 0.8s;
+               position: fixed;
+               top: 0; left: 0; width: 100%; height: 100%;
+               background-color: #05020a;
+               z-index: 99999; /* زدنا الـ Z-index باش يجي هو الأول ديما */
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+               cursor: pointer;
+               transition: opacity 0.8s ease-out;
         }
 
         /* 3D INFINITE MOVING GRID (بحال إلى كايتمشى للأمام) */
