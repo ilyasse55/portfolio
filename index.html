@@ -14,6 +14,10 @@
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
   <style>
     /* ================================================================
        CSS CUSTOM PROPERTIES — PALETTE & TOKENS
@@ -485,174 +489,397 @@
       50% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
     }
 
-  /* ============================================================
-   THE VAULT — PORTFOLIO STYLES
-============================================================ */
-#Masterpeices {
-  padding: 8rem 2rem 6rem;
-  background: #06020f; /* خلفية داكنة جداً تبرز ألوان النيون */
-  position: relative;
-  overflow: hidden;
-}
+    /* ================================================================
+       THE VAULT — PORTFOLIO STYLES
+    ================================================================ */
+    #vault {
+      padding: 8rem 2rem 6rem;
+      background: #06020f;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* Container */
-#Masterpeices .container {
-  width: 100%;
-  margin: 0 auto;
-}
+    #vault .container {
+      width: 100%;
+      margin: 0 auto;
+    }
 
-/* Grid Layout */
-.vault-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
-  margin-top: 3.5rem;
-}
+    .vault-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
 
-/* Vault Card Base */
-.vault-card {
-  position: relative;
-  height: 380px;
-  border: 1px solid rgba(0, 240, 255, 0.15); /* حدود نيون خفيفة */
-  background: #110a1e;
-  border-radius: 4px;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-}
+    .vault-card {
+      position: relative;
+      height: 380px;
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      background: #110a1e;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
 
-/* Background Image Control */
-.vault-card-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  z-index: 1;
-}
+    .vault-card-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 1;
+    }
 
-/* Dark Overlay with Neon Blend */
-.vault-card-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to top,
-    rgba(11, 7, 19, 0.95) 20%,
-    rgba(11, 7, 19, 0.6) 60%,
-    rgba(11, 7, 19, 0.2) 100%
-  );
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  z-index: 2;
-  transition: all 0.4s ease;
-}
+    .vault-card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to top,
+        rgba(11, 7, 19, 0.95) 20%,
+        rgba(11, 7, 19, 0.6) 60%,
+        rgba(11, 7, 19, 0.2) 100%
+      );
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      z-index: 2;
+      transition: all 0.4s ease;
+    }
 
-/* Card Information Elements */
-.vault-card-cat {
-  font-family: monospace;
-  font-size: 0.75rem;
-  color: var(--cyan, #00f0ff);
-  letter-spacing: 2px;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-}
+    .vault-card-cat {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--cyan);
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
 
-.vault-card-title {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: 1px;
-  margin-bottom: 0.75rem;
-  text-transform: uppercase;
-}
+    .vault-card-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 1px;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
 
-.vault-card-desc {
-  font-size: 0.85rem;
-  color: #b0a7bc;
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
-  opacity: 0.8;
-  transform: translateY(0);
-  transition: all 0.4s ease;
-}
+    .vault-card-desc {
+      font-size: 0.85rem;
+      color: #b0a7bc;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+      transition: all 0.4s ease;
+    }
 
-/* Action Link / Button */
-.vault-card-arrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--pink, #ff007f);
-  text-decoration: none;
-  font-family: monospace;
-  font-size: 0.8rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  align-self: flex-start;
-  transition: all 0.3s ease;
-  border-bottom: 1px solid transparent;
-  padding-bottom: 2px;
-}
+    .vault-card-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--pink);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      align-self: flex-start;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+    }
 
-.vault-card-arrow span {
-  transition: transform 0.3s ease;
-}
+    .vault-card-arrow span {
+      transition: transform 0.3s ease;
+    }
 
-/* ============================================================
-   HOVER EFFECTS (تأثيرات تمرير الماوس النيونية)
-============================================================ */
-.vault-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--pink, #ff007f);
-  box-shadow: 0 10px 25px rgba(255, 0, 127, 0.2);
-}
+    .vault-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--pink);
+      box-shadow: 0 10px 25px rgba(255, 0, 127, 0.2);
+    }
 
-.vault-card:hover .vault-card-bg {
-  transform: scale(1.05); /* تكبير خفيف وصافي للصورة عند الحوم */
-}
+    .vault-card:hover .vault-card-bg {
+      transform: scale(1.05);
+    }
 
-.vault-card:hover .vault-card-overlay {
-  background: linear-gradient(
-    to top,
-    rgba(11, 7, 19, 0.98) 30%,
-    rgba(11, 7, 19, 0.7) 70%,
-    rgba(255, 0, 127, 0.05) 100%
-  );
-}
+    .vault-card:hover .vault-card-overlay {
+      background: linear-gradient(
+        to top,
+        rgba(11, 7, 19, 0.98) 30%,
+        rgba(11, 7, 19, 0.7) 70%,
+        rgba(255, 0, 127, 0.05) 100%
+      );
+    }
 
-.vault-card:hover .vault-card-arrow {
-  color: #ffffff;
-  border-color: var(--cyan, #00f0ff);
-}
+    .vault-card:hover .vault-card-arrow {
+      color: #ffffff;
+      border-color: var(--cyan);
+    }
 
-.vault-card:hover .vault-card-arrow span {
-  transform: translateX(4px); /* دفع السهم للأمام بسلاسة */
-}
+    .vault-card:hover .vault-card-arrow span {
+      transform: translateX(4px);
+    }
+
+    /* ================================================================
+       RETRO CASSETTE PLAYER STYLES (FIX 5: Added complete cassette CSS)
+    ================================================================ */
+    #cassette-section {
+      padding: 4rem 2rem 6rem;
+      background: linear-gradient(to bottom, transparent, rgba(255,0,127,0.02), transparent);
+      position: relative;
+      z-index: 1;
+    }
+
+    .cassette-deck {
+      max-width: 500px;
+      margin: 3rem auto 0;
+      background: linear-gradient(145deg, #1a1028, #0d0819);
+      border: 2px solid rgba(0, 240, 255, 0.2);
+      border-radius: 12px;
+      padding: 2rem 2rem 1.5rem;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.08), inset 0 0 40px rgba(0, 240, 255, 0.02);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .cassette-deck::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, transparent, rgba(0, 240, 255, 0.05), transparent);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .cassette-deck.playing {
+      border-color: var(--pink);
+      box-shadow: 0 0 60px rgba(255, 0, 127, 0.15), inset 0 0 60px rgba(255, 0, 127, 0.03);
+    }
+
+    .cassette-deck > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Tape Window */
+    .tape-window {
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 8px;
+      padding: 1.5rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2.5rem;
+      position: relative;
+      border: 1px solid rgba(0, 240, 255, 0.08);
+    }
+
+    /* Spools */
+    .spool {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 240, 255, 0.15);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.4s ease;
+    }
+
+    .spool-inner {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 0, 127, 0.25);
+      background: radial-gradient(circle, rgba(255, 0, 127, 0.05), transparent);
+      transition: all 0.4s ease;
+    }
+
+    .spool-left.spinning-l {
+      animation: spin-left 4s linear infinite;
+      border-color: var(--pink);
+    }
+
+    .spool-right.spinning-r {
+      animation: spin-right 4s linear infinite;
+      border-color: var(--cyan);
+    }
+
+    .spool-left.spinning-l .spool-inner {
+      border-color: var(--pink);
+      background: radial-gradient(circle, rgba(255, 0, 127, 0.15), transparent);
+    }
+
+    .spool-right.spinning-r .spool-inner {
+      border-color: var(--cyan);
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.15), transparent);
+    }
+
+    @keyframes spin-left {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes spin-right {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* Tape between spools */
+    .tape-between {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 2px;
+      background: linear-gradient(to right, var(--pink), var(--cyan));
+      opacity: 0.15;
+      transition: opacity 0.4s ease;
+    }
+
+    .cassette-deck.playing .tape-between {
+      opacity: 0.4;
+      animation: tape-pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes tape-pulse {
+      0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scaleX(1); }
+      50% { opacity: 0.4; transform: translate(-50%, -50%) scaleX(1.05); }
+    }
+
+    /* Equalizer */
+    .equalizer {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 3px;
+      height: 40px;
+      margin: 1.5rem 0 1rem;
+    }
+
+    .eq-bar {
+      width: 6px;
+      height: 6px;
+      background: var(--pink);
+      border-radius: 2px;
+      transition: height 0.15s ease, background 0.3s ease;
+      opacity: 0.6;
+    }
+
+    .eq-bar.active {
+      opacity: 1;
+    }
+
+    .cassette-deck.playing .eq-bar {
+      background: var(--cyan);
+    }
+
+    /* Controls */
+    .cassette-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .cassette-btn {
+      background: transparent;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      color: var(--text);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cassette-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, var(--pink), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .cassette-btn:hover {
+      border-color: var(--pink);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.15);
+    }
+
+    .cassette-btn:hover::before {
+      opacity: 0.1;
+    }
+
+    .cassette-btn:active {
+      transform: scale(0.95);
+    }
+
+    .cassette-btn .fa-play {
+      margin-left: 3px;
+    }
+
+    .cassette-btn.playing {
+      border-color: var(--pink);
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);
+    }
+
+    .cassette-btn.playing .fa-pause {
+      color: var(--pink);
+    }
+
+    /* Status text */
+    .cassette-status {
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--text-muted);
+      margin-top: 1rem;
+      text-transform: uppercase;
+    }
+
+    .cassette-status .status-text {
+      transition: color 0.3s ease;
+    }
+
+    .cassette-deck.playing .cassette-status .status-text {
+      color: var(--pink);
+    }
+
     /* ================================================================
        THE RATE CARD — #rates
     ================================================================ */
     #rates { background: linear-gradient(to bottom, transparent, rgba(255,0,127,0.02), transparent); }
 
-    .rates-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      gap: 2rem;
-      margin-bottom: 3.5rem;
-    }
-
     .rates-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.2rem;
+      margin-top: 3.5rem;
     }
 
     .rate-card {
@@ -782,7 +1009,6 @@
     .rate-card.featured .rate-btn::before { background: var(--cyan); }
     .rate-card.featured .rate-btn:hover { color: var(--bg); box-shadow: 0 0 20px rgba(0,240,255,0.4); }
 
-    /* Bundle strip */
     .bundle-strip {
       margin-top: 2rem;
       padding: 2rem 2.2rem;
@@ -807,13 +1033,13 @@
       color: #fff;
       padding: 0.25rem 0.9rem;
     }
-    .bundle-strip-left {}
     .bundle-strip-title {
       font-family: var(--sans);
       font-weight: 700;
       font-size: 1.1rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      color: var(--text);
     }
     .bundle-strip-sub {
       font-family: var(--mono);
@@ -852,8 +1078,6 @@
     /* ================================================================
        THE TERMINAL — #terminal  (Contact)
     ================================================================ */
-    #terminal { }
-
     .terminal-window {
       margin-top: 4rem;
       border: 1px solid rgba(0,240,255,0.25);
@@ -903,7 +1127,6 @@
     }
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* Social Links */
     .socials {
       display: flex;
       gap: 1rem;
@@ -930,7 +1153,6 @@
     }
     .social-btn i { font-size: 1rem; }
 
-    /* Contact Form */
     .contact-form {
       margin-top: 2rem;
       display: flex;
@@ -1064,7 +1286,7 @@
     }
 
     /* ================================================================
-       RESPONSIVE
+       RESPONSIVE (FIX 6: Properly closed media query)
     ================================================================ */
     @media (max-width: 768px) {
       .nav-links { display: none; }
@@ -1074,51 +1296,72 @@
 
       .vault-grid {
         grid-template-columns: 1fr;
-        grid-template-rows: auto;
       }
       .vault-card { min-height: 220px; }
-      .vault-card:nth-child(1),
-      .vault-card:nth-child(2),
-      .vault-card:nth-child(3),
-      .vault-card:nth-child(4) {
-        grid-column: auto;
-        grid-row: auto;
+
+      .rates-grid {
+        grid-template-columns: 1fr;
       }
-      .vault-card-desc { opacity: 1; transform: translateY(0); }
-      .vault-card-arrow { opacity: 1; transform: translateY(0); }
 
       .form-row { grid-template-columns: 1fr; }
 
       .hero-cta { flex-direction: column; align-items: center; }
       .hero-cta .btn { width: 100%; max-width: 280px; justify-content: center; }
 
-      .rates-header { flex-direction: column; }
       .bundle-strip { flex-direction: column; }
       .bundle-strip-price { text-align: left; }
+
+      .cassette-deck {
+        padding: 1.5rem 1rem 1rem;
+        max-width: 100%;
+      }
+
+      .tape-window {
+        padding: 1rem 0.5rem;
+        gap: 1.5rem;
+      }
+
+      .spool {
+        width: 45px;
+        height: 45px;
+      }
+
+      .spool-inner {
+        width: 18px;
+        height: 18px;
+      }
+
+      .equalizer {
+        height: 30px;
+        gap: 2px;
+      }
+
+      .eq-bar {
+        width: 4px;
+      }
     }
 
-    /* هادا هو التصحيح للشاشات الصغار (إيلا بغيتي تزيد فيه تعديلات من بعد) */
     @media (max-width: 480px) {
-      .section-title { font-size: 2rem; } /* مثال فقط لتفادي الأخطاء */
-    }
+      .section-title { font-size: 2rem; }
+      .cassette-deck { padding: 1rem; }
+      .tape-window { gap: 1rem; }
+      .spool { width: 35px; height: 35px; }
+      .spool-inner { width: 14px; height: 14px; }
+      .cassette-controls { gap: 1rem; }
+      .cassette-btn { width: 40px; height: 40px; font-size: 1rem; }
+    } /* FIX 6: Media query properly closed */
   </style>
 </head>
 <body>
 
-<!-- ============================================================
-     CURSOR
-============================================================ -->
+<!-- CURSOR -->
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
-<!-- ============================================================
-     CRT + SCANLINES
-============================================================ -->
+<!-- CRT + SCANLINES -->
 <div id="crt" aria-hidden="true"></div>
 
-<!-- ============================================================
-     BACKGROUND GRID (Canvas)
-============================================================ -->
+<!-- BACKGROUND GRID -->
 <canvas id="grid-canvas" aria-hidden="true"></canvas>
 
 <!-- ============================================================
@@ -1134,6 +1377,7 @@
     <li><a href="#home"     class="nav-link" data-section="home">// HOME</a></li>
     <li><a href="#vault"    class="nav-link" data-section="vault">// VAULT</a></li>
     <li><a href="#rates"    class="nav-link" data-section="rates">// RATES</a></li>
+    <li><a href="#cassette-section" class="nav-link" data-section="cassette">// CASSETTE</a></li>
     <li><a href="#terminal" class="nav-link" data-section="terminal">// TERMINAL</a></li>
   </ul>
 
@@ -1149,6 +1393,7 @@
   <a href="#home"     onclick="closeNav()">// HOME</a>
   <a href="#vault"    onclick="closeNav()">// VAULT</a>
   <a href="#rates"    onclick="closeNav()">// RATES</a>
+  <a href="#cassette-section" onclick="closeNav()">// CASSETTE</a>
   <a href="#terminal" onclick="closeNav()">// TERMINAL</a>
 </nav>
 
@@ -1187,207 +1432,263 @@
 <!-- ============================================================
      THE VAULT — PORTFOLIO
 ============================================================ -->
-<section id="Masterpeices" aria-label="Masterpeices — The Vault">
-  <div class="container" style="max-width:900px;">
+<section id="vault" aria-label="Masterpieces — The Vault">
+  <div class="container">
     <div class="reveal">
-      <div class="section-eyebrow">03 — THE ARCHIVE</div>
+      <div class="section-eyebrow">01 — THE ARCHIVE</div>
       <h2 class="section-title">
-        <span style="color:var(--text);">MASTERPEICE</span><br>
+        <span style="color:var(--text);">MASTERPIECE</span><br>
         <span class="neon-cyan flicker-slow">COLLECTION</span>
       </h2>
     </div>
 
-  <div class="vault-grid">
-    
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/suzuki with noise.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_01 . AUTOMOTIVE</div>
-        <div class="vault-card-title">SUZUKI POSTER</div>
-        <div class="vault-card-desc">High-octane cybernetic motorcycle layout with premium noise texture.</div>
-        <a href="images/suzuki with noise.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+    <div class="vault-grid">
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/suzuki with noise.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_01 . AUTOMOTIVE</div>
+          <div class="vault-card-title">SUZUKI POSTER</div>
+          <div class="vault-card-desc">High-octane cybernetic motorcycle layout with premium noise texture.</div>
+          <a href="images/suzuki with noise.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
+      </div>
+
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/horror.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_02 . SURREALISM</div>
+          <div class="vault-card-title">HORROR</div>
+          <div class="vault-card-desc">Gothic cyber composition featuring neon tones and dark surreal atmosphere.</div>
+          <a href="images/horror.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
+      </div>
+
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/travis edited.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_03 . MUSIC_POSTER</div>
+          <div class="vault-card-title">TRAVIS SCOTT</div>
+          <div class="vault-card-desc">Cactus Jack inspired high-tier graphic manipulation.</div>
+          <a href="images/travis edited.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
+      </div>
+
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/sr71 with the signature.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_04 . MILITARY</div>
+          <div class="vault-card-title">SR71 BLACKBIRD</div>
+          <div class="vault-card-desc">Cinematic studio lighting showcase featuring the legendary stealth aircraft.</div>
+          <a href="images/sr71 with the signature.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
+      </div>
+
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/surfing.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_05 . SPORT</div>
+          <div class="vault-card-title">THE FATHER OF SURFING</div>
+          <div class="vault-card-desc">Retro aesthetics blended with high-resolution ocean waves.</div>
+          <a href="images/surfing.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
+      </div>
+
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/gorden ramsy.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_06 . CONCEPT</div>
+          <div class="vault-card-title">HELL'S KITCHEN ALCHEMY</div>
+          <div class="vault-card-desc">Fiery visual creation focusing on expressive surreal character art.</div>
+          <a href="images/gorden ramsy.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
+      </div>
+
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/final result.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_07 . COLLAGE</div>
+          <div class="vault-card-title">THE DEVIL BANANA COMPANY</div>
+          <div class="vault-card-desc">Complex visual identity matching high-end professional layout.</div>
+          <a href="images/final result.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
+      </div>
+
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/doomed.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_08 . GLITCH</div>
+          <div class="vault-card-title">DOOMED</div>
+          <div class="vault-card-desc">VHS glitch artwork detailing the dark cyber aesthetic.</div>
+          <a href="images/doomed.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
+      </div>
+
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/dapikcha.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_09 . BREAKING_BAD</div>
+          <div class="vault-card-title">WALTER WHITE</div>
+          <div class="vault-card-desc">Cinematic layout highlighting crisp studio photorealism.</div>
+          <a href="images/dapikcha.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
+      </div>
+
+      <div class="vault-card">
+        <div class="vault-card-bg" style="background-image: url('images/11212.png');"></div>
+        <div class="vault-card-overlay">
+          <div class="vault-card-cat">ART_10 . ABSTRACT</div>
+          <div class="vault-card-title">SHATTERED COGNITION</div>
+          <div class="vault-card-desc">Complex surreal portrait edit with breaking shards effect.</div>
+          <a href="images/11212.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+        </div>
       </div>
     </div>
-
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/horror.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_02 . SURREALISM</div>
-        <div class="vault-card-title">HORROR</div>
-        <div class="vault-card-desc">Gothic cyber composition featuring neon tones and dark surreal atmosphere.</div>
-        <a href="images/horror.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
-      </div>
-    </div>
-
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/travis edited.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_03 . MUSIC_POSTER</div>
-        <div class="vault-card-title">TRAVIS SCOTT</div>
-        <div class="vault-card-desc">Cactus Jack inspired high-tier graphic manipulation.</div>
-        <a href="images/travis edited.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
-      </div>
-    </div>
-
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/sr71 with the signature.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_04 . MILITARY</div>
-        <div class="vault-card-title">SR71 BLACKBIRD</div>
-        <div class="vault-card-desc">Cinematic studio lighting showcase featuring the legendary stealth aircraft.</div>
-        <a href="images/sr71 with the signature.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
-      </div>
-    </div>
-
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/surfing.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_05 . SPORT</div>
-        <div class="vault-card-title">THE FATHER OF SURFING</div>
-        <div class="vault-card-desc">Retro aesthetics blended with high-resolution ocean waves.</div>
-        <a href="images/surfing.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
-      </div>
-    </div>
-
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/gorden ramsy.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_06 . CONCEPT</div>
-        <div class="vault-card-title">HELL'S KITCHEN ALCHEMY</div>
-        <div class="vault-card-desc">Fiery visual creation focusing on expressive surreal character art.</div>
-        <a href="images/gorden ramsy.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
-      </div>
-    </div>
-
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/final result.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_07 . COLLAGE</div>
-        <div class="vault-card-title">THE DEVIL BANANA COMPANYC</div>
-        <div class="vault-card-desc">Complex visual identity matching high-end professional layout.</div>
-        <a href="images/final result.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
-      </div>
-    </div>
-
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/doomed.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_08 . GLITCH</div>
-        <div class="vault-card-title">DOOMED</div>
-        <div class="vault-card-desc">VHS glitch artwork detailing the dark cyber aesthetic.</div>
-        <a href="images/doomed.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
-      </div>
-    </div>
-
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/dapikcha.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_09 . BREAKING_BAD</div>
-        <div class="vault-card-title">WALTER WHITE</div>
-        <div class="vault-card-desc">Cinematic layout highlighting crisp studio photorealism.</div>
-        <a href="images/dapikcha.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
-      </div>
-    </div>
-
-    <div class="vault-card">
-      <div class="vault-card-bg" style="background-image: url('images/11212.png');"></div>
-      <div class="vault-card-overlay">
-        <div class="vault-card-cat">ART_10 . ABSTRACT</div>
-        <div class="vault-card-title">SHATTERED COGNITION</div>
-        <div class="vault-card-desc">Complex surreal portrait edit with breaking shards effect.</div>
-        <a href="images/11212.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
-      </div>
-    </div>
-
   </div>
 </section>
-  <!-- ============================================================
-     THE PRICING $ — RATES
+
+<!-- ============================================================
+     RETRO CASSETTE PLAYER (FIX 7: Properly structured with no unclosed tags)
 ============================================================ -->
-  <section id="pricing" aria-label="Prices — Pricing Rates">
-  <div class="container" style="max-width:900px;">
+<section id="cassette-section" aria-label="Retro Cassette Player">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-eyebrow">04 — THE CASSETTE</div>
+      <h2 class="section-title">
+        <span style="color:var(--text);">RETRO</span><br>
+        <span class="neon-pink flicker-slow">PLAYER_</span>
+      </h2>
+    </div>
+
+    <div class="cassette-deck" id="cassette-deck">
+      <!-- Audio Element -->
+      <audio id="audio-player" src="Venger.mp3" loop preload="metadata"></audio>
+
+      <!-- Tape Window -->
+      <div class="tape-window">
+        <div class="spool spool-left" id="spool-left">
+          <div class="spool-inner"></div>
+        </div>
+        <div class="tape-between"></div>
+        <div class="spool spool-right" id="spool-right">
+          <div class="spool-inner"></div>
+        </div>
+      </div>
+
+      <!-- Equalizer -->
+      <div class="equalizer" id="equalizer">
+        <div class="eq-bar" style="height: 6px;"></div>
+        <div class="eq-bar" style="height: 10px;"></div>
+        <div class="eq-bar" style="height: 14px;"></div>
+        <div class="eq-bar" style="height: 20px;"></div>
+        <div class="eq-bar" style="height: 24px;"></div>
+        <div class="eq-bar" style="height: 28px;"></div>
+        <div class="eq-bar" style="height: 24px;"></div>
+        <div class="eq-bar" style="height: 18px;"></div>
+        <div class="eq-bar" style="height: 12px;"></div>
+        <div class="eq-bar" style="height: 8px;"></div>
+      </div>
+
+      <!-- Controls -->
+      <div class="cassette-controls">
+        <button class="cassette-btn" id="play-btn" aria-label="Play/Pause">
+          <i class="fas fa-play" id="play-icon"></i>
+        </button>
+      </div>
+
+      <!-- Status -->
+      <div class="cassette-status">
+        <span class="status-text" id="status-text">⏹ READY</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     THE PRICING — RATES
+============================================================ -->
+<section id="rates" aria-label="Prices — Pricing Rates">
+  <div class="container">
     <div class="reveal">
       <div class="section-eyebrow">02 — THE PRICING RATES</div>
       <h2 class="section-title">
         <span style="color:var(--text);">PRICES</span><br>
-        <span class="neon-cyan flicker-slow">CONTRACT/</span>
+        <span class="neon-cyan flicker-slow">CONTRACT</span>
       </h2>
     </div>
 
-  <div class="rates-grid">
-    
-    <div class="rate-card">
-      <span class="rate-badge badge-pink">STANDARD</span>
-      <div class="rate-name">SINGLE DESIGN</div>
-      <div class="rate-price"><span class="rate-price-sup">$</span>15</div>
-      <div class="rate-price-label">PER PIECE</div>
-      <div class="rate-divider"></div>
-      <ul class="rate-features">
-        <li><i class="fas fa-check-circle"></i> 1 design concept</li>
-        <li><i class="fas fa-check-circle"></i> 2 revisions included</li>
-        <li><i class="fas fa-check-circle"></i> PNG + PSD delivery</li>
-        <li><i class="fas fa-check-circle"></i> 5-day turnaround</li>
-      </ul>
-      <button class="rate-btn"><span>COMMISSION NOW</span></button>
-    </div>
+    <div class="rates-grid">
+      <div class="rate-card">
+        <span class="rate-badge badge-pink">STANDARD</span>
+        <div class="rate-name">SINGLE DESIGN</div>
+        <div class="rate-price"><span class="rate-price-sup">$</span>15</div>
+        <div class="rate-price-label">PER PIECE</div>
+        <div class="rate-divider"></div>
+        <ul class="rate-features">
+          <li><i class="fas fa-check-circle"></i> 1 design concept</li>
+          <li><i class="fas fa-check-circle"></i> 2 revisions included</li>
+          <li><i class="fas fa-check-circle"></i> PNG + PSD delivery</li>
+          <li><i class="fas fa-check-circle"></i> 5-day turnaround</li>
+        </ul>
+        <button class="rate-btn"><span>COMMISSION NOW</span></button>
+      </div>
 
-    <div class="rate-card featured">
-      <span class="rate-badge badge-cyan">MOST POPULAR</span>
-      <div class="rate-name" style="color: var(--cyan);">PREMIUM DESIGN</div>
-      <div class="rate-price" style="color: var(--cyan); text-shadow: 0 0 15px rgba(0,240,255,0.4);"><span class="rate-price-sup">$</span>20</div>
-      <div class="rate-price-label">PER PIECE</div>
-      <div class="rate-divider"></div>
-      <ul class="rate-features">
-        <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> 2 design concepts</li>
-        <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> 4 revisions included</li>
-        <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> All formats + source files</li>
-        <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> 3-day priority turnaround</li>
-        <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> Commercial use license</li>
-      </ul>
-      <button class="rate-btn"><span>COMMISSION NOW</span></button>
-    </div>
+      <div class="rate-card featured">
+        <span class="rate-badge badge-cyan">MOST POPULAR</span>
+        <div class="rate-name" style="color: var(--cyan);">PREMIUM DESIGN</div>
+        <div class="rate-price" style="color: var(--cyan); text-shadow: 0 0 15px rgba(0,240,255,0.4);"><span class="rate-price-sup">$</span>20</div>
+        <div class="rate-price-label">PER PIECE</div>
+        <div class="rate-divider"></div>
+        <ul class="rate-features">
+          <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> 2 design concepts</li>
+          <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> 4 revisions included</li>
+          <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> All formats + source files</li>
+          <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> 3-day priority turnaround</li>
+          <li><i class="fas fa-check-circle" style="color: var(--cyan);"></i> Commercial use license</li>
+        </ul>
+        <button class="rate-btn"><span>COMMISSION NOW</span></button>
+      </div>
 
-    <div class="rate-card">
-      <span class="rate-badge badge-purple">ELITE</span>
-      <div class="rate-name">ELITE PACKAGE</div>
-      <div class="rate-price" style="color: #b87fff;"><span class="rate-price-sup">$</span>25</div>
-      <div class="rate-price-label">PER PIECE</div>
-      <div class="rate-divider"></div>
-      <ul class="rate-features">
-        <li><i class="fas fa-check-circle"></i> 3 design concepts</li>
-        <li><i class="fas fa-check-circle"></i> Unlimited revisions</li>
-        <li><i class="fas fa-check-circle"></i> All formats + source files</li>
-        <li><i class="fas fa-check-circle"></i> 48h rush delivery available</li>
-        <li><i class="fas fa-check-circle"></i> Full commercial license</li>
-        <li><i class="fas fa-check-circle"></i> 1-month post-delivery support</li>
-      </ul>
-      <button class="rate-btn"><span>COMMISSION NOW</span></button>
-    </div>
-
-  </div>
-
-  <div class="bundle-strip">
-    <div class="bundle-strip-left">
-      <div class="bundle-strip-title text-white">VIP FULL BULK BRANDING</div>
-      <div class="bundle-strip-sub">Get a massive discount for ordering 5+ custom designs simultaneously.</div>
-      <div class="bundle-tags">
-        <span class="bundle-tag">Priority Support</span>
-        <span class="bundle-tag">Source Files</span>
-        <span class="bundle-tag">Fast Lane</span>
+      <div class="rate-card">
+        <span class="rate-badge badge-purple">ELITE</span>
+        <div class="rate-name">ELITE PACKAGE</div>
+        <div class="rate-price" style="color: #b87fff;"><span class="rate-price-sup">$</span>25</div>
+        <div class="rate-price-label">PER PIECE</div>
+        <div class="rate-divider"></div>
+        <ul class="rate-features">
+          <li><i class="fas fa-check-circle"></i> 3 design concepts</li>
+          <li><i class="fas fa-check-circle"></i> Unlimited revisions</li>
+          <li><i class="fas fa-check-circle"></i> All formats + source files</li>
+          <li><i class="fas fa-check-circle"></i> 48h rush delivery available</li>
+          <li><i class="fas fa-check-circle"></i> Full commercial license</li>
+          <li><i class="fas fa-check-circle"></i> 1-month post-delivery support</li>
+        </ul>
+        <button class="rate-btn"><span>COMMISSION NOW</span></button>
       </div>
     </div>
-    <div class="bundle-strip-price">
-      <div class="bundle-price-label">STARTING AT</div>
-      <div class="bundle-price-value">$69</div>
+
+    <div class="bundle-strip">
+      <div class="bundle-strip-left">
+        <div class="bundle-strip-title">VIP FULL BULK BRANDING</div>
+        <div class="bundle-strip-sub">Get a massive discount for ordering 5+ custom designs simultaneously.</div>
+        <div class="bundle-tags">
+          <span class="bundle-tag">Priority Support</span>
+          <span class="bundle-tag">Source Files</span>
+          <span class="bundle-tag">Fast Lane</span>
+        </div>
+      </div>
+      <div class="bundle-strip-price">
+        <div class="bundle-price-label">STARTING AT</div>
+        <div class="bundle-price-value">$69</div>
+      </div>
     </div>
   </div>
-
 </section>
+
 <!-- ============================================================
      THE TERMINAL — CONTACT
 ============================================================ -->
 <section id="terminal" aria-label="Contact — The Terminal">
-  <div class="container" style="max-width:900px;">
+  <div class="container">
     <div class="reveal">
       <div class="section-eyebrow">03 — THE TERMINAL</div>
       <h2 class="section-title">
@@ -1454,9 +1755,8 @@
             <span class="t-out" style="color:var(--cyan);">// MESSAGE_TRANSMITTED ✓ &nbsp;Check your inbox — response inbound.</span>
           </div>
         </form>
-
-      </div><!-- /terminal-body -->
-    </div><!-- /terminal-window -->
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1470,238 +1770,458 @@
   <div class="footer-rule"><span>dsn_ajn</span></div>
   <p class="footer-copy">© 2025 AJN · All Rights Reserved · Built in the Heart of Agadir</p>
 </footer>
-<script>
 
+<!-- ============================================================
+     SINGLE UNIFIED SCRIPT BLOCK (FIX 8: All JS combined, no duplicate tags)
+============================================================ -->
+<script>
 /* ================================================================
    CUSTOM CURSOR
 ================================================================ */
-const cursor     = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursor-ring');
-let mx = 0, my = 0, rx = 0, ry = 0;
+(function initCursor() {
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
 
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top  = my + 'px';
-});
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX;
+    my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
 
-(function trackRing() {
-  rx += (mx - rx) * 0.13;
-  ry += (my - ry) * 0.13;
-  cursorRing.style.left = rx + 'px';
-  cursorRing.style.top  = ry + 'px';
-  requestAnimationFrame(trackRing);
+  function trackRing() {
+    rx += (mx - rx) * 0.13;
+    ry += (my - ry) * 0.13;
+    cursorRing.style.left = rx + 'px';
+    cursorRing.style.top = ry + 'px';
+    requestAnimationFrame(trackRing);
+  }
+  trackRing();
+
+  document.querySelectorAll('a,button,.vault-card,.rate-card,input,textarea,.cassette-btn').forEach(function(el) {
+    el.addEventListener('mouseenter', function() {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2.2)';
+      cursorRing.style.width = '64px';
+      cursorRing.style.height = '64px';
+      cursorRing.style.borderColor = 'var(--cyan)';
+    });
+    el.addEventListener('mouseleave', function() {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      cursorRing.style.width = '38px';
+      cursorRing.style.height = '38px';
+      cursorRing.style.borderColor = 'var(--pink)';
+    });
+  });
 })();
-
-document.querySelectorAll('a,button,.vault-card,.rate-card,input,textarea').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.transform     = 'translate(-50%,-50%) scale(2.2)';
-    cursorRing.style.width     = '64px';
-    cursorRing.style.height    = '64px';
-    cursorRing.style.borderColor = 'var(--cyan)';
-  });
-  el.addEventListener('mouseleave', () => {
-    cursor.style.transform     = 'translate(-50%,-50%) scale(1)';
-    cursorRing.style.width     = '38px';
-    cursorRing.style.height    = '38px';
-    cursorRing.style.borderColor = 'var(--pink)';
-  });
-});
 
 /* ================================================================
    PERSPECTIVE GRID CANVAS
 ================================================================ */
-const canvas = document.getElementById('grid-canvas');
-const ctx    = canvas.getContext('2d');
-let gridTick = 0;
+(function initGrid() {
+  const canvas = document.getElementById('grid-canvas');
+  const ctx = canvas.getContext('2d');
+  let gridTick = 0;
 
-function resizeCanvas() {
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
 
-function drawGridFrame() {
-  const W = canvas.width, H = canvas.height;
-  ctx.clearRect(0, 0, W, H);
+  function drawGridFrame() {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
 
-  const hz   = H * 0.52;   // horizon Y
-  const vpx  = W / 2;      // vanishing point X
-  const spd  = 0.45;
-  gridTick  += spd;
+    const hz = H * 0.52;
+    const vpx = W / 2;
+    const spd = 0.45;
+    gridTick += spd;
 
-  const numH = 22;
-  const numV = 16;
+    const numH = 22;
+    const numV = 16;
 
-  /* — horizontal lines — */
-  for (let i = 0; i <= numH; i++) {
-    let t = ((i / numH) + (gridTick % (H / numH * 2)) / (H / numH * 2)) % 1;
-    const y   = hz + (H - hz) * (t * t);
-    const ext = 1 - (1 - t) * 0.82;
-    const lx  = vpx - vpx * ext;
-    const rx2 = vpx + (W - vpx) * ext;
+    for (let i = 0; i <= numH; i++) {
+      let t = ((i / numH) + (gridTick % (H / numH * 2)) / (H / numH * 2)) % 1;
+      const y = hz + (H - hz) * (t * t);
+      const ext = 1 - (1 - t) * 0.82;
+      const lx = vpx - vpx * ext;
+      const rx2 = vpx + (W - vpx) * ext;
 
+      ctx.beginPath();
+      ctx.moveTo(lx, y);
+      ctx.lineTo(rx2, y);
+      ctx.strokeStyle = 'rgba(0,240,255,' + (t * 0.16) + ')';
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    }
+
+    for (let i = 0; i <= numV; i++) {
+      const t = i / numV;
+      const gx = t * W;
+      const a = 0.03 + Math.sin(Math.PI * t) * 0.08;
+      ctx.beginPath();
+      ctx.moveTo(vpx, hz);
+      ctx.lineTo(gx, H);
+      ctx.strokeStyle = 'rgba(255,0,127,' + a + ')';
+      ctx.lineWidth = 0.7;
+      ctx.stroke();
+    }
+
+    const hGrad = ctx.createLinearGradient(0, 0, W, 0);
+    hGrad.addColorStop(0, 'transparent');
+    hGrad.addColorStop(0.25, 'rgba(255,0,127,0.35)');
+    hGrad.addColorStop(0.5, 'rgba(0,240,255,0.55)');
+    hGrad.addColorStop(0.75, 'rgba(255,0,127,0.35)');
+    hGrad.addColorStop(1, 'transparent');
     ctx.beginPath();
-    ctx.moveTo(lx, y);
-    ctx.lineTo(rx2, y);
-    ctx.strokeStyle = `rgba(0,240,255,${t * 0.16})`;
-    ctx.lineWidth   = 0.8;
+    ctx.moveTo(0, hz);
+    ctx.lineTo(W, hz);
+    ctx.strokeStyle = hGrad;
+    ctx.lineWidth = 2;
     ctx.stroke();
+
+    const sunY = hz - 70;
+    const sunR = 72;
+    const sunG = ctx.createRadialGradient(vpx, sunY, 0, vpx, sunY, sunR);
+    sunG.addColorStop(0, 'rgba(255,0,127,0.55)');
+    sunG.addColorStop(0.45, 'rgba(255,0,127,0.2)');
+    sunG.addColorStop(1, 'rgba(255,0,127,0)');
+    ctx.beginPath();
+    ctx.arc(vpx, sunY, sunR, 0, Math.PI * 2);
+    ctx.fillStyle = sunG;
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(12,7,20,0.9)';
+    ctx.lineWidth = 4;
+    for (let k = 0; k < 7; k++) {
+      const ly = sunY + 10 + k * 9;
+      const hw = Math.sqrt(Math.max(0, sunR * sunR - Math.pow(ly - sunY, 2)));
+      if (hw <= 0) break;
+      ctx.beginPath();
+      ctx.moveTo(vpx - hw, ly);
+      ctx.lineTo(vpx + hw, ly);
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(drawGridFrame);
+  }
+  drawGridFrame();
+
+  window.addEventListener('scroll', function() {
+    canvas.style.transform = 'translateY(' + (window.scrollY * 0.28) + 'px)';
+  }, { passive: true });
+})();
+
+/* ================================================================
+   RETRO CASSETTE PLAYER CONTROLLER (FIX 9: Bulletproof sandboxed logic)
+================================================================ */
+(function initCassette() {
+  const audio = document.getElementById('audio-player');
+  const playBtn = document.getElementById('play-btn');
+  const playIcon = document.getElementById('play-icon');
+  const statusText = document.getElementById('status-text');
+  const deck = document.getElementById('cassette-deck');
+  const spoolLeft = document.getElementById('spool-left');
+  const spoolRight = document.getElementById('spool-right');
+  const eqBars = document.querySelectorAll('.eq-bar');
+
+  let isPlaying = false;
+  let eqAnimation = null;
+  let audioContext = null;
+  let audioInitialized = false;
+
+  // Safe AudioContext initialization
+  function initAudioContext() {
+    try {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // Resume context on user interaction
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+      }
+      return true;
+    } catch (error) {
+      console.warn('AudioContext not available:', error);
+      return false;
+    }
   }
 
-  /* — vertical perspective lines — */
-  for (let i = 0; i <= numV; i++) {
-    const t  = i / numV;
-    const gx = t * W;
-    const a  = 0.03 + Math.sin(Math.PI * t) * 0.08;
-    ctx.beginPath();
-    ctx.moveTo(vpx, hz);
-    ctx.lineTo(gx, H);
-    ctx.strokeStyle = `rgba(255,0,127,${a})`;
-    ctx.lineWidth   = 0.7;
-    ctx.stroke();
+  // Equalizer animation - visual only (fallback if audio fails)
+  function animateEqualizer() {
+    if (eqAnimation) {
+      cancelAnimationFrame(eqAnimation);
+      eqAnimation = null;
+    }
+
+    function updateEq() {
+      if (!isPlaying) {
+        // Flatten bars
+        eqBars.forEach(function(bar) {
+          bar.style.height = '2px';
+          bar.classList.remove('active');
+        });
+        return;
+      }
+
+      eqBars.forEach(function(bar) {
+        const minH = 2;
+        const maxH = 35;
+        const randomH = minH + Math.random() * (maxH - minH);
+        bar.style.height = randomH + 'px';
+        bar.classList.add('active');
+      });
+
+      eqAnimation = requestAnimationFrame(updateEq);
+    }
+
+    updateEq();
   }
 
-  /* — horizon glow — */
-  const hGrad = ctx.createLinearGradient(0, 0, W, 0);
-  hGrad.addColorStop(0,   'transparent');
-  hGrad.addColorStop(0.25,'rgba(255,0,127,0.35)');
-  hGrad.addColorStop(0.5, 'rgba(0,240,255,0.55)');
-  hGrad.addColorStop(0.75,'rgba(255,0,127,0.35)');
-  hGrad.addColorStop(1,   'transparent');
-  ctx.beginPath();
-  ctx.moveTo(0, hz);
-  ctx.lineTo(W, hz);
-  ctx.strokeStyle = hGrad;
-  ctx.lineWidth   = 2;
-  ctx.stroke();
+  // Play/Pause toggle with error handling
+  function togglePlay() {
+    try {
+      // Initialize AudioContext on first user interaction
+      if (!audioInitialized) {
+        const ctxOk = initAudioContext();
+        if (!ctxOk) {
+          // Fallback: Visual-only mode
+          audioInitialized = true;
+          isPlaying = !isPlaying;
+          updateUI();
+          animateEqualizer();
+          updateStatus(isPlaying ? '▶ PLAYING (visual mode)' : '⏹ PAUSED');
+          return;
+        }
+        audioInitialized = true;
+      }
 
-  /* — synthwave sun — */
-  const sunY  = hz - 70;
-  const sunR  = 72;
-  const sunG  = ctx.createRadialGradient(vpx, sunY, 0, vpx, sunY, sunR);
-  sunG.addColorStop(0,   'rgba(255,0,127,0.55)');
-  sunG.addColorStop(0.45,'rgba(255,0,127,0.2)');
-  sunG.addColorStop(1,   'rgba(255,0,127,0)');
-  ctx.beginPath();
-  ctx.arc(vpx, sunY, sunR, 0, Math.PI * 2);
-  ctx.fillStyle = sunG;
-  ctx.fill();
-
-  /* sun horizontal stripes (Hotline Miami aesthetic) */
-  ctx.strokeStyle = 'rgba(12,7,20,0.9)';
-  ctx.lineWidth   = 4;
-  for (let k = 0; k < 7; k++) {
-    const ly = sunY + 10 + k * 9;
-    const hw = Math.sqrt(Math.max(0, sunR * sunR - Math.pow(ly - sunY, 2)));
-    if (hw <= 0) break;
-    ctx.beginPath();
-    ctx.moveTo(vpx - hw, ly);
-    ctx.lineTo(vpx + hw, ly);
-    ctx.stroke();
+      if (isPlaying) {
+        // Pause
+        audio.pause();
+        isPlaying = false;
+        updateUI();
+        animateEqualizer();
+        updateStatus('⏹ PAUSED');
+      } else {
+        // Play with error handling
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(function() {
+            isPlaying = true;
+            updateUI();
+            animateEqualizer();
+            updateStatus('▶ PLAYING');
+          }).catch(function(error) {
+            console.warn('Audio playback blocked:', error);
+            // Fallback: Visual-only mode
+            isPlaying = true;
+            updateUI();
+            animateEqualizer();
+            updateStatus('▶ PLAYING (visual mode)');
+          });
+        } else {
+          // Older browsers
+          isPlaying = true;
+          updateUI();
+          animateEqualizer();
+          updateStatus('▶ PLAYING');
+        }
+      }
+    } catch (error) {
+      console.warn('Audio controller error:', error);
+      // Graceful fallback - toggle visual state only
+      isPlaying = !isPlaying;
+      updateUI();
+      animateEqualizer();
+      updateStatus(isPlaying ? '▶ PLAYING (fallback)' : '⏹ PAUSED');
+    }
   }
 
-  requestAnimationFrame(drawGridFrame);
-}
-drawGridFrame();
+  function updateUI() {
+    if (isPlaying) {
+      playIcon.className = 'fas fa-pause';
+      playBtn.classList.add('playing');
+      deck.classList.add('playing');
+      spoolLeft.classList.add('spinning-l');
+      spoolRight.classList.add('spinning-r');
+    } else {
+      playIcon.className = 'fas fa-play';
+      playBtn.classList.remove('playing');
+      deck.classList.remove('playing');
+      spoolLeft.classList.remove('spinning-l');
+      spoolRight.classList.remove('spinning-r');
+      // Flatten equalizer
+      eqBars.forEach(function(bar) {
+        bar.style.height = '2px';
+        bar.classList.remove('active');
+      });
+      if (eqAnimation) {
+        cancelAnimationFrame(eqAnimation);
+        eqAnimation = null;
+      }
+    }
+  }
 
-/* Parallax grid on scroll */
-window.addEventListener('scroll', () => {
-  canvas.style.transform = `translateY(${window.scrollY * 0.28}px)`;
-}, { passive: true });
+  function updateStatus(text) {
+    if (statusText) {
+      statusText.textContent = text;
+    }
+  }
+
+  // Event listener
+  if (playBtn) {
+    playBtn.addEventListener('click', togglePlay);
+  }
+
+  // Handle audio ended (loop is on, but just in case)
+  if (audio) {
+    audio.addEventListener('ended', function() {
+      if (isPlaying) {
+        // Loop is enabled, but if it fails, we reset
+        isPlaying = false;
+        updateUI();
+        animateEqualizer();
+        updateStatus('⏹ ENDED');
+        // Try to play again
+        try {
+          audio.currentTime = 0;
+          audio.play().catch(function(e) {});
+        } catch (e) {}
+      }
+    });
+
+    audio.addEventListener('error', function(e) {
+      console.warn('Audio loading error:', e);
+      updateStatus('⚠️ AUDIO ERROR (visual mode)');
+      // Keep UI interactive with visual feedback
+    });
+  }
+
+  // Clean up on page unload
+  window.addEventListener('beforeunload', function() {
+    if (eqAnimation) {
+      cancelAnimationFrame(eqAnimation);
+    }
+    if (audio) {
+      try { audio.pause(); } catch (e) {}
+    }
+  });
+
+  // Initial state
+  updateStatus('⏹ READY');
+  updateUI();
+})();
 
 /* ================================================================
    MOBILE NAV
 ================================================================ */
-let navOpen = false;
+(function initNav() {
+  let navOpen = false;
 
-function toggleNav() {
-  navOpen = !navOpen;
-  document.getElementById('mobile-nav').classList.toggle('open', navOpen);
-  document.getElementById('nav-toggle').setAttribute('aria-expanded', navOpen);
-  document.getElementById('toggle-1').style.transform = navOpen ? 'rotate(45deg) translate(4.5px,4.5px)' : '';
-  document.getElementById('toggle-2').style.opacity   = navOpen ? '0' : '1';
-  document.getElementById('toggle-3').style.transform = navOpen ? 'rotate(-45deg) translate(4.5px,-4.5px)' : '';
-}
+  window.toggleNav = function() {
+    navOpen = !navOpen;
+    document.getElementById('mobile-nav').classList.toggle('open', navOpen);
+    document.getElementById('nav-toggle').setAttribute('aria-expanded', navOpen);
+    document.getElementById('toggle-1').style.transform = navOpen ? 'rotate(45deg) translate(4.5px,4.5px)' : '';
+    document.getElementById('toggle-2').style.opacity = navOpen ? '0' : '1';
+    document.getElementById('toggle-3').style.transform = navOpen ? 'rotate(-45deg) translate(4.5px,-4.5px)' : '';
+  };
 
-function closeNav() {
-  if (navOpen) toggleNav();
-}
+  window.closeNav = function() {
+    if (navOpen) window.toggleNav();
+  };
+})();
 
 /* ================================================================
    GSAP SCROLL REVEAL
 ================================================================ */
-gsap.registerPlugin(ScrollTrigger);
+(function initScrollReveal() {
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
 
-document.querySelectorAll('.reveal').forEach(el => {
-  gsap.fromTo(el,
-    { opacity: 0, y: 50 },
-    {
-      opacity: 1, y: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 88%',
-        toggleActions: 'play none none none'
+    document.querySelectorAll('.reveal').forEach(function(el) {
+      gsap.fromTo(el,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    gsap.utils.toArray('.vault-card').forEach(function(card, i) {
+      gsap.fromTo(card,
+        { opacity: 0, y: 60 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.85,
+          delay: i * 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#vault .vault-grid',
+            start: 'top 82%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+  } else {
+    // Fallback: Show all elements
+    document.querySelectorAll('.reveal, .vault-card').forEach(function(el) {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    });
+  }
+})();
+
+/* ================================================================
+   NAV ACTIVE LINK TRACKING
+================================================================ */
+(function initNavTracking() {
+  const sectIds = ['home', 'vault', 'cassette-section', 'rates', 'terminal'];
+  window.addEventListener('scroll', function() {
+    const sp = window.scrollY + 120;
+    sectIds.forEach(function(id) {
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      const top = sec.offsetTop;
+      const bot = top + sec.offsetHeight;
+      const lnk = document.querySelector('.nav-link[data-section="' + id + '"]');
+      if (lnk) {
+        lnk.classList.toggle('active', sp >= top && sp < bot);
       }
-    }
-  );
-});
-
-/* Staggered vault cards */
-gsap.utils.toArray('.vault-card').forEach((card, i) => {
-  gsap.fromTo(card,
-    { opacity: 0, y: 60 },
-    {
-      opacity: 1, y: 0,
-      duration: 0.85,
-      delay: i * 0.12,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '#vault .vault-grid',
-        start: 'top 82%',
-        toggleActions: 'play none none none'
-      }
-    }
-  );
-});
-
-/* Nav active link tracking */
-const sectIds = ['home', 'vault', 'rates', 'terminal'];
-window.addEventListener('scroll', () => {
-  const sp = window.scrollY + 120;
-  sectIds.forEach(id => {
-    const sec = document.getElementById(id);
-    if (!sec) return;
-    const top = sec.offsetTop, bot = top + sec.offsetHeight;
-    const lnk = document.querySelector(`.nav-link[data-section="${id}"]`);
-    if (lnk) lnk.classList.toggle('active', sp >= top && sp < bot);
-  });
-}, { passive: true });
+    });
+  }, { passive: true });
+})();
 
 /* ================================================================
    CONTACT FORM
 ================================================================ */
-function handleSubmit(e) {
-  e.preventDefault();
-  const btn   = document.getElementById('submit-btn');
-  const label = document.getElementById('submit-label');
-  btn.disabled = true;
-  label.textContent = '[ TRANSMITTING... ]';
+(function initForm() {
+  window.handleSubmit = function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const label = document.getElementById('submit-label');
+    btn.disabled = true;
+    label.textContent = '[ TRANSMITTING... ]';
 
-  setTimeout(() => {
-    e.target.reset();
-    document.getElementById('form-success').style.display = 'block';
-    label.textContent = '[ TRANSMITTED ✓ ]';
-  }, 1600);
-}
-
-function scrollToContact() {
-  document.getElementById('terminal').scrollIntoView({ behavior: 'smooth' });
-}
+    setTimeout(function() {
+      e.target.reset();
+      document.getElementById('form-success').style.display = 'block';
+      label.textContent = '[ TRANSMITTED ✓ ]';
+      btn.disabled = false;
+    }, 1600);
+  };
+})();
 </script>
-
 </body>
 </html>
