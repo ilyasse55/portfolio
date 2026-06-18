@@ -1653,117 +1653,41 @@
   <p class="footer-copy">© 2025 AJN · All Rights Reserved · Built in the Heart of Agadir</p>
 </footer>
 
-<!-- ============================================================
-     CASSETTE AUDIO PLAYER (DIRECT STREAM)
-============================================================ -->
 <div id="cassette-player" aria-label="Audio player">
   <div class="cassette-deck">
 
     <div class="cassette-header">
       <span class="cassette-brand flicker">◈ AUDIO SYSTEM ◈</span>
-      <button class="cassette-minimize" id="minimize-btn" onclick="toggleMinimize()" aria-label="Minimize player">▼ MIN</button>
     </div>
 
-    <div id="cassette-content">
-      <div class="cassette-body-wrap">
-        <div class="cassette-tape">
-          <div class="tape-label-strip">
-            <div>
-              <div class="tape-track-title">VENGER</div>
-              <div class="tape-track-artist">Perturbator</div>
-            </div>
-            <div class="tape-side">SIDE A</div>
+    <div class="cassette-body-wrap">
+      <div class="cassette-tape">
+        <div class="tape-label-strip">
+          <div>
+            <div class="tape-track-title">VENGER</div>
+            <div class="tape-track-artist">Perturbator</div>
           </div>
-          <div class="tape-spools">
-            <div class="spool" id="spool-left">
-              <div class="spool-spokes"></div>
-              <div class="spool-hub"></div>
-            </div>
-            <div class="tape-mid-label">[ TAPE ]</div>
-            <div class="spool" id="spool-right">
-              <div class="spool-spokes"></div>
-              <div class="spool-hub"></div>
-            </div>
+          <div class="tape-side">SIDE A</div>
+        </div>
+        
+        <div class="tape-spools">
+          <div class="spool spinning-l" id="spool-left">
+            <div class="spool-spokes"></div>
+            <div class="spool-hub"></div>
           </div>
-        </div>
-      </div>
+          <div class="tape-mid-label">[ TAPE ]</div>
+          <div class="spool spinning-r" id="spool-right">
+            <div class="spool-spokes"></div>
+            <div class="spool-hub"></div>
+          </div>
+        </div> </div> </div> <div class="cassette-controls" style="padding: 10px; display: flex; justify-content: center;">
+      <audio id="audio-player" src="Venger.mp3" controls loop style="width: 100%; max-width: 250px; filter: invert(1) hue-rotate(180deg); opacity: 0.8;"></audio>
+    </div>
 
-      <div class="eq-wrap">
-        <div class="equalizer" id="equalizer" aria-hidden="true"></div>
-      </div>
-
-      <div class="cassette-controls">
-        <button class="ctrl-btn play-btn" id="play-btn" onclick="togglePlay()" aria-label="Play/Pause">
-          <i class="fas fa-play" id="play-icon"></i>
-        </button>
-        <div class="vol-row">
-          <i class="fas fa-volume-down vol-icon" aria-hidden="true"></i>
-          <input type="range" class="vol-slider" id="volume-slider" min="0" max="1" step="0.04" value="0.7" oninput="setVolume(this.value)" aria-label="Volume">
-          <i class="fas fa-volume-up vol-icon" aria-hidden="true"></i>
-        </div>
-      </div>
-
-    </div></div></div><audio id="audio-player" src="Venger.mp3" preload="auto" loop></audio>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
+ </div>
+</div> 
 <script>
-// ============================================================
-// CASSETTE PLAYER LOGIC (SAFE INLINE)
-// ============================================================
-function togglePlay() {
-  const audio = document.getElementById('audio-player');
-  const playIcon = document.getElementById('play-icon');
-  const spoolLeft = document.getElementById('spool-left');
-  const spoolRight = document.getElementById('spool-right');
   
-  if (!audio) return;
-
-  if (audio.paused) {
-    audio.play()
-      .then(() => {
-        if (playIcon) playIcon.className = 'fas fa-pause';
-        if (spoolLeft) spoolLeft.style.animation = 'spin 3s linear infinite';
-        if (spoolRight) spoolRight.style.animation = 'spin 3s linear infinite';
-      })
-      .catch(error => {
-        console.error("Autoplay blocked:", error);
-      });
-  } else {
-    audio.pause();
-    if (playIcon) playIcon.className = 'fas fa-play';
-    if (spoolLeft) spoolLeft.style.animation = 'none';
-    if (spoolRight) spoolRight.style.animation = 'none';
-  }
-}
-
-function setVolume(value) {
-  const audio = document.getElementById('audio-player');
-  if (audio) audio.volume = value;
-}
-
-function toggleMinimize() {
-  const cassetteContent = document.getElementById('cassette-content');
-  const minimizeBtn = document.getElementById('minimize-btn');
-  if (cassetteContent && minimizeBtn) {
-    if (cassetteContent.style.display === 'none') {
-      cassetteContent.style.display = 'block';
-      minimizeBtn.innerText = '▼ MIN';
-    } else {
-      cassetteContent.style.display = 'none';
-      minimizeBtn.innerText = '▲ MAX';
-    }
-  }
-}
-
-// ربط قيم السلايدر عند أول تشغيل
-const initialAudio = document.getElementById('audio-player');
-const initialSlider = document.getElementById('volume-slider');
-if (initialAudio && initialSlider) {
-  initialAudio.volume = initialSlider.value;
-}
-
 /* ================================================================
    CUSTOM CURSOR
 ================================================================ */
@@ -1977,129 +1901,43 @@ window.addEventListener('scroll', () => {
    CASSETTE AUDIO PLAYER (FIXED & OPTIMIZED)
 ================================================================ */
 // ربطنا الـ ID الصحيح مع الـ HTML (audio-player)
-const audio      = document.getElementById('audio-player');
-const playBtn    = document.getElementById('play-btn');
-const playIcon   = document.getElementById('play-icon');
-const spoolLeft  = document.getElementById('spool-left');
-const spoolRight = document.getElementById('spool-right');
-const eqEl       = document.getElementById('equalizer');
+<div id="cassette-player" aria-label="Audio player">
+  <div class="cassette-deck">
 
-let playing      = false;
-let audioCtx     = null;
-let analyser     = null;
-let sourceNode   = null;
-let eqAnimId     = null;
-const NUM_BARS   = 20;
+    <div class="cassette-header">
+      <span class="cassette-brand flicker">◈ AUDIO SYSTEM ◈</span>
+    </div>
 
-/* Build eq bars */
-const bars = [];
-if (eqEl) {
-  eqEl.innerHTML = ''; // تنظيف الأكوام السابقة لتجنب التكرار
-  for (let i = 0; i < NUM_BARS; i++) {
-    const b = document.createElement('div');
-    b.className = 'eq-bar';
-    eqEl.appendChild(b);
-    bars.push(b);
-  }
-}
+    <div class="cassette-body-wrap">
+      <div class="cassette-tape">
+        <div class="tape-label-strip">
+          <div>
+            <div class="tape-track-title">VENGER</div>
+            <div class="tape-track-artist">Perturbator</div>
+          </div>
+          <div class="tape-side">SIDE A</div>
+        </div>
+        
+        <div class="tape-spools">
+          <div class="spool spinning-l" id="spool-left">
+            <div class="spool-spokes"></div>
+            <div class="spool-hub"></div>
+          </div>
+          <div class="tape-mid-label">[ TAPE ]</div>
+          <div class="spool spinning-r" id="spool-right">
+            <div class="spool-spokes"></div>
+            <div class="spool-hub"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-function initAudio() {
-  if (audioCtx || !audio) return;
-  try {
-    // حل مشكلة البلوكاج ف السيرفر المباشر (CORS)
-    audio.crossOrigin = "anonymous"; 
-    
-    audioCtx  = new (window.AudioContext || window.webkitAudioContext)();
-    analyser  = audioCtx.createAnalyser();
-    analyser.fftSize = 64;
-    sourceNode = audioCtx.createMediaElementSource(audio);
-    sourceNode.connect(analyser);
-    analyser.connect(audioCtx.destination);
-  } catch(e) { 
-    console.error("AudioContext Context Error:", e);
-  }
-}
+    <div class="cassette-controls" style="padding: 10px; display: flex; justify-content: center;">
+      <audio id="audio-player" src="Venger.mp3" controls loop style="width: 100%; max-width: 250px; filter: invert(1) hue-rotate(180deg); opacity: 0.8;"></audio>
+    </div>
 
-function animateEQ() {
-  if (analyser && playing) {
-    const buf = new Uint8Array(analyser.frequencyBinCount);
-    analyser.getByteFrequencyData(buf);
-    bars.forEach((b, i) => {
-      const idx = Math.floor(i * buf.length / NUM_BARS);
-      const v   = buf[idx] / 255;
-      const h   = 2 + v * 24;
-      b.style.height     = h + 'px';
-      b.style.background = h > 14 ? 'var(--pink)' : 'var(--cyan)';
-      b.style.boxShadow  = h > 14 ? '0 0 4px var(--pink)' : '0 0 4px var(--cyan)';
-    });
-    eqAnimId = requestAnimationFrame(animateEQ);
-  } else if (playing) {
-    /* Fake animated EQ كحطة احتياطية */
-    const now = Date.now();
-    bars.forEach((b, i) => {
-      const h = 2 + (Math.sin(now / 180 + i * 0.62) * 0.5 + 0.5) * 24 + Math.random() * 3;
-      b.style.height     = h + 'px';
-      b.style.background = h > 14 ? 'var(--pink)' : 'var(--cyan)';
-      b.style.boxShadow  = h > 14 ? '0 0 4px var(--pink)' : '0 0 4px var(--cyan)';
-    });
-    eqAnimId = requestAnimationFrame(animateEQ);
-  }
-}
-
-async function togglePlay() {
-  if (!audio) return;
-
-  if (!playing) {
-    initAudio();
-    if (audioCtx && audioCtx.state === 'suspended') {
-      await audioCtx.resume().catch(() => {});
-    }
-    try {
-      await audio.play();
-    } catch(e) {
-      console.warn("Audio play error, retrying fake animation:", e);
-    }
-    playing = true;
-    if (playIcon) playIcon.className = 'fas fa-pause';
-    
-    // تشغيل الأنيميشن ديال الدوران
-    if (spoolLeft) spoolLeft.style.animation = 'spin 3s linear infinite';
-    if (spoolRight) spoolRight.style.animation = 'spin 3s linear infinite';
-    if (eqEl) eqEl.classList.add('playing');
-    animateEQ();
-  } else {
-    audio.pause();
-    playing = false;
-    if (playIcon) playIcon.className = 'fas fa-play';
-    
-    // إيقاف الأنيميشن ديال الدوران
-    if (spoolLeft) spoolLeft.style.animation = 'none';
-    if (spoolRight) spoolRight.style.animation = 'none';
-    if (eqEl) eqEl.classList.remove('playing');
-    
-    if (eqAnimId) { cancelAnimationFrame(eqAnimId); eqAnimId = null; }
-    bars.forEach(b => { b.style.height = '2px'; });
-  }
-}
-
-function setVolume(val) {
-  if (audio) audio.volume = parseFloat(val);
-}
-
-let minimized = false;
-function toggleMinimize() {
-  minimized = !minimized;
-  const content = document.getElementById('cassette-content');
-  const minBtn = document.getElementById('minimize-btn');
-  if (content) content.style.display = minimized ? 'none' : '';
-  if (minBtn) minBtn.textContent = minimized ? '▲ MAX' : '▼ MIN';
-}
-
-// ربط قيم السلايدر عند البداية
-const initialSlider = document.getElementById('volume-slider');
-if (audio && initialSlider) {
-  audio.volume = initialSlider.value;
-}
+  </div>
+</div>
 /* ================================================================
    CONTACT FORM
 ================================================================ */
