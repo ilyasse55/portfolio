@@ -1974,9 +1974,10 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 /* ================================================================
-   CASSETTE AUDIO PLAYER
+   CASSETTE AUDIO PLAYER (FIXED & OPTIMIZED)
 ================================================================ */
-const audio      = document.getElementById('bg-audio');
+// ربطنا الـ ID الصحيح مع الـ HTML (audio-player)
+const audio      = document.getElementById('audio-player');
 const playBtn    = document.getElementById('play-btn');
 const playIcon   = document.getElementById('play-icon');
 const spoolLeft  = document.getElementById('spool-left');
@@ -1992,27 +1993,35 @@ const NUM_BARS   = 20;
 
 /* Build eq bars */
 const bars = [];
-for (let i = 0; i < NUM_BARS; i++) {
-  const b = document.createElement('div');
-  b.className = 'eq-bar';
-  eqEl.appendChild(b);
-  bars.push(b);
+if (eqEl) {
+  eqEl.innerHTML = ''; // تنظيف الأكوام السابقة لتجنب التكرار
+  for (let i = 0; i < NUM_BARS; i++) {
+    const b = document.createElement('div');
+    b.className = 'eq-bar';
+    eqEl.appendChild(b);
+    bars.push(b);
+  }
 }
 
 function initAudio() {
-  if (audioCtx) return;
+  if (audioCtx || !audio) return;
   try {
+    // حل مشكلة البلوكاج ف السيرفر المباشر (CORS)
+    audio.crossOrigin = "anonymous"; 
+    
     audioCtx  = new (window.AudioContext || window.webkitAudioContext)();
     analyser  = audioCtx.createAnalyser();
     analyser.fftSize = 64;
     sourceNode = audioCtx.createMediaElementSource(audio);
     sourceNode.connect(analyser);
     analyser.connect(audioCtx.destination);
-  } catch(e) { /* no audio context support */ }
+  } catch(e) { 
+    console.error("AudioContext Context Error:", e);
+  }
 }
 
 function animateEQ() {
-  if (analyser) {
+  if (analyser && playing) {
     const buf = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(buf);
     bars.forEach((b, i) => {
@@ -2023,8 +2032,9 @@ function animateEQ() {
       b.style.background = h > 14 ? 'var(--pink)' : 'var(--cyan)';
       b.style.boxShadow  = h > 14 ? '0 0 4px var(--pink)' : '0 0 4px var(--cyan)';
     });
-  } else {
-    /* Fake animated EQ when audio file unavailable */
+    eqAnimId = requestAnimationFrame(animateEQ);
+  } else if (playing) {
+    /* Fake animated EQ كحطة احتياطية */
     const now = Date.now();
     bars.forEach((b, i) => {
       const h = 2 + (Math.sin(now / 180 + i * 0.62) * 0.5 + 0.5) * 24 + Math.random() * 3;
@@ -2032,11 +2042,13 @@ function animateEQ() {
       b.style.background = h > 14 ? 'var(--pink)' : 'var(--cyan)';
       b.style.boxShadow  = h > 14 ? '0 0 4px var(--pink)' : '0 0 4px var(--cyan)';
     });
+    eqAnimId = requestAnimationFrame(animateEQ);
   }
-  eqAnimId = requestAnimationFrame(animateEQ);
 }
 
 async function togglePlay() {
+  if (!audio) return;
+
   if (!playing) {
     initAudio();
     if (audioCtx && audioCtx.state === 'suspended') {
@@ -2045,38 +2057,49 @@ async function togglePlay() {
     try {
       await audio.play();
     } catch(e) {
-      /* audio file missing — animate anyway */
+      console.warn("Audio play error, retrying fake animation:", e);
     }
     playing = true;
-    playIcon.className = 'fas fa-pause';
-    spoolLeft.classList.add('spinning-l');
-    spoolRight.classList.add('spinning-r');
-    eqEl.classList.add('playing');
+    if (playIcon) playIcon.className = 'fas fa-pause';
+    
+    // تشغيل الأنيميشن ديال الدوران
+    if (spoolLeft) spoolLeft.style.animation = 'spin 3s linear infinite';
+    if (spoolRight) spoolRight.style.animation = 'spin 3s linear infinite';
+    if (eqEl) eqEl.classList.add('playing');
     animateEQ();
   } else {
     audio.pause();
     playing = false;
-    playIcon.className = 'fas fa-play';
-    spoolLeft.classList.remove('spinning-l');
-    spoolRight.classList.remove('spinning-r');
-    eqEl.classList.remove('playing');
+    if (playIcon) playIcon.className = 'fas fa-play';
+    
+    // إيقاف الأنيميشن ديال الدوران
+    if (spoolLeft) spoolLeft.style.animation = 'none';
+    if (spoolRight) spoolRight.style.animation = 'none';
+    if (eqEl) eqEl.classList.remove('playing');
+    
     if (eqAnimId) { cancelAnimationFrame(eqAnimId); eqAnimId = null; }
     bars.forEach(b => { b.style.height = '2px'; });
   }
 }
 
 function setVolume(val) {
-  audio.volume = parseFloat(val);
+  if (audio) audio.volume = parseFloat(val);
 }
 
 let minimized = false;
 function toggleMinimize() {
   minimized = !minimized;
   const content = document.getElementById('cassette-content');
-  content.style.display = minimized ? 'none' : '';
-  document.getElementById('minimize-btn').textContent = minimized ? '▲ MAX' : '▼ MIN';
+  const minBtn = document.getElementById('minimize-btn');
+  if (content) content.style.display = minimized ? 'none' : '';
+  if (minBtn) minBtn.textContent = minimized ? '▲ MAX' : '▼ MIN';
 }
 
+// ربط قيم السلايدر عند البداية
+const initialSlider = document.getElementById('volume-slider');
+if (audio && initialSlider) {
+  audio.volume = initialSlider.value;
+}
 /* ================================================================
    CONTACT FORM
 ================================================================ */
