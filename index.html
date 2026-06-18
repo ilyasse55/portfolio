@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TORNOVIS — dsn_ajn · Graphic Designer</title>
-  <meta name="description" content="Tornovis (dsn_ajn) — Retro-futuristic graphic designer. Automotive, Horror, Brand Identity, Documentary visuals.">
+  <title>AJN — dsn_ajn · Graphic Designer</title>
+  <meta name="description" content="AJN (dsn_ajn) — Retro-futuristic graphic designer. Automotive, Horror, Brand Identity, Documentary visuals.">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1370,9 +1370,9 @@
      NAVIGATION
 ============================================================ -->
 <nav id="nav" role="navigation" aria-label="Main navigation">
-  <a href="#home" class="nav-logo" aria-label="Tornovis home">
+  <a href="#home" class="nav-logo" aria-label="AJN home">
     <div class="nav-logo-dot"></div>
-    <span class="neon-pink flicker">TORNOVIS</span>
+    <span class="neon-pink flicker">AJN</span>
   </a>
 
   <ul class="nav-links" id="nav-links" role="list">
@@ -1655,28 +1655,28 @@
         <div class="t-dot t-dot-red"></div>
         <div class="t-dot t-dot-amber"></div>
         <div class="t-dot t-dot-green"></div>
-        <div class="t-title">TORNOVIS_TERMINAL v2.4.1 — root@dsn_ajn:~</div>
+        <div class="t-title">AJN_TERMINAL v2.4.1 — root@dsn_ajn:~</div>
       </div>
 
       <div class="terminal-body">
-        <p class="t-line"><span class="t-prompt">tornovis@dsn_ajn</span>:<span class="t-cmd"> ~$ whoami</span></p>
+        <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ whoami</span></p>
         <p class="t-line" style="margin-bottom:1rem;"><span class="t-out">// Graphic designer. Retro futurist. Visual alchemist. Based in the neon underground.</span></p>
 
-        <p class="t-line"><span class="t-prompt">tornovis@dsn_ajn</span>:<span class="t-cmd"> ~$ cat socials.txt</span></p>
+        <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ cat socials.txt</span></p>
         <p class="t-line" style="margin-bottom:0.5rem;"><span class="t-out">// Active channels detected —</span></p>
 
         <div class="socials">
           <a href="https://discord.com/users/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Discord profile">
             <i class="fab fa-discord" style="color:#5865f2;"></i>
-            <span>dsn_ajn · Discord</span>
+            <span>elyas867 · Discord</span>
           </a>
           <a href="https://instagram.com/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram profile">
             <i class="fab fa-instagram" style="background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
-            <span>dsn_ajn · Instagram</span>
+            <span>ajn_dsn · Instagram</span>
           </a>
         </div>
 
-        <p class="t-line"><span class="t-prompt">tornovis@dsn_ajn</span>:<span class="t-cmd"> ~$ compose_message --secure</span></p>
+        <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ compose_message --secure</span></p>
         <p class="t-line" style="margin-bottom:1.5rem;"><span class="t-out">// Encrypted channel open. Fill the fields below. <span class="t-cursor"></span></span></p>
 
         <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)" novalidate>
@@ -1722,21 +1722,29 @@
     <span class="neon-pink flicker">TORN</span><span style="color:var(--text);">OVIS</span>
   </div>
   <div class="footer-rule"><span>dsn_ajn</span></div>
-  <p class="footer-copy">© 2025 Tornovis · All Rights Reserved · Built in the Neon Underground</p>
+  <p class="footer-copy">© 2025 AJN · All Rights Reserved · Built in the Heart of Agadir</p>
 </footer>
 
 <!-- ============================================================
      CASSETTE AUDIO PLAYER
 ============================================================ -->
-<div id="cassette-player" aria-label="Audio player">
+<div id="cassette-player" aria-label="Audio player" style="position: relative;">
+  
+  <iframe src="https://open.spotify.com/embed/track/6Uel7q6fLw8v7ubwI5TLis?utm_source=generator&theme=0" 
+          width="100%" 
+          height="100%" 
+          frameBorder="0" 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.01; z-index: 99; cursor: pointer;">
+  </iframe>
+
   <div class="cassette-deck">
 
     <div class="cassette-header">
       <span class="cassette-brand flicker">◈ AUDIO SYSTEM ◈</span>
-      <button class="cassette-minimize" id="minimize-btn" onclick="toggleMinimize()" aria-label="Minimize player">▼ MIN</button>
+      <button class="cassette-minimize" id="minimize-btn" onclick="toggleMinimize()" aria-label="Minimize player" style="position: relative; z-index: 100;">▼ MIN</button>
     </div>
 
-    <!-- Collapsible content -->
     <div id="cassette-content">
       <div class="cassette-body-wrap">
         <div class="cassette-tape">
@@ -1761,34 +1769,22 @@
         </div>
       </div>
 
-      <!-- Equalizer -->
       <div class="eq-wrap">
         <div class="equalizer" id="equalizer" aria-hidden="true"></div>
       </div>
 
-      <!-- Controls -->
       <div class="cassette-controls">
-        <button class="ctrl-btn play-btn" id="play-btn" onclick="togglePlay()" aria-label="Play/Pause">
+        <button class="ctrl-btn play-btn" id="play-btn" aria-label="Play/Pause">
           <i class="fas fa-play" id="play-icon"></i>
         </button>
         <div class="vol-row">
           <i class="fas fa-volume-down vol-icon" aria-hidden="true"></i>
-          <input type="range" class="vol-slider" id="volume-slider"
-                 min="0" max="1" step="0.04" value="0.7"
-                 oninput="setVolume(this.value)" aria-label="Volume">
+          <input type="range" class="vol-slider" id="volume-slider" min="0" max="1" step="0.04" value="0.7" aria-label="Volume">
           <i class="fas fa-volume-up vol-icon" aria-hidden="true"></i>
         </div>
       </div>
-    </div><!-- /cassette-content -->
 
-  </div>
-</div>
-
-<!-- Hidden audio -->
-<audio id="bg-audio" loop preload="none">
-  <source src="Venger.mp3" type="audio/mpeg">
-</audio>
-
+    </div></div></div>```
 <!-- ============================================================
      SCRIPTS
 ============================================================ -->
