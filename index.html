@@ -124,4 +124,140 @@
     </div>
 
     <div id="loginModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100000] hidden flex items-center justify-center p-4">
-        <div class="bg-
+        <div class="bg-[#0f0a1c] border-2 solid border-pink-500 p-6 rounded-xl max-w-sm w-full font-mono text-sm">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-pink-500 font-bold"><i class="fas fa-terminal mr-2"></i>SECURE AUTH</span>
+                <button onclick="closeLogin()" class="text-zinc-500 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">USER_ID</label>
+                    <input id="adminUser" type="text" class="w-full bg-black/50 border border-zinc-700 p-2 rounded text-white focus:outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">PASSWORD_HASH</label>
+                    <input id="adminPass" type="password" class="w-full bg-black/50 border border-zinc-700 p-2 rounded text-white focus:outline-none focus:border-cyan-400">
+                </div>
+                <button onclick="checkAdminAuth()" class="w-full py-2 bg-pink-600 hover:bg-pink-700 font-bold rounded text-white transition">EXECUTE LOGIN</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminPanel" class="fixed bottom-4 left-4 right-4 bg-[#0a0514]/95 border-2 border-green-500 rounded-xl p-4 z-50 hidden font-mono text-xs shadow-2xl">
+        <div class="flex justify-between items-center border-b border-green-500/30 pb-2 mb-4">
+            <span class="text-green-400 font-bold"><i class="fas fa-user-shield mr-2"></i>ADMIN PANEL ACTIVE</span>
+            <button onclick="document.getElementById('adminPanel').classList.add('hidden')" class="text-zinc-400 hover:text-red-500"><i class="fas fa-eye-slash"></i> HIDE</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <label class="block text-zinc-400 mb-1">Upload Thumbnail Image</label>
+                <input id="uploadImg" type="file" accept="image/*" class="w-full bg-black/40 border border-zinc-700 p-1 rounded text-zinc-300">
+            </div>
+            <div>
+                <label class="block text-zinc-400 mb-1">Thumbnail Title</label>
+                <input id="itemTitle" type="text" placeholder="e.g., Concept Art" class="w-full bg-black/40 border border-zinc-700 p-1.5 rounded text-white focus:outline-none">
+            </div>
+            <div class="flex items-end gap-2">
+                <div class="flex-1">
+                    <label class="block text-zinc-400 mb-1">Price ($)</label>
+                    <input id="itemPrice" type="text" placeholder="e.g., 25.00" class="w-full bg-black/40 border border-zinc-700 p-1.5 rounded text-white focus:outline-none">
+                </div>
+                <button onclick="addUploadedItem()" class="px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded text-black transition">PUBLISH</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bgAudio');
+        const playBtn = document.getElementById('playBtn');
+        const playText = document.getElementById('playText');
+        const playIcon = document.getElementById('playIcon');
+        const tapeStatus = document.getElementById('tape-status');
+
+        // بيانات الدخول الافتراضية (تقدر تبدلها)
+        const SYS_USER = "admin";
+        const SYS_HASH = "1234";
+
+        function initializeVault() {
+            const screen = document.getElementById('enter-screen');
+            screen.style.opacity = '0';
+            setTimeout(() => { screen.style.display = 'none'; }, 800);
+
+            // تشغيل الأغنية فوراً وبشكل صحيح عند الدخول للموقع
+            audio.play().then(() => {
+                tapeStatus.innerText = "● PLAYING";
+                playText.innerText = "PAUSE TAPE";
+                playIcon.className = "fas fa-pause mr-2";
+            }).catch(err => {
+                console.log("Audio waiting for explicit button click.");
+            });
+        }
+
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                tapeStatus.innerText = "● PLAYING";
+                playText.innerText = "PAUSE TAPE";
+                playIcon.className = "fas fa-pause mr-2";
+            } else {
+                audio.pause();
+                tapeStatus.innerText = "● PAUSED";
+                playText.innerText = "PLAY TAPE";
+                playIcon.className = "fas fa-play mr-2";
+            }
+        }
+
+        // دوال الـ Admin Login
+        function openLogin() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLogin() { document.getElementById('loginModal').classList.add('hidden'); }
+
+        function checkAdminAuth() {
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+
+            if (user === SYS_USER && pass === SYS_HASH) {
+                confetti({ particleCount: 100, spread: 60, colors: ['#ff007f', '#00f0ff'] });
+                closeLogin();
+                document.getElementById('adminPanel').classList.remove('hidden');
+            } else {
+                alert("🚨 INTRUDER REJECTED: CRITICAL AUTHENTICATION FAILURE.");
+            }
+        }
+
+        // دالة الـ Dynamic Upload للصور والأثمنة
+        function addUploadedItem() {
+            const title = document.getElementById('itemTitle').value;
+            const price = document.getElementById('itemPrice').value;
+            const fileInput = document.getElementById('uploadImg');
+            
+            if (!title || !price || !fileInput.files[0]) {
+                alert("Please fill all fields and select an image!");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const gallery = document.getElementById('itemsGallery');
+                
+                // إنشاء كرت صورة جديد وإضافته للـ Gallery ديريكت
+                const newCard = document.createElement('div');
+                newCard.className = "item-card";
+                newCard.innerHTML = `
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('${e.target.result}')"></div>
+                    <div class="p-4 flex justify-between items-center bg-black/40">
+                        <span class="font-bold text-white text-sm">${title}</span>
+                        <span class="text-cyan-400 font-mono font-bold">$${parseFloat(price).toFixed(2)}</span>
+                    </div>
+                `;
+                gallery.prepend(newCard); // يظهر فـ الأول
+                
+                // مسح الحقول بعد النشر الناجح
+                document.getElementById('itemTitle').value = '';
+                document.getElementById('itemPrice').value = '';
+                fileInput.value = '';
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    </script>
+</body>
+</html>
