@@ -1,34 +1,165 @@
-# 🌌 AJN DSN — THE RETRO VAULT V1.5
+╔═══════════════════════════════════════════════════════════════════╗
+║                                                                   ║
+║     █████╗ ██╗███╗   ██╗    ██████╗  ██████╗ ██████╗ ████████╗  ║
+║    ██╔══██╗██║████╗  ██║    ██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝  ║
+║    ███████║██║██╔██╗ ██║    ██████╔╝██║   ██║██████╔╝   ██║     ║
+║    ██╔══██║██║██║╚██╗██║    ██╔══██╗██║   ██║██╔═══╝    ██║     ║
+║    ██║  ██║██║██║ ╚████║    ██████╔╝╚██████╔╝██║        ██║     ║
+║    ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝    ╚═════╝  ╚═════╝ ╚═╝        ╚═╝     ║
+║                                                                   ║
+╚═══════════════════════════════════════════════════════════════════╝
 
-<p align="center">
-  <img src="https://img.shields.io/badge/System-Secure-ff007f?style=for-the-badge&logo=retroarch&logoColor=white" />
-  <img src="https://img.shields.io/badge/UI--Framework-TailwindCSS-00f0ff?style=for-the-badge&logo=tailwind-css&logoColor=white" />
-  <img src="https://img.shields.io/badge/Engine-Vanilla_JS-yellow?style=for-the-badge&logo=javascript&logoColor=black" />
-</p>
+┌───────────────────────────────────────────────────────────────────┐
+│  🔮 RETRO-FUTURISTIC GRAPHIC DESIGN PORTFOLIO                   │
+│  ───────────────────────────────────────────────────────────────  │
+│  »  Guns.lol style entry screen with neon glitch animation      │
+│  »  Fully draggable retro cassette player                       │
+│  »  Embedded Pac-Man arcade cabinet                            │
+│  »  Cyberpunk/neon aesthetic with custom cursor                │
+│  »  Interactive portfolio vault with 10+ designs               │
+│  »  Terminal-style contact form                                │
+│  »  CRT scanline & vignette overlay effects                   │
+│  »  Animated perspective grid background                      │
+└───────────────────────────────────────────────────────────────────┘
 
----
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                              FEATURES
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
-## ⚡ OVERVIEW 
-Welcome to the official deployment of **AJN DSN** (The Vault v867). This is a highly immersive, interactive portfolio engineered for digital creators, streamers, and high-end brands. Inspired by the legendary **guns.lol** landing sequence and 80s arcade interfaces, this platform features a full-screen audio authorization gate, CRT scanline effects, dynamic audio spectrum analysis, and a local-storage dashboard for live assets.
+  🚀 ENTRY SEQUENCE
+  ──────────────────
+  • Full-screen dark overlay with pulsating neon button
+  • Glitch text animation on "AJN" logo
+  • One-click unlock with AudioContext initialization
+  • Smooth fade transition to main content
+  • Enter key support for accessibility
 
-> **⚠️ WARNING:** Unauthorized access attempts to the core terminal will trigger security protocols. *We know where you live.* 
+  📼 FLOATING CASSETTE PLAYER
+  ──────────────────────────
+  • Position: fixed in bottom-right corner
+  • Fully draggable (mouse + touch support)
+  • Animated spools with direction-specific rotation
+  • Real-time equalizer bars
+  • Play/Pause with icon toggle
+  • Minimize & close controls
+  • Sandboxed audio with error fallback
+  • Persistent state via localStorage
 
----
+  🕹️ ARCADE CABINET
+  ────────────────
+  • Embedded Pac-Man game (retrogames.cz)
+  • Neon purple cabinet with glow effects
+  • CRT scanline overlay
+  • Arcade-style marquee with "INSERT COIN"
+  • Fully responsive game container
 
-## 🛠️ KEY CYBER-FEATURES
+  🎨 DESIGN SYSTEM
+  ────────────────
+  • Color Palette: #ff007f (Pink) | #00f0ff (Cyan) | #7b00ff (Purple)
+  • Typography: Share Tech Mono + Montserrat
+  • Custom neon cursor with hover scaling
+  • CRT scanlines + vignette overlay
+  • Animated perspective grid (canvas)
+  • Flicker & glitch text effects
+  • GSAP scroll-triggered animations
 
-| Feature | Description | Technical Stack |
-| :--- | :--- | :--- |
-| **Guns-Style Entry Gate** | Bypasses modern browser autoplay blocks with a high-fidelity neon trigger. | Custom JS Event Hooks |
-| **Interactive Tape Deck** | A fully functional 80s cassette visualization that spins and tracks audio status. | HTML5 Audio & Interval Drivers |
-| **Live Audio Equalizer** | Real-time dynamic visual bars that dance according to playback activation. | CSS Keyframes & JS Math Engine |
-| **The Admin Terminal** | Hidden encrypted panel allowing the operator to deploy or destroy portfolio assets. | SHA-256 Crypto API & LocalStorage |
-| **Cyberpunk Aesthetic** | Horizon grid background, CRT emulation overlay, and flickering neon typography. | Tailwind CSS + Custom Vectors |
+  🗂️ PORTFOLIO VAULT
+  ──────────────────
+  • 10 design projects with hover effects
+  • Automotive, Horror, Music, Military, Sport
+  • Image zoom on hover
+  • Neon glow border transitions
+  • "VIEW DESIGN" links to full artwork
 
----
+  💬 TERMINAL CONTACT
+  ──────────────────
+  • Retro terminal window with command-line aesthetic
+  • Discord & Instagram social links
+  • Form with transparent neon inputs
+  • Simulated message transmission
+  • Responsive design for all devices
 
-## 🚀 INSTALLATION & LOCAL RUN
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                           TECH STACK
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
-1. **Clone the matrix:**
-```bash
-   git clone [https://github.com/your-username/ajn-dsn-vault.git](https://github.com/your-username/ajn-dsn-vault.git)
+  Frontend:
+  ─────────
+  ✓ HTML5
+  ✓ CSS3 (Custom Properties, Flexbox, Grid)
+  ✓ Vanilla JavaScript (ES6)
+  ✓ GSAP + ScrollTrigger
+  ✓ FontAwesome Icons
+  ✓ Google Fonts
+
+  Assets:
+  ───────
+  ✓ Custom SVG/Canvas animations
+  ✓ Local image gallery
+  ✓ Audio (Venger.mp3)
+
+  Features:
+  ─────────
+  ✓ Drag & Drop (Vanilla JS)
+  ✓ Web Audio API
+  ✓ localStorage persistence
+  ✓ Touch events (mobile)
+  ✓ Responsive design
+  ✓ Custom cursor
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                        LIVE PREVIEW
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+  🌐 https://ilyasse55.github.io/portfolio/
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                        INSTALLATION
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+  1. Clone the repository:
+     $ git clone https://github.com/yourusername/AJN-Portfolio.git
+
+  2. Navigate to the project:
+     $ cd AJN-Portfolio
+
+  3. Open index.html in your browser:
+     $ open index.html
+
+  ── OR ──
+
+  Simply drag the index.html file into your browser.
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                       FILE STRUCTURE
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+  AJN-Portfolio/
+  ├── index.html              # Main HTML file
+  ├── images/                 # Portfolio artwork
+  │   ├── suzuki with noise.png
+  │   ├── horror.png
+  │   ├── travis edited.png
+  │   ├── sr71 with the signature.png
+  │   ├── surfing.png
+  │   ├── gorden ramsy.png
+  │   ├── final result.png
+  │   ├── doomed.png
+  │   ├── dapikcha.png
+  │   └── 11212.png
+  ├── Venger.mp3              # Cassette player audio
+  └── README.md              # This file
+
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                         CREDITS
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+  🎨 Design & Development: AJN (dsn_ajn)
+  📧 Email: xilyassexss@gmail.com
+  🎵 Music: Venger (for demo purposes)
+
+  ──────────────────────────────────────────────────────────────────
+
+  Built with ❤️ in Agadir, Morocco
+
+  © 2025 AJN · All Rights Reserved
