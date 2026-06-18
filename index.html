@@ -4,305 +4,409 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AJN DSN | Vault v867</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <!-- Fonts & CDNs -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Share+Tech+Mono&display=swap');
         
+        :root {
+            --neon-pink: #ff007f;
+            --neon-cyan: #00f0ff;
+        }
+
         body {
-            background-color: #0b0512;
+            background-color: #0c0714;
             color: #fff;
             font-family: 'Share Tech Mono', monospace;
             overflow-x: hidden;
-            background-image: linear-gradient(rgba(26, 11, 46, 0.4) 1px, transparent 1px), linear-gradient(90px, rgba(26, 11, 46, 0.4) 1px, transparent 1px);
-            background-size: 30px 30px;
+            position: relative;
         }
 
-        /* RETRO CYBER SUN BACKGROUND */
-        .retro-sun {
+        h1, h2, h3, .font-retro {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* RETRO GRID PATTERN WITH ANIMATION */
+        .retro-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(255, 0, 127, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2;
+        }
+
+        /* HORIZON SUN EFFECT */
+        .synthwave-sun {
             position: absolute;
-            top: 150px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(to bottom, #ff007f, #ff7700);
+            top: 180px; left: 50%; transform: translateX(-50%);
+            width: 350px; height: 350px;
+            background: linear-gradient(to bottom, var(--neon-pink), #ff7700);
             border-radius: 50%;
             z-index: -1;
-            box-shadow: 0 0 60px #ff007f;
-            clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 70%, 0% 73%, 100% 73%, 100% 78%, 0% 78%, 0% 82%, 100% 82%, 100% 88%, 0% 88%, 0% 92%, 100% 92%, 100% 100%, 0% 100%);
+            box-shadow: 0 0 80px rgba(255, 0, 127, 0.6);
+            clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 70%, 0% 72%, 100% 72%, 100% 76%, 0% 76%, 0% 79%, 100% 79%, 100% 84%, 0% 84%, 0% 87%, 100% 87%, 100% 92%, 0% 92%, 0% 100%, 100% 100%);
         }
 
-        .neon-text-pink { text-shadow: 0 0 8px #ff007f, 0 0 15px #ff007f; }
-        .neon-text-cyan { text-shadow: 0 0 8px #00f0ff, 0 0 15px #00f0ff; }
-        .neon-border-pink { box-shadow: 0 0 12px #ff007f; border: 2px solid #ff007f; }
-        .neon-border-cyan { box-shadow: 0 0 12px #00f0ff; border: 2px solid #00f0ff; }
+        /* CRT EFFECT & SCANLINES */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
 
-        /* CASSETTE UI STYLING */
-        .cassette {
-            background: #1a0f2e;
-            border: 3px solid #00f0ff;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
-            border-radius: 10px;
-            position: relative;
-            width: 100%;
-            max-width: 380px;
-            margin: 0 auto;
-            padding: 15px;
+        /* GLITCH & NEON EFFECT */
+        .neon-glow-pink { text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink); }
+        .neon-glow-cyan { text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan); }
+        .neon-box-pink { box-shadow: 0 0 15px var(--neon-pink); border: 2px solid var(--neon-pink); }
+        .neon-box-cyan { box-shadow: 0 0 15px var(--neon-cyan); border: 2px solid var(--neon-cyan); }
+
+        .flicker {
+            animation: flicker 3s infinite alternate;
         }
-        .tape-wheel {
-            animation: spin 4s linear infinite;
-            animation-play-state: paused;
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink); }
+            20%, 24%, 55% { text-shadow: none; }
         }
+
+        /* CASSETTE ROTATION & WAVEFORM */
+        .tape-wheel { animation: spin 3s linear infinite; animation-play-state: paused; }
         .playing .tape-wheel { animation-play-state: running; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .bar { width: 4px; background-color: var(--neon-cyan); height: 5px; transition: 0.1s; }
     </style>
 </head>
-<body class="relative min-h-screen pb-20">
+<body class="min-h-screen relative pb-24 selection:bg-pink-500 selection:text-black">
 
-    <div class="retro-sun"></div>
+    <div class="retro-grid"></div>
+    <div class="synthwave-sun"></div>
 
-    <!-- HEADER -->
-    <header class="p-6 flex justify-between items-center max-w-6xl mx-auto border-b border-purple-900/60 bg-black/40 backdrop-blur-md sticky top-0 z-40">
-        <h1 class="text-6xl font-black tracking-wider text-pink-500 neon-text-pink font-['Orbitron']">AJN</h1>
-        <nav class="flex gap-4 md:gap-6 items-center text-sm">
-            <a href="#thumbnails" class="hover:text-cyan-400 transition">// THUMBNAILS</a>
-            <a href="#posters" class="hover:text-pink-400 transition">// POSTERS</a>
-            <a href="#offers" class="hover:text-yellow-400 transition">// OFFERS</a>
-            <button onclick="openLoginModal()" class="px-3 py-1 neon-border-cyan text-xs text-cyan-400 hover:bg-cyan-500 hover:text-black transition">SYS_ACCESS</button>
+    <!-- HEADER / NAVIGATION -->
+    <header class="p-6 max-w-6xl mx-auto flex justify-between items-center border-b border-pink-500/20 bg-black/60 backdrop-blur-md sticky top-0 z-40">
+        <span class="text-4xl font-black tracking-wider text-pink-500 neon-glow-pink flicker">AJN DSN</span>
+        <nav class="flex gap-4 text-xs md:text-sm">
+            <a href="#vault" class="hover:text-cyan-400 transition">// THE_VAULT</a>
+            <a href="#rates" class="hover:text-pink-400 transition">// THE_RATES</a>
+            <a href="#terminal" class="hover:text-yellow-400 transition">// TERMINAL</a>
+            <button onclick="openLogin()" class="px-2 py-0.5 border border-cyan-400 text-cyan-400 text-[10px] hover:bg-cyan-400 hover:text-black transition">SYS_ACCESS</button>
         </nav>
     </header>
 
-    <!-- MOTIVATIONAL HYPING SECTION -->
-    <section class="max-w-4xl mx-auto text-center mt-36 mb-12 px-4">
-        <h2 class="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">واش محتاج <span class="text-cyan-400 neon-text-cyan">صورة مصغرة</span> تفركع ليك الـ CTR؟</h2>
-        <p class="text-zinc-400 max-w-xl mx-auto text-sm md:text-base mb-6">أنت فـ المكان الصحيح. هنا كنطبخو الـ High-End Thumbnails والبوسترات الفنية بستايل النيون والريترو اللي غايخلي البروجيكت ديالك يهرب على كُلشي فـ الساحة.</p>
+    <!-- HERO / THE ARCADE INTRO -->
+    <section class="max-w-4xl mx-auto text-center mt-36 mb-16 px-4">
+        <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white mb-6">
+           Do you need<span class="text-cyan-400 neon-glow-cyan">a thumbnail</span> that boosts your CTR ?
+        </h1>
+        <p class="text-zinc-400 max-w-xl mx-auto text-sm md:text-base border-l-2 border-pink-500 pl-4 py-2 bg-pink-500/5">
+           We make the best High Tier Thumbnails 
+        </p>
     </section>
 
-    <!-- CASSETTE SPOTIFY PLAYER -->
-    <div class="max-w-md mx-auto mb-16 px-4">
-        <div id="cassettePlayer" class="cassette playing">
-            <div class="flex justify-between items-center border-b border-cyan-900 pb-2 mb-3 text-xs text-cyan-400">
-                <span>AJN_RADIO_V867</span>
-                <span class="animate-pulse">● LIVE_TAPE</span>
+    <!-- INTERACTIVE CASSETTE DECK (AUDIO PLAYER) -->
+    <div class="max-w-md mx-auto mb-20 px-4">
+        <div id="cassette" class="bg-zinc-950 border-2 border-cyan-400 rounded-xl p-5 shadow-[0_0_20px_rgba(0,240,255,0.3)] relative">
+            <div class="flex justify-between items-center text-[10px] text-cyan-400 border-b border-cyan-950 pb-2 mb-4">
+                <span>SYSTEM_AUDIO: Venger.mp3</span>
+                <span id="tape-status" class="animate-pulse">● READY</span>
             </div>
-            <div class="bg-black/60 p-4 rounded border border-purple-900 flex justify-around items-center mb-3">
-                <!-- Wheel 1 -->
+            
+            <!-- Tape Inside -->
+            <div class="bg-zinc-900 border border-pink-500/40 p-4 rounded-lg flex justify-around items-center mb-4 relative overflow-hidden">
                 <div class="w-12 h-12 rounded-full border-4 border-dashed border-pink-500 tape-wheel flex items-center justify-center">
-                    <div class="w-3 h-3 bg-zinc-800 rounded-full"></div>
+                    <div class="w-3 h-3 bg-zinc-950 rounded-full"></div>
                 </div>
-                <div class="text-center w-1/2">
-                    <p class="text-xs text-zinc-500">PLAYLIST TRACKS</p>
-                    <p class="text-[10px] text-yellow-400 truncate">Spotify Synthwave/Retro Grid</p>
+                
+                <!-- Visual Equalizer Bars -->
+                <div id="equalizer" class="flex items-end gap-1 h-10 w-24 justify-center">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
                 </div>
-                <!-- Wheel 2 -->
+
                 <div class="w-12 h-12 rounded-full border-4 border-dashed border-pink-500 tape-wheel flex items-center justify-center">
-                    <div class="w-3 h-3 bg-zinc-800 rounded-full"></div>
+                    <div class="w-3 h-3 bg-zinc-950 rounded-full"></div>
                 </div>
             </div>
-            <!-- Dynamic Iframe Embed that works directly without getting blocked -->
-            <iframe src="https://open.spotify.com/embed/playlist/3Cam6NTFHkK08lUXfntCoE?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" class="rounded"></iframe>
+
+            <!-- Controls -->
+            <div class="flex items-center justify-between gap-4">
+                <button id="playBtn" onclick="toggleAudio()" class="flex-1 py-2 bg-cyan-400 text-black font-bold text-xs uppercase tracking-wider hover:bg-cyan-300 transition flex items-center justify-center gap-2">
+                    <i id="playIcon" class="fas fa-play"></i> <span id="playText">INSERT TAPE / PLAY</span>
+                </button>
+                <div class="flex items-center gap-2 w-1/3">
+                    <i class="fas fa-volume-high text-xs text-zinc-500"></i>
+                    <input type="range" id="volume" min="0" max="1" step="0.1" value="0.5" oninput="changeVolume()" class="w-full accent-pink-500 bg-zinc-800 h-1 rounded">
+                </div>
+            </div>
+            
+            <!-- Hidden Audio Element -->
+            <audio id="bgAudio" src="Venger.mp3" loop></audio>
         </div>
     </div>
 
-    <!-- MAIN GRID -->
-    <main class="max-w-6xl mx-auto px-6 space-y-24">
+    <!-- MAIN PORTFOLIO GRID (THE VAULT) -->
+    <main class="max-w-6xl mx-auto px-6 space-y-28">
         
-        <!-- THUMBNAILS SECTION -->
-        <section id="thumbnails">
-            <div class="border-l-4 border-cyan-400 pl-4 mb-8">
-                <h2 class="text-3xl font-bold text-cyan-400 neon-text-cyan">> THUMBNAILS_VAULT</h2>
-                <p class="text-xs text-zinc-500">صورة مصغرة احترافية لزيادة المشاهدات على حسب الصعوبة</p>
+        <!-- THE VAULT -->
+        <section id="vault" class="scroll-mt-24">
+            <div class="border-l-4 border-cyan-400 pl-4 mb-10">
+                <h2 class="text-3xl font-black tracking-wider text-cyan-400 neon-glow-cyan">_THE_VAULT</h2>
+                <p class="text-xs text-zinc-500">Design gallery categorized by difficulty and demand</p>
             </div>
-            <div id="thumbnail-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Appended via JavaScript safely -->
+            
+            <!-- CATEGORY PILLS (For visual style) -->
+            <div class="flex flex-wrap gap-2 mb-8 text-[11px]">
+                <span class="px-2 py-0.5 bg-cyan-950 text-cyan-400 border border-cyan-800">AUTOMOTIVE</span>
+                <span class="px-2 py-0.5 bg-pink-950 text-pink-400 border border-pink-800">HORROR</span>
+                <span class="px-2 py-0.5 bg-zinc-900 text-zinc-400 border border-zinc-800">BRANDS</span>
+                <span class="px-2 py-0.5 bg-purple-950 text-purple-400 border border-purple-800">HISTORICAL_DOCS</span>
+            </div>
+
+            <div id="vault-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Dynamically generated via JavaScript -->
             </div>
         </section>
 
-        <!-- POSTERS SECTION -->
-        <section id="posters">
-            <div class="border-l-4 border-pink-500 pl-4 mb-8">
-                <h2 class="text-3xl font-bold text-pink-500 neon-text-pink">> ART_POSTERS_COMPILATION</h2>
-                <p class="text-xs text-zinc-500">بوسترات فنية سينمائية بدقة عالية</p>
+        <!-- THE RATE CARD -->
+        <section id="rates" class="scroll-mt-24">
+            <div class="border-l-4 border-pink-500 pl-4 mb-10">
+                <h2 class="text-3xl font-black tracking-wider text-pink-500 neon-glow-pink">_THE_RATE_CARD</h2>
+                <p class="text-xs text-zinc-500">Standard pricing and strategic packages to increase CTR</p>
             </div>
-            <div id="poster-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Appended via JavaScript safely -->
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Standard Pack -->
+                <div class="bg-zinc-950 border border-purple-900 p-6 rounded-lg hover:border-cyan-400 transition duration-300">
+                    <span class="text-xs text-cyan-400 tracking-widest">// STANDARD ASSET</span>
+                    <h3 class="text-2xl font-bold mt-2 text-white">Thumbnail</h3>
+                    <p class="text-4xl font-black text-cyan-400 my-4">$15 <span class="text-xs text-zinc-600 font-normal">/ starting</span></p>
+                    <p class="text-xs text-zinc-400">Design a professional thumbnail based on a clear and audience-oriented idea to increase CTR</p>
+                </div>
+                <!-- Advanced Pack -->
+                <div class="bg-zinc-950 border border-purple-900 p-6 rounded-lg hover:border-pink-500 transition duration-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-pink-500 text-black font-black text-[9px] px-3 py-1 uppercase tracking-widest rotate-45 translate-x-4 translate-y-2">HOT</div>
+                    <span class="text-xs text-pink-500 tracking-widest">// HIGH END</span>
+                    <h3 class="text-2xl font-bold mt-2 text-white">Art Poster</h3>
+                    <p class="text-4xl font-black text-pink-500 my-4">$25 <span class="text-xs text-zinc-600 font-normal">/ max difficulty</span></p>
+                    <p class="text-xs text-zinc-400">A fully-fledged cinematic poster with superior resolution and powerful Rembrandt lighting, designed for major projects and brands.</p>
+                </div>
+                <!-- Package Deals -->
+                <div class="bg-gradient-to-br from-purple-950/40 to-black border-2 border-yellow-500/40 p-6 rounded-lg relative">
+                    <span class="text-xs text-yellow-400 tracking-widest">// BUNDLE SAVINGS</span>
+                    <h3 class="text-2xl font-bold mt-2 text-white">Pack Streamer</h3>
+                    <p class="text-4xl font-black text-yellow-400 my-4">Custom <span class="text-xs text-zinc-600 font-normal">/ Quote</span></p>
+                    <p class="text-xs text-zinc-400">Monthly packages tailored for content creators (unlimited designs and instant edits within Discord).</p>
+                </div>
             </div>
         </section>
 
-        <!-- SPECIAL OFFERS SECTION -->
-        <section id="offers" class="bg-gradient-to-r from-purple-950/40 to-black p-8 rounded-xl border-2 border-yellow-500/40 relative">
-            <span class="absolute top-0 right-6 -translate-y-1/2 bg-yellow-500 text-black font-bold px-3 py-0.5 text-xs">HOT_OFFER 🔥</span>
-            <h3 class="text-2xl text-yellow-400 font-bold mb-4">> عروض باقات AJN DSN الإستراتيجية:</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="p-4 bg-black/40 border border-purple-900 rounded">
-                    <h4 class="text-pink-500 font-bold text-lg">Pack Streamer Starter</h4>
-                    <p class="text-xs text-zinc-400 mt-1">احصل على 5 تصاور مصغرة هربانة + تصميم غلاف السيرفر فابور بخصم 20%.</p>
+        <!-- THE TERMINAL (CONTACT) -->
+        <section id="terminal" class="scroll-mt-24 max-w-3xl mx-auto">
+            <div class="bg-zinc-950 border-2 border-pink-500 rounded-lg p-6 font-mono shadow-[0_0_20px_rgba(255,0,127,0.2)]">
+                <div class="flex items-center gap-2 border-b border-pink-900/40 pb-3 mb-6 text-xs text-zinc-500">
+                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                    <span class="ml-2">AJN_SECURE_TERMINAL_V867.EXE</span>
                 </div>
-                <div class="p-4 bg-black/40 border border-purple-900 rounded">
-                    <h4 class="text-cyan-400 font-bold text-lg">Pack Infinite Art</h4>
-                    <p class="text-xs text-zinc-400 mt-1">للصناع الكبار: اشتراك شهري للتصاميم اللامحدودة مع تعديلات فورية فـ ديسكورد.</p>
-                </div>
-            </div>
-        </section>
+                
+                <p class="text-green-400 mb-2">> INITIALIZING LINK CHANNELS...</p>
+                <p class="text-zinc-500 mb-6">Choose your preferred platform to start the instant chat and prepare your order:</p>
 
-        <!-- CONTACT LINKS -->
-        <section id="contact" class="max-w-2xl mx-auto bg-black/80 p-8 rounded-xl border border-purple-900 relative">
-            <h3 class="text-lg text-zinc-400 mb-6 text-center">> SECURE_COMMUNICATION_CHANNELS:</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                <a href="https://instagram.com/AJN_DSN" target="_blank" class="p-4 bg-purple-950/20 rounded border border-purple-900 hover:border-pink-500 transition text-pink-400">
-                    <i class="fab fa-instagram text-2xl mb-1"></i>
-                    <p class="text-xs">@AJN_DSN</p>
-                </a>
-                <div class="p-4 bg-purple-950/20 rounded border border-purple-900 hover:border-00f0ff transition text-cyan-400">
-                    <i class="fab fa-discord text-2xl mb-1"></i>
-                    <p class="text-xs">elyas867</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-center mb-6">
+                    <a href="https://instagram.com/AJN_DSN" target="_blank" class="p-4 bg-zinc-900 border border-purple-950 rounded hover:border-pink-500 hover:bg-pink-950/10 transition group">
+                        <i class="fab fa-instagram text-2xl text-pink-500 mb-2 group-hover:scale-110 transition"></i>
+                        <p class="text-sm font-bold">@AJN_DSN</p>
+                        <p class="text-[10px] text-zinc-600">// INSTAGRAM_GATEWAY</p>
+                    </a>
+                    <div class="p-4 bg-zinc-900 border border-purple-950 rounded hover:border-cyan-400 hover:bg-cyan-950/10 transition group cursor-pointer">
+                        <i class="fab fa-discord text-2xl text-cyan-400 mb-2 group-hover:scale-110 transition"></i>
+                        <p class="text-sm font-bold">elyas867</p>
+                        <p class="text-[10px] text-zinc-600">// DISCORD_DIRECT_COMS</p>
+                    </div>
                 </div>
-                <a href="mailto:xilyassexss@gmail.com" class="p-4 bg-purple-950/20 rounded border border-purple-900 hover:border-pink-500 transition text-pink-400">
-                    <i class="far fa-envelope text-2xl mb-1"></i>
-                    <p class="text-xs">xilyassexss@gmail.com</p>
-                </a>
+
+                <p class="text-zinc-600 text-xs text-center border-t border-purple-950 pt-4">Email Channel: xilyassexss@gmail.com</p>
             </div>
         </section>
     </main>
 
-    <!-- SECURE GATEWAY (LOGIN MODAL) -->
-    <div id="loginModal" class="fixed inset-0 bg-black/90 flex items-center justify-center hidden z-50 p-4 backdrop-blur-sm">
+    <!-- SECURITY ACCESS GATEWAY (LOGIN MODAL) -->
+    <div id="loginModal" class="fixed inset-0 bg-black/90 flex items-center justify-center hidden z-50 p-4 backdrop-blur-md">
         <div class="bg-zinc-950 p-8 rounded-xl border-2 border-cyan-400 max-w-sm w-full relative">
-            <h3 class="text-xl text-cyan-400 text-center mb-6 neon-text-cyan">[SECURE_ACCESS_GATEWAY]</h3>
+            <h3 class="text-lg text-cyan-400 text-center mb-6 neon-glow-cyan">[SECURE_ACCESS_GATEWAY]</h3>
             <div class="space-y-4">
-                <input type="text" id="username" placeholder="OPERATOR_ID" class="w-full bg-zinc-900 border border-purple-900 p-2 text-cyan-400 focus:outline-none focus:border-cyan-400">
-                <input type="password" id="password" placeholder="ACCESS_KEY" class="w-full bg-zinc-900 border border-purple-900 p-2 text-pink-500 focus:outline-none focus:border-pink-500">
-                <button onclick="validateAccess()" class="w-full py-2 bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">DECRYPT_AND_ENTER</button>
-                <button onclick="closeLoginModal()" class="w-full text-center text-xs text-zinc-600 hover:text-zinc-400">CLOSE</button>
+                <input type="text" id="username" placeholder="OPERATOR_ID" class="w-full bg-zinc-900 border border-purple-900 p-2 text-cyan-400 focus:outline-none focus:border-cyan-400 text-sm">
+                <input type="password" id="password" placeholder="ACCESS_KEY" class="w-full bg-zinc-900 border border-purple-900 p-2 text-pink-500 focus:outline-none focus:border-pink-500 text-sm">
+                <button onclick="validateAccess()" class="w-full py-2 bg-cyan-400 text-black font-bold text-xs uppercase tracking-wider hover:bg-cyan-300 transition">DECRYPT_AND_ENTER</button>
+                <button onclick="closeLogin()" class="w-full text-center text-xs text-zinc-600 hover:text-zinc-400">ABORT_MISSION</button>
             </div>
         </div>
     </div>
 
-    <!-- ADMIN PANEL -->
+    <!-- CONTROL PANEL (ADMIN INTERACTION) -->
     <div id="adminPanel" class="fixed bottom-4 right-4 bg-zinc-950 p-6 rounded-xl border-2 border-pink-500 max-w-xs w-full hidden z-50 shadow-2xl">
-        <div class="flex justify-between items-center mb-3 border-b border-purple-900 pb-2 text-xs">
-            <span class="text-pink-500 font-bold">⚙️ AJN CONTROL PANEL</span>
-            <button onclick="logout()" class="text-red-500">LOGOUT</button>
+        <div class="flex justify-between items-center mb-3 border-b border-purple-900 pb-2 text-[10px]">
+            <span class="text-pink-500 font-bold">⚙️ AJN SYSTEM CORE</span>
+            <button onclick="logout()" class="text-red-500 hover:underline">DISCONNECT</button>
         </div>
         <div class="space-y-3 text-xs">
-            <input type="text" id="imgName" placeholder="Image URL or filename (e.g., thumb1.jpg)" class="w-full bg-zinc-900 border border-purple-800 p-2 text-white">
-            <input type="number" id="imgPrice" placeholder="Price (Variable based on difficulty e.g. 25)" class="w-full bg-zinc-900 border border-purple-800 p-2 text-white">
-            <select id="imgCategory" class="w-full bg-zinc-900 border border-purple-800 p-2 text-white">
+            <input type="text" id="imgUrl" placeholder="Image Name / URL (e.g. thumb1.png)" class="w-full bg-zinc-900 border border-purple-800 p-2 text-white">
+            <input type="number" id="imgPrice" placeholder="Variable Price (e.g. 20)" class="w-full bg-zinc-900 border border-purple-800 p-2 text-white">
+            <select id="imgType" class="w-full bg-zinc-900 border border-purple-800 p-2 text-white">
                 <option value="thumb">THUMBNAIL SECTION</option>
                 <option value="poster">POSTER SECTION</option>
             </select>
-            <button onclick="deployNewAsset()" class="w-full py-2 bg-pink-600 text-white font-bold hover:bg-pink-500 transition">SAVE_AND_DEPLOY</button>
+            <button onclick="addNewAsset()" class="w-full py-2 bg-pink-600 text-white font-bold hover:bg-pink-500 transition">DEPLOY_TO_VAULT</button>
         </div>
     </div>
 
+    <!-- JAVASCRIPT SYSTEM ENGINE -->
     <script>
-        // Hashed Password Check to completely block Inspect Element crackers (SHA-256 validation)
-        const SECURE_USER = "ajn_boss";
-        const SECURE_HASH = "76ca223849ecb2d26fdf24cf8f2b7a9561de0f5926c04f981ff3fb7ff8477ff3"; // "retro2026" hashed
+        // SHA-256 Hashed Password System ("retro2026")
+        const SYS_USER = "ajn_boss";
+        const SYS_HASH = "76ca223849ecb2d26fdf24cf8f2b7a9561de0f5926c04f981ff3fb7ff8477ff3";
 
-        async function sha256(message) {
-            const msgBuffer = new TextEncoder().encode(message);                    
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        async function calcHash(msg) {
+            const buffer = new TextEncoder().encode(msg);
+            const hash = await crypto.subtle.digest('SHA-256', buffer);
+            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
-        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+        function openLogin() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLogin() { document.getElementById('loginModal').classList.add('hidden'); }
         function logout() { document.getElementById('adminPanel').classList.add('hidden'); }
 
         async function validateAccess() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            const pHash = await sha256(p);
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const hashedPass = await calcHash(pass);
 
-            if(u === SECURE_USER && pHash === SECURE_HASH) {
-                confetti({ particleCount: 120, spread: 80 });
-                closeLoginModal();
+            if(user === SYS_USER && hashedPass === SYS_HASH) {
+                confetti({ particleCount: 100, spread: 60, colors: ['#ff007f', '#00f0ff'] });
+                closeLogin();
                 document.getElementById('adminPanel').classList.remove('hidden');
             } else {
-                alert("🚨 INTRUDER ALERT: KEYS DO NOT MATCH THE SYSTEM DATABASE.");
+                alert("🚨 INTROUDER REJECTED: CRITICAL AUTHENTICATION FAILURE WE WILL COME TO YOUR HOUSE.");
             }
         }
 
-        // LOAD AND SAVE SYSTEM VIA LOCALSTORAGE
-        let database = JSON.parse(localStorage.getItem('ajn_database')) || { thumbnails: [], posters: [] };
+        // INTERACTIVE CASSETTE DECK LOGIC
+        const audio = document.getElementById('bgAudio');
+        const cassette = document.getElementById('cassette');
+        const eqBars = document.querySelectorAll('#equalizer .bar');
+        let eqInterval;
 
-        function renderGrid() {
-            const thumbGrid = document.getElementById('thumbnail-grid');
-            const posterGrid = document.getElementById('poster-grid');
-            
-            thumbGrid.innerHTML = '';
-            posterGrid.innerHTML = '';
-
-            // Render Thumbnails
-            if(database.thumbnails.length === 0) {
-                thumbGrid.innerHTML = `<p class="text-zinc-600 text-xs italic">// No custom items yet. Use control panel.</p>`;
-            } else {
-                database.thumbnails.forEach((item, index) => {
-                    thumbGrid.innerHTML += createCardHTML(item.url, item.price, 'cyan', 'aspect-video', index, 'thumb');
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    cassette.classList.add('playing');
+                    document.getElementById('tape-status').innerText = "● PLAYING";
+                    document.getElementById('playIcon').className = "fas fa-pause";
+                    document.getElementById('playText').innerText = "PAUSE TAPE";
+                    startEqualizer();
+                }).catch(err => {
+                    alert("Click again to enable audio initialization!");
                 });
-            }
-
-            // Render Posters
-            if(database.posters.length === 0) {
-                posterGrid.innerHTML = `<p class="text-zinc-600 text-xs italic">// No custom items yet. Use control panel.</p>`;
             } else {
-                database.posters.forEach((item, index) => {
-                    posterGrid.innerHTML += createCardHTML(item.url, item.price, 'pink', 'aspect-[3/4]', index, 'poster');
+                audio.pause();
+                cassette.classList.remove('playing');
+                document.getElementById('tape-status').innerText = "● PAUSED";
+                document.getElementById('playIcon').className = "fas fa-play";
+                document.getElementById('playText').innerText = "PLAY TAPE";
+                stopEqualizer();
+            }
+        }
+
+        function changeVolume() {
+            audio.volume = document.getElementById('volume').value;
+        }
+
+        function startEqualizer() {
+            eqInterval = setInterval(() => {
+                eqBars.forEach(bar => {
+                    const height = Math.floor(Math.random() * 35) + 5;
+                    bar.style.height = `${height}px`;
                 });
-            }
+            }, 120);
         }
 
-        function createCardHTML(url, price, color, aspect, index, cat) {
-            return `
-                <div class="bg-purple-950/20 p-3 rounded-lg border border-purple-900/60 group hover:border-${color}-400 transition-all duration-300 relative">
-                    <div class="${aspect} bg-zinc-900 rounded overflow-hidden mb-3">
-                        <img src="${url}" onerror="this.src='https://via.placeholder.com/800x600/1a0f2e/ffffff?text=Asset+Not+Found'" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-zinc-500 text-xs">ASSET_${index+1}</span>
-                        <span class="text-${color}-400 font-bold neon-text-${color}">$${price}</span>
-                    </div>
-                    <button onclick="deleteAsset('${cat}', ${index})" class="absolute top-2 right-2 bg-red-600/80 p-1 text-[10px] text-white rounded hidden group-hover:block hover:bg-red-700">DELETE</button>
-                </div>
-            `;
+        function stopEqualizer() {
+            clearInterval(eqInterval);
+            eqBars.forEach(bar => bar.style.height = '5px');
         }
 
-        function deployNewAsset() {
-            const url = document.getElementById('imgName').value;
-            const price = document.getElementById('imgPrice').value || "25";
-            const cat = document.getElementById('imgCategory').value;
+        // DATABASE ARCHITECTURE VIA LOCALSTORAGE (No Data Loss on Refresh)
+        let localData = JSON.parse(localStorage.getItem('ajn_core_vault')) || { items: [] };
 
-            if(!url) return alert("Please enter image source!");
+        function renderVault() {
+            const grid = document.getElementById('vault-grid');
+            grid.innerHTML = '';
 
-            if(cat === 'thumb') {
-                database.thumbnails.push({ url, price });
-            } else {
-                database.posters.push({ url, price });
+            if(localData.items.length === 0) {
+                grid.innerHTML = `<p class="text-zinc-600 text-xs italic col-span-3 text-center">// No active assets in database. Access system to deploy.</p>`;
+                return;
             }
 
-            localStorage.setItem('ajn_database', JSON.stringify(database));
-            renderGrid();
-            confetti({ particleCount: 40, spread: 50 });
+            localData.items.forEach((item, index) => {
+                const accentColor = item.type === 'thumb' ? 'cyan' : 'pink';
+                const ratioClass = item.type === 'thumb' ? 'aspect-video' : 'aspect-[3/4]';
+                
+                grid.innerHTML += `
+                    <div class="bg-zinc-950 p-3 rounded-lg border border-purple-900/60 group hover:border-${accentColor}-400 transition-all duration-300 relative overflow-hidden">
+                        <div class="${ratioClass} bg-zinc-900 rounded overflow-hidden mb-3">
+                            <img src="${item.url}" onerror="this.src='https://via.placeholder.com/600x400/160c28/ffffff?text=AJN+DESIGN'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-zinc-600">SYS_DEPLOY_${index+1}</span>
+                            <span class="text-${accentColor}-400 font-bold text-base neon-glow-${accentColor}">$${item.price}</span>
+                        </div>
+                        <button onclick="deleteAsset(${index})" class="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition hover:bg-red-700">REMOVE</button>
+                    </div>
+                `;
+            });
+        }
+
+        function addNewAsset() {
+            const url = document.getElementById('imgUrl').value;
+            const price = document.getElementById('imgPrice').value || "20";
+            const type = document.getElementById('imgType').value;
+
+            if(!url) return alert("System requires an Image URL or Name!");
+
+            localData.items.push({ url, price, type });
+            localStorage.setItem('ajn_core_vault', JSON.stringify(localData));
+            renderVault();
             
-            document.getElementById('imgName').value = '';
+            document.getElementById('imgUrl').value = '';
             document.getElementById('imgPrice').value = '';
+            confetti({ particleCount: 30, spread: 40 });
         }
 
-        function deleteAsset(cat, index) {
-            if(confirm("Delete this asset permanently?")) {
-                if(cat === 'thumb') database.thumbnails.splice(index, 1);
-                else database.posters.splice(index, 1);
-                localStorage.setItem('ajn_database', JSON.stringify(database));
-                renderGrid();
+        function deleteAsset(index) {
+            if(confirm("Confirm asset removal from system core?")) {
+                localData.items.splice(index, 1);
+                localStorage.setItem('ajn_core_vault', JSON.stringify(localData));
+                renderVault();
             }
         }
 
-        // Run on Startup
-        renderGrid();
+        // GSAP INTRO ANIMATIONS
+        window.addEventListener('DOMContentLoaded', () => {
+            renderVault();
+            gsap.from("header", { y: -50, opacity: 0, duration: 1 });
+            gsap.from("h1", { scale: 0.9, opacity: 0, duration: 1.2, delay: 0.3 });
+            gsap.from("#cassette", { y: 30, opacity: 0, duration: 1, delay: 0.6 });
+        });
     </script>
 </body>
 </html>
