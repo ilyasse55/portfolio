@@ -34,6 +34,8 @@
       --text-muted: rgba(224, 215, 255, 0.45);
       --mono:       'Share Tech Mono', monospace;
       --sans:       'Montserrat', sans-serif;
+      --crt-green:  #00ff41;
+      --crt-green-dim: rgba(0, 255, 65, 0.1);
     }
 
     /* ================================================================
@@ -156,6 +158,15 @@
 
     .space-enter-btn:hover .enter-arrow {
       transform: translateX(8px);
+    }
+
+    /* FIX: Enter button hidden state */
+    .space-enter-btn.hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: scale(0.8) !important;
+      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     }
 
     @keyframes space-pulse {
@@ -722,7 +733,7 @@
     }
 
     /* ================================================================
-       SPOTIFY PLAYER SECTION (Replaces Cassette)
+       SPOTIFY PLAYER SECTION
     ================================================================ */
     #spotify-section {
       padding: 5rem 2rem 4rem;
@@ -913,7 +924,6 @@
       box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
     }
 
-    /* Mobile controls */
     .mobile-controls {
       display: none;
       justify-content: center;
@@ -1190,37 +1200,209 @@
     }
 
     /* ================================================================
-       THE TERMINAL — #terminal
+       THE TERMINAL — #terminal (WITH OLD SCREEN BORDER)
     ================================================================ */
-    .terminal-window {
+    .terminal-container {
+      position: relative;
       margin-top: 4rem;
-      border: 1px solid rgba(0,240,255,0.25);
-      box-shadow: 0 0 50px rgba(0,240,255,0.08);
+      padding: 3px;
+      background: linear-gradient(145deg, #2a2a2a, #0a0a0a);
+      border-radius: 20px;
+      box-shadow: 
+        0 0 60px rgba(0, 240, 255, 0.05),
+        inset 0 0 60px rgba(0, 0, 0, 0.8),
+        0 20px 60px rgba(0, 0, 0, 0.8);
+    }
+
+    .terminal-container::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 22px;
+      padding: 4px;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        rgba(0, 240, 255, 0.05) 20%,
+        rgba(255, 0, 127, 0.05) 40%,
+        rgba(123, 0, 255, 0.05) 60%,
+        rgba(0, 240, 255, 0.05) 80%,
+        transparent 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .terminal-container::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 18px;
+      background: radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .terminal-window {
+      position: relative;
+      z-index: 1;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(0, 240, 255, 0.08);
+      background: #000;
+      box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.9);
+    }
+
+    .terminal-window::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 2px,
+          rgba(0, 240, 255, 0.015) 2px,
+          rgba(0, 240, 255, 0.015) 3px
+        );
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .terminal-corner {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      pointer-events: none;
+      z-index: 4;
+      opacity: 0.3;
+    }
+
+    .terminal-corner.tl {
+      top: 8px;
+      left: 8px;
+      border-top: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan);
+      box-shadow: -2px -2px 10px rgba(0, 240, 255, 0.1);
+    }
+
+    .terminal-corner.tr {
+      top: 8px;
+      right: 8px;
+      border-top: 2px solid var(--pink);
+      border-right: 2px solid var(--pink);
+      box-shadow: 2px -2px 10px rgba(255, 0, 127, 0.1);
+    }
+
+    .terminal-corner.bl {
+      bottom: 8px;
+      left: 8px;
+      border-bottom: 2px solid var(--purple);
+      border-left: 2px solid var(--purple);
+      box-shadow: -2px 2px 10px rgba(123, 0, 255, 0.1);
+    }
+
+    .terminal-corner.br {
+      bottom: 8px;
+      right: 8px;
+      border-bottom: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan);
+      box-shadow: 2px 2px 10px rgba(0, 240, 255, 0.1);
+    }
+
+    .terminal-power {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      font-family: var(--mono);
+      font-size: 0.4rem;
+      letter-spacing: 0.6em;
+      color: rgba(0, 255, 65, 0.15);
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .terminal-power .power-dot {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--crt-green);
+      box-shadow: 0 0 10px var(--crt-green);
+      margin-right: 6px;
+      animation: blink 2s step-end infinite;
     }
 
     .terminal-titlebar {
-      background: rgba(0,240,255,0.06);
-      border-bottom: 1px solid rgba(0,240,255,0.15);
+      background: rgba(0, 240, 255, 0.03);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.06);
       padding: 0.75rem 1.4rem;
       display: flex;
       align-items: center;
       gap: 0.6rem;
+      position: relative;
+      z-index: 1;
+      padding-left: 3rem;
     }
-    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .t-dot-red   { background: #ff5f57; }
-    .t-dot-amber { background: #febc2e; }
-    .t-dot-green { background: #28c840; }
+
+    .terminal-titlebar .t-dots {
+      display: flex;
+      gap: 0.5rem;
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .t-dot { 
+      width: 10px; 
+      height: 10px; 
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .t-dot-red   { background: #ff5f57; box-shadow: 0 0 10px rgba(255, 95, 87, 0.2); }
+    .t-dot-amber { background: #febc2e; box-shadow: 0 0 10px rgba(254, 188, 46, 0.2); }
+    .t-dot-green { background: #28c840; box-shadow: 0 0 10px rgba(40, 200, 64, 0.2); }
+
     .t-title {
       font-family: var(--mono);
       font-size: 0.62rem;
       letter-spacing: 0.22em;
-      color: var(--cyan);
+      color: rgba(0, 240, 255, 0.4);
       margin: 0 auto;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
     }
 
     .terminal-body {
       padding: 2.2rem 2.5rem 2.5rem;
-      background: rgba(12,7,20,0.92);
+      background: rgba(0, 0, 0, 0.92);
+      position: relative;
+      z-index: 1;
+    }
+
+    .terminal-body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 3px,
+          rgba(0, 0, 0, 0.03) 3px,
+          rgba(0, 0, 0, 0.03) 4px
+        );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .terminal-body > * {
+      position: relative;
+      z-index: 1;
     }
 
     .t-line {
@@ -1228,18 +1410,28 @@
       font-size: 0.78rem;
       margin-bottom: 0.4rem;
       line-height: 1.5;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.05);
     }
     .t-prompt { color: var(--pink); }
     .t-cmd    { color: var(--cyan); }
-    .t-out    { color: var(--text-muted); }
+    .t-out    { color: rgba(224, 215, 255, 0.5); }
     .t-cursor {
       display: inline-block;
       width: 8px; height: 1em;
       background: var(--cyan);
       vertical-align: text-bottom;
       animation: blink 1s step-end infinite;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
     }
-    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+    .terminal-window {
+      animation: terminal-flicker 0.15s infinite;
+    }
+
+    @keyframes terminal-flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.98; }
+    }
 
     .socials {
       display: flex;
@@ -1255,15 +1447,18 @@
       font-size: 0.7rem;
       letter-spacing: 0.12em;
       padding: 0.75rem 1.4rem;
-      border: 1px solid rgba(255,0,127,0.25);
+      border: 1px solid rgba(255, 0, 127, 0.15);
       color: var(--text);
       transition: all 0.3s;
       cursor: pointer;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
     }
     .social-btn:hover {
       border-color: var(--pink);
       color: var(--pink);
-      box-shadow: 0 0 18px rgba(255,0,127,0.25);
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.1);
+      background: rgba(255, 0, 127, 0.05);
     }
     .social-btn i { font-size: 1rem; }
 
@@ -1280,14 +1475,14 @@
       font-family: var(--mono);
       font-size: 0.58rem;
       letter-spacing: 0.3em;
-      color: var(--cyan);
+      color: rgba(0, 240, 255, 0.6);
       text-transform: uppercase;
     }
     .form-label::before { content: '> '; color: var(--pink); }
 
     .form-input, .form-textarea {
-      background: rgba(0,240,255,0.02);
-      border: 1px solid rgba(0,240,255,0.18);
+      background: rgba(0, 240, 255, 0.02);
+      border: 1px solid rgba(0, 240, 255, 0.1);
       color: var(--text);
       padding: 0.75rem 1rem;
       font-family: var(--mono);
@@ -1296,11 +1491,12 @@
       transition: border-color 0.3s, box-shadow 0.3s;
       width: 100%;
       letter-spacing: 0.04em;
+      border-radius: 4px;
     }
-    .form-input::placeholder, .form-textarea::placeholder { color: rgba(224,215,255,0.2); }
+    .form-input::placeholder, .form-textarea::placeholder { color: rgba(224, 215, 255, 0.15); }
     .form-input:focus, .form-textarea:focus {
       border-color: var(--cyan);
-      box-shadow: 0 0 18px rgba(0,240,255,0.1);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
     }
     .form-textarea { resize: vertical; min-height: 110px; }
 
@@ -1324,6 +1520,7 @@
       position: relative;
       overflow: hidden;
       transition: color 0.3s, box-shadow 0.3s;
+      border-radius: 4px;
     }
     .form-submit span { position: relative; z-index: 1; }
     .form-submit::before {
@@ -1335,7 +1532,7 @@
       transform-origin: left;
       transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
     }
-    .form-submit:hover { color: var(--bg); box-shadow: 0 0 25px var(--pink); }
+    .form-submit:hover { color: var(--bg); box-shadow: 0 0 30px rgba(255, 0, 127, 0.2); }
     .form-submit:hover::before { transform: scaleX(1); }
     .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -1343,7 +1540,7 @@
       font-family: var(--mono);
       font-size: 0.58rem;
       letter-spacing: 0.12em;
-      color: var(--text-muted);
+      color: rgba(224, 215, 255, 0.2);
     }
 
     #form-success {
@@ -1433,6 +1630,12 @@
       .arcade-cabinet { padding: 1.5rem; }
 
       .game-marquee { flex-direction: column; gap: 0.5rem; text-align: center; }
+
+      .terminal-container { margin-top: 2rem; }
+      .terminal-titlebar { padding: 0.5rem 1rem; padding-left: 2.5rem; }
+      .terminal-body { padding: 1.5rem; }
+      .t-line { font-size: 0.7rem; }
+      .terminal-corner { display: none; }
     }
 
     @media (max-width: 480px) {
@@ -1442,6 +1645,12 @@
       .mobile-control-btn { width: 55px; height: 55px; font-size: 1.5rem; }
       .game-overlay .score-value { font-size: 1rem; }
       .arcade-cabinet { padding: 1rem; }
+      .terminal-titlebar .t-dots { gap: 0.3rem; }
+      .t-dot { width: 8px; height: 8px; }
+      .terminal-body { padding: 1rem; }
+      .t-line { font-size: 0.6rem; }
+      .form-input, .form-textarea { font-size: 0.7rem; }
+      .terminal-power { font-size: 0.3rem; }
     }
 
     /* Content wrapper */
@@ -1565,7 +1774,7 @@
       </div>
 
       <div class="vault-grid">
-        <!-- ART 01-11 - Keeping all existing cards -->
+        <!-- ART 01 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/suzuki with noise.png');"></div>
           <div class="vault-card-overlay">
@@ -1693,12 +1902,13 @@
       </div>
 
       <div class="spotify-container reveal reveal-delay-1">
-        <!-- Spotify Embed - Replace track URI with your own -->
+        <!-- Spotify Embed - Venger Track -->
         <iframe 
+          id="spotify-main-player"
           src="https://open.spotify.com/embed/track/4iV5W9uYEdYUVa79Axb7Rh?utm_source=generator" 
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
           loading="lazy"
-          title="Spotify Player">
+          title="Spotify Player - Venger">
         </iframe>
       </div>
     </div>
@@ -1849,64 +2059,74 @@
         </h2>
       </div>
 
-      <div class="terminal-window reveal reveal-delay-1">
-        <div class="terminal-titlebar">
-          <div class="t-dot t-dot-red"></div>
-          <div class="t-dot t-dot-amber"></div>
-          <div class="t-dot t-dot-green"></div>
-          <div class="t-title">AJN_TERMINAL v2.4.1 — root@dsn_ajn:~</div>
-        </div>
+      <div class="terminal-container reveal reveal-delay-1">
+        <div class="terminal-corner tl"></div>
+        <div class="terminal-corner tr"></div>
+        <div class="terminal-corner bl"></div>
+        <div class="terminal-corner br"></div>
+        <div class="terminal-power"><span class="power-dot"></span>SYSTEM ACTIVE</div>
 
-        <div class="terminal-body">
-          <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ whoami</span></p>
-          <p class="t-line" style="margin-bottom:1rem;"><span class="t-out">// Graphic designer. Retro futurist. Visual alchemist. Based in the neon underground.</span></p>
-
-          <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ cat socials.txt</span></p>
-          <p class="t-line" style="margin-bottom:0.5rem;"><span class="t-out">// Active channels detected —</span></p>
-
-          <div class="socials">
-            <a href="https://discord.com/users/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Discord profile">
-              <i class="fab fa-discord" style="color:#5865f2;"></i>
-              <span>elyas867 · Discord</span>
-            </a>
-            <a href="https://instagram.com/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram profile">
-              <i class="fab fa-instagram" style="background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
-              <span>ajn_dsn · Instagram</span>
-            </a>
+        <div class="terminal-window">
+          <div class="terminal-titlebar">
+            <div class="t-dots">
+              <div class="t-dot t-dot-red"></div>
+              <div class="t-dot t-dot-amber"></div>
+              <div class="t-dot t-dot-green"></div>
+            </div>
+            <div class="t-title">AJN_TERMINAL v2.4.1 — root@dsn_ajn:~</div>
           </div>
 
-          <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ compose_message --secure</span></p>
-          <p class="t-line" style="margin-bottom:1.5rem;"><span class="t-out">// Encrypted channel open. Fill the fields below. <span class="t-cursor"></span></span></p>
+          <div class="terminal-body">
+            <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ whoami</span></p>
+            <p class="t-line" style="margin-bottom:1rem;"><span class="t-out">// Graphic designer. Retro futurist. Visual alchemist. Based in the neon underground.</span></p>
 
-          <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)" novalidate>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="field-name">YOUR_HANDLE</label>
-                <input type="text" id="field-name" name="name" class="form-input" placeholder="your username" required autocomplete="name">
+            <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ cat socials.txt</span></p>
+            <p class="t-line" style="margin-bottom:0.5rem;"><span class="t-out">// Active channels detected —</span></p>
+
+            <div class="socials">
+              <a href="https://discord.com/users/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Discord profile">
+                <i class="fab fa-discord" style="color:#5865f2;"></i>
+                <span>elyas867 · Discord</span>
+              </a>
+              <a href="https://instagram.com/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram profile">
+                <i class="fab fa-instagram" style="background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
+                <span>ajn_dsn · Instagram</span>
+              </a>
+            </div>
+
+            <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ compose_message --secure</span></p>
+            <p class="t-line" style="margin-bottom:1.5rem;"><span class="t-out">// Encrypted channel open. Fill the fields below. <span class="t-cursor"></span></span></p>
+
+            <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="field-name">YOUR_HANDLE</label>
+                  <input type="text" id="field-name" name="name" class="form-input" placeholder="your username" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="field-email">EMAIL_ADDR</label>
+                  <input type="email" id="field-email" name="email" class="form-input" placeholder="addr@domain.com" required autocomplete="email">
+                </div>
               </div>
               <div class="form-group">
-                <label class="form-label" for="field-email">EMAIL_ADDR</label>
-                <input type="email" id="field-email" name="email" class="form-input" placeholder="addr@domain.com" required autocomplete="email">
+                <label class="form-label" for="field-subject">SUBJECT_LINE</label>
+                <input type="text" id="field-subject" name="subject" class="form-input" placeholder="Commission / collab / inquiry" required>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="field-subject">SUBJECT_LINE</label>
-              <input type="text" id="field-subject" name="subject" class="form-input" placeholder="Commission / collab / inquiry" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="field-message">MESSAGE_BODY</label>
-              <textarea id="field-message" name="message" class="form-textarea" placeholder="Describe your project — style references, deliverables, timeline..." required></textarea>
-            </div>
-            <div class="form-footer">
-              <button type="submit" class="form-submit" id="submit-btn">
-                <span id="submit-label">[ TRANSMIT MESSAGE ]</span>
-              </button>
-              <span class="form-note">Response within 24–48h via Discord or email.</span>
-            </div>
-            <div id="form-success">
-              <span class="t-out" style="color:var(--cyan);">// MESSAGE_TRANSMITTED ✓ &nbsp;Check your inbox — response inbound.</span>
-            </div>
-          </form>
+              <div class="form-group">
+                <label class="form-label" for="field-message">MESSAGE_BODY</label>
+                <textarea id="field-message" name="message" class="form-textarea" placeholder="Describe your project — style references, deliverables, timeline..." required></textarea>
+              </div>
+              <div class="form-footer">
+                <button type="submit" class="form-submit" id="submit-btn">
+                  <span id="submit-label">[ TRANSMIT MESSAGE ]</span>
+                </button>
+                <span class="form-note">Response within 24–48h via Discord or email.</span>
+              </div>
+              <div id="form-success">
+                <span class="t-out" style="color:var(--cyan);">// MESSAGE_TRANSMITTED ✓ &nbsp;Check your inbox — response inbound.</span>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -1930,7 +2150,145 @@
 ============================================================ -->
 <script>
 /* ================================================================
-   BLACK HOLE INTRO ANIMATION
+   FIX 1: ENTER BUTTON - IMMEDIATE HIDE
+   FIX 2: SPOTIFY SECTION-BASED TRANSITIONS
+================================================================ */
+
+// --- Global Spotify Controller ---
+const SpotifyController = {
+  mainPlayer: null,
+  arcadePlayer: null,
+  currentTrack: 'main',
+  isArcadeVisible: false,
+  transitionTimeout: null,
+
+  init() {
+    // Get the main Spotify iframe (Venger)
+    this.mainPlayer = document.getElementById('spotify-main-player');
+    
+    // Create a hidden arcade player that we'll swap in
+    this.createArcadePlayer();
+    
+    // Set up intersection observer for arcade section
+    this.setupSectionObserver();
+  },
+
+  createArcadePlayer() {
+    // Create a container for the arcade player
+    const container = document.querySelector('.spotify-container');
+    if (!container) return;
+    
+    // Create the arcade iframe (Space Defender track)
+    this.arcadePlayer = document.createElement('iframe');
+    this.arcadePlayer.id = 'spotify-arcade-player';
+    // Replace with actual Space Defender track URI
+    this.arcadePlayer.src = 'https://open.spotify.com/embed/track/4iV5W9uYEdYUVa79Axb7Rh?utm_source=generator';
+    this.arcadePlayer.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+    this.arcadePlayer.loading = 'lazy';
+    this.arcadePlayer.title = 'Spotify Player - Space Defender';
+    this.arcadePlayer.style.display = 'none';
+    this.arcadePlayer.style.width = '100%';
+    this.arcadePlayer.style.height = '352px';
+    this.arcadePlayer.style.border = 'none';
+    this.arcadePlayer.style.background = '#000';
+    
+    container.appendChild(this.arcadePlayer);
+  },
+
+  setupSectionObserver() {
+    const arcadeSection = document.getElementById('arcade-section');
+    if (!arcadeSection) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // User is viewing the arcade section
+          this.switchToArcadeTrack();
+        } else {
+          // User left the arcade section
+          this.switchToMainTrack();
+        }
+      });
+    }, {
+      threshold: 0.3 // Trigger when 30% of section is visible
+    });
+
+    observer.observe(arcadeSection);
+  },
+
+  switchToArcadeTrack() {
+    if (this.currentTrack === 'arcade') return;
+    this.currentTrack = 'arcade';
+    this.isArcadeVisible = true;
+    
+    // Smoothly transition
+    if (this.mainPlayer) {
+      this.mainPlayer.style.transition = 'opacity 0.5s ease';
+      this.mainPlayer.style.opacity = '0';
+    }
+    
+    // Show arcade player after fade
+    clearTimeout(this.transitionTimeout);
+    this.transitionTimeout = setTimeout(() => {
+      if (this.mainPlayer) {
+        this.mainPlayer.style.display = 'none';
+      }
+      if (this.arcadePlayer) {
+        this.arcadePlayer.style.display = 'block';
+        this.arcadePlayer.style.opacity = '0';
+        this.arcadePlayer.style.transition = 'opacity 0.5s ease';
+        // Reload the iframe to start playing
+        this.arcadePlayer.src = this.arcadePlayer.src;
+        setTimeout(() => {
+          this.arcadePlayer.style.opacity = '1';
+        }, 100);
+      }
+    }, 500);
+  },
+
+  switchToMainTrack() {
+    if (this.currentTrack === 'main') return;
+    this.currentTrack = 'main';
+    this.isArcadeVisible = false;
+    
+    // Hide arcade player
+    if (this.arcadePlayer) {
+      this.arcadePlayer.style.transition = 'opacity 0.5s ease';
+      this.arcadePlayer.style.opacity = '0';
+    }
+    
+    // Show main player after fade
+    clearTimeout(this.transitionTimeout);
+    this.transitionTimeout = setTimeout(() => {
+      if (this.arcadePlayer) {
+        this.arcadePlayer.style.display = 'none';
+      }
+      if (this.mainPlayer) {
+        this.mainPlayer.style.display = 'block';
+        this.mainPlayer.style.opacity = '0';
+        this.mainPlayer.style.transition = 'opacity 0.5s ease';
+        // Reload to start playing
+        this.mainPlayer.src = this.mainPlayer.src;
+        setTimeout(() => {
+          this.mainPlayer.style.opacity = '1';
+        }, 100);
+      }
+    }, 500);
+  },
+
+  // Force play Venger on entry
+  playVengerOnEntry() {
+    if (this.mainPlayer) {
+      // Reload the iframe to trigger autoplay
+      this.mainPlayer.src = this.mainPlayer.src;
+      this.mainPlayer.style.display = 'block';
+      this.mainPlayer.style.opacity = '1';
+    }
+  }
+};
+
+/* ================================================================
+   BLACK HOLE INTRO ANIMATION (FIXED: Enter button hides instantly)
 ================================================================ */
 (function initBlackHoleIntro() {
   const intro = document.getElementById('space-intro');
@@ -2048,6 +2406,12 @@
         document.querySelectorAll('section:not(#home)').forEach((section, index) => {
           setTimeout(() => { section.classList.add('visible'); }, 600 + (index * 200));
         });
+        // Initialize Spotify controller after content is visible
+        SpotifyController.init();
+        // Start Venger on entry
+        setTimeout(() => {
+          SpotifyController.playVengerOnEntry();
+        }, 1000);
         resolve();
       }, 800);
     });
@@ -2056,8 +2420,11 @@
   async function startEntrySequence() {
     if (isEntering) return;
     isEntering = true;
-    enterBtn.style.opacity = '0';
-    enterBtn.style.pointerEvents = 'none';
+    
+    // FIX: INSTANTLY hide the button with display: none + fade
+    enterBtn.classList.add('hidden');
+    enterBtn.style.display = 'none';
+    
     await triggerWarpSpeed();
     await showBlackHoleText();
     await revealMainContent();
@@ -2175,18 +2542,15 @@
   const startBtn = document.getElementById('startGameBtn');
   const resetBtn = document.getElementById('resetGameBtn');
 
-  // Mobile controls
   const leftBtn = document.getElementById('moveLeftBtn');
   const rightBtn = document.getElementById('moveRightBtn');
   const fireBtn = document.getElementById('fireBtn');
 
-  // Game state
   let gameRunning = false;
   let score = 0;
   let animationId = null;
   let keys = { left: false, right: false, fire: false };
 
-  // Player
   const player = {
     x: 0,
     y: 0,
@@ -2197,7 +2561,6 @@
       ctx.shadowColor = '#00f0ff';
       ctx.shadowBlur = 20;
       ctx.fillStyle = '#00f0ff';
-      // Ship shape (triangle)
       ctx.beginPath();
       ctx.moveTo(this.x + this.width / 2, this.y);
       ctx.lineTo(this.x, this.y + this.height);
@@ -2205,7 +2568,6 @@
       ctx.closePath();
       ctx.fill();
       ctx.shadowBlur = 0;
-      // Cockpit
       ctx.fillStyle = 'rgba(255, 0, 127, 0.5)';
       ctx.beginPath();
       ctx.arc(this.x + this.width / 2, this.y + this.height * 0.3, 6, 0, Math.PI * 2);
@@ -2213,19 +2575,16 @@
     }
   };
 
-  // Bullets
   let bullets = [];
   const bulletSpeed = 6;
   const bulletCooldown = 10;
   let bulletTimer = 0;
 
-  // Enemies
   let enemies = [];
   const enemySpawnRate = 30;
   let enemyTimer = 0;
   let enemySpeed = 1.5;
 
-  // Stars background
   let gameStars = [];
 
   function resizeGame() {
@@ -2286,7 +2645,6 @@
     gameStatus.textContent = 'GAME OVER';
     gameStatus.style.color = 'var(--pink)';
     if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
-    // Reset player position
     player.x = canvas.width / 2 - player.width / 2;
     player.y = canvas.height - 60;
     drawGame();
@@ -2308,36 +2666,29 @@
   function update() {
     if (!gameRunning) return;
 
-    // Player movement
     if (keys.left && player.x > 0) player.x -= player.speed;
     if (keys.right && player.x < canvas.width - player.width) player.x += player.speed;
     if (keys.fire) fireBullet();
 
-    // Bullet timer
     if (bulletTimer > 0) bulletTimer--;
 
-    // Update bullets
     bullets = bullets.filter(b => {
       b.y -= bulletSpeed;
       return b.y > 0;
     });
 
-    // Spawn enemies
     enemyTimer++;
     if (enemyTimer >= enemySpawnRate) {
       spawnEnemy();
       enemyTimer = 0;
-      // Increase difficulty
       if (enemySpeed < 3.5) enemySpeed += 0.05;
     }
 
-    // Update enemies
     enemies = enemies.filter(enemy => {
       enemy.y += enemy.speed;
       return enemy.y < canvas.height + 30;
     });
 
-    // Collision detection - bullets vs enemies
     for (let i = bullets.length - 1; i >= 0; i--) {
       for (let j = enemies.length - 1; j >= 0; j--) {
         const b = bullets[i];
@@ -2355,7 +2706,6 @@
       }
     }
 
-    // Collision detection - player vs enemies
     for (let j = enemies.length - 1; j >= 0; j--) {
       const e = enemies[j];
       if (player.x < e.x + e.width &&
@@ -2375,12 +2725,9 @@
   function drawGame() {
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
-
-    // Background
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, W, H);
 
-    // Stars
     gameStars.forEach(star => {
       star.y += star.speed;
       if (star.y > H) { star.y = 0; star.x = Math.random() * W; }
@@ -2390,7 +2737,6 @@
       ctx.fill();
     });
 
-    // Draw enemies
     enemies.forEach(enemy => {
       ctx.shadowColor = '#ff007f';
       ctx.shadowBlur = 15;
@@ -2402,14 +2748,12 @@
       ctx.closePath();
       ctx.fill();
       ctx.shadowBlur = 0;
-      // Enemy eye
       ctx.fillStyle = 'rgba(255,255,255,0.6)';
       ctx.beginPath();
       ctx.arc(enemy.x + enemy.width / 2, enemy.y + enemy.height * 0.35, 4, 0, Math.PI * 2);
       ctx.fill();
     });
 
-    // Draw bullets
     bullets.forEach(b => {
       ctx.shadowColor = '#00f0ff';
       ctx.shadowBlur = 15;
@@ -2418,10 +2762,8 @@
       ctx.shadowBlur = 0;
     });
 
-    // Draw player
     player.draw();
 
-    // Score on canvas
     ctx.shadowBlur = 0;
     ctx.fillStyle = 'rgba(255,255,255,0.05)';
     ctx.font = '120px monospace';
@@ -2437,7 +2779,6 @@
   }
 
   // --- Event Listeners ---
-  // Keyboard
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft' || e.key === 'a') keys.left = true;
     if (e.key === 'ArrowRight' || e.key === 'd') keys.right = true;
@@ -2457,11 +2798,9 @@
     }
   });
 
-  // Buttons
   startBtn.addEventListener('click', startGame);
   resetBtn.addEventListener('click', resetGame);
 
-  // Mobile controls
   function setupMobileButton(btn, key, onStart, onEnd) {
     if (!btn) return;
     btn.addEventListener('touchstart', (e) => {
@@ -2486,13 +2825,11 @@
   setupMobileButton(rightBtn, 'right');
   setupMobileButton(fireBtn, 'fire', () => { if (gameRunning) fireBullet(); });
 
-  // Window resize
   window.addEventListener('resize', () => {
     resizeGame();
     if (!gameRunning) drawGame();
   });
 
-  // --- Init ---
   resizeGame();
   drawGame();
   gameStatus.textContent = 'PRESS START';
