@@ -20,23 +20,6 @@
 
   <style>
     /* ================================================================
-       FIX 1: CURSOR VISIBILITY
-    ================================================================ */
-    body {
-      cursor: default !important; /* Force default cursor */
-    }
-    
-    /* Remove custom cursor entirely */
-    #cursor, #cursor-ring {
-      display: none !important;
-    }
-    
-    /* But keep hover effects on interactive elements */
-    a, button, .vault-card, .rate-card, input, textarea, .cassette-btn, .cassette-header-btn, .entry-btn, .arcade-btn {
-      cursor: pointer !important;
-    }
-
-    /* ================================================================
        CSS CUSTOM PROPERTIES — PALETTE & TOKENS
     ================================================================ */
     :root {
@@ -65,10 +48,11 @@
       font-family: var(--sans);
       overflow-x: hidden;
       line-height: 1.6;
+      cursor: default;
     }
 
     a { text-decoration: none; color: inherit; }
-    button { font-family: inherit; }
+    button { font-family: inherit; cursor: pointer; }
 
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
@@ -130,7 +114,6 @@
       pointer-events: none;
     }
 
-    /* Starfield Canvas */
     #starfield {
       position: absolute;
       inset: 0;
@@ -139,7 +122,6 @@
       z-index: 1;
     }
 
-    /* Enter Button */
     .space-enter-btn {
       position: relative;
       z-index: 10;
@@ -181,7 +163,6 @@
       50% { opacity: 1; transform: scale(1.02); }
     }
 
-    /* Warp Speed Overlay */
     #warp-overlay {
       position: absolute;
       inset: 0;
@@ -196,7 +177,6 @@
       opacity: 1;
     }
 
-    /* Black Hole Text */
     #blackhole-text {
       position: absolute;
       z-index: 8;
@@ -236,14 +216,6 @@
     .neon-cyan {
       color: var(--cyan);
       text-shadow: 0 0 6px var(--cyan), 0 0 20px var(--cyan), 0 0 40px rgba(0,240,255,0.5);
-    }
-    .glow-border-pink {
-      border: 1px solid var(--pink);
-      box-shadow: 0 0 10px rgba(255,0,127,0.4), inset 0 0 10px rgba(255,0,127,0.05);
-    }
-    .glow-border-cyan {
-      border: 1px solid var(--cyan);
-      box-shadow: 0 0 10px rgba(0,240,255,0.4), inset 0 0 10px rgba(0,240,255,0.05);
     }
 
     /* ================================================================
@@ -373,7 +345,6 @@
     .nav-links a.active { color: var(--cyan); }
     .nav-links a.active::after { width: 100%; }
 
-    /* Hamburger */
     #nav-toggle {
       display: none;
       flex-direction: column;
@@ -392,7 +363,6 @@
       transition: transform 0.3s, opacity 0.3s;
     }
 
-    /* Mobile nav overlay */
     #mobile-nav {
       display: none;
       position: fixed;
@@ -461,7 +431,6 @@
       letter-spacing: -0.02em;
     }
 
-    /* Reveal animation classes */
     .reveal { opacity: 0; transform: translateY(48px); }
     .reveal.visible {
       opacity: 1;
@@ -554,7 +523,6 @@
       animation: hero-fade-up 0.8s cubic-bezier(0.22,1,0.36,1) 1.25s forwards;
     }
 
-    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -585,11 +553,9 @@
     .btn:hover { color: var(--bg); }
     .btn:hover::before { transform: translateX(0); }
     .btn span { position: relative; z-index: 1; }
-    .btn:hover .btn-icon { position: relative; z-index: 1; color: var(--bg); }
     .btn-pink:hover { box-shadow: 0 0 25px var(--pink); }
     .btn-cyan:hover  { box-shadow: 0 0 25px var(--cyan); }
 
-    /* Scroll caret */
     .scroll-down {
       position: absolute;
       bottom: 2.5rem;
@@ -620,18 +586,13 @@
     }
 
     /* ================================================================
-       THE VAULT — PORTFOLIO STYLES (FIX 3: Image Gallery)
+       THE VAULT — PORTFOLIO STYLES
     ================================================================ */
     #vault {
       padding: 8rem 2rem 6rem;
       background: #06020f;
       position: relative;
       overflow: hidden;
-    }
-
-    #vault .container {
-      width: 100%;
-      margin: 0 auto;
     }
 
     .vault-grid {
@@ -652,7 +613,6 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 
-    /* FIX 3: Image display fix - object-fit: contain */
     .vault-card-bg {
       position: absolute;
       top: 0;
@@ -762,375 +722,48 @@
     }
 
     /* ================================================================
-       FLOATING CASSETTE PLAYER
+       SPOTIFY PLAYER SECTION (Replaces Cassette)
     ================================================================ */
-    #cassette-float-container {
-      position: fixed;
-      z-index: 5000;
-      bottom: 30px;
-      right: 30px;
-      width: 280px;
-      cursor: grab;
-      touch-action: none;
-      user-select: none;
-      -webkit-user-select: none;
-      transition: filter 0.3s ease, opacity 0.3s ease;
-      opacity: 0;
-      transform: scale(0.9) translateY(20px);
-      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), 
-                  transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-                  filter 0.3s ease;
+    #spotify-section {
+      padding: 5rem 2rem 4rem;
+      background: linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.02), transparent);
+      position: relative;
     }
 
-    #cassette-float-container.visible {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-
-    #cassette-float-container:active {
-      cursor: grabbing;
-    }
-
-    #cassette-float-container.dragging {
-      filter: drop-shadow(0 0 30px rgba(255, 0, 127, 0.3));
-      opacity: 0.9;
-      transition: filter 0.1s ease;
-    }
-
-    #cassette-float-container.minimized .cassette-deck-body {
-      max-height: 0;
-      padding: 0 1.5rem;
-      opacity: 0;
+    .spotify-container {
+      max-width: 500px;
+      margin: 2rem auto 0;
+      border-radius: 16px;
       overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    #cassette-float-container:not(.minimized) .cassette-deck-body {
-      max-height: 500px;
-      padding: 1.5rem;
-      opacity: 1;
-      transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .cassette-deck-float {
-      background: linear-gradient(145deg, #1a1028, #0d0819);
-      border: 2px solid rgba(0, 240, 255, 0.2);
-      border-radius: 12px;
-      box-shadow: 
-        0 0 40px rgba(0, 240, 255, 0.08),
-        0 20px 60px rgba(0, 0, 0, 0.8),
-        inset 0 0 40px rgba(0, 240, 255, 0.02);
-      overflow: hidden;
-      transition: border-color 0.4s ease, box-shadow 0.4s ease;
-      position: relative;
-    }
-
-    .cassette-deck-float::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: linear-gradient(45deg, transparent, rgba(0, 240, 255, 0.05), transparent);
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .cassette-deck-float > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .cassette-deck-float.playing {
-      border-color: var(--pink);
-      box-shadow: 
-        0 0 60px rgba(255, 0, 127, 0.15),
-        0 20px 60px rgba(0, 0, 0, 0.8),
-        inset 0 0 60px rgba(255, 0, 127, 0.03);
-    }
-
-    .cassette-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.6rem 1rem;
-      background: rgba(0, 0, 0, 0.4);
-      border-bottom: 1px solid rgba(0, 240, 255, 0.08);
-      cursor: grab;
-    }
-
-    .cassette-header:active {
-      cursor: grabbing;
-    }
-
-    .cassette-header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .cassette-drag-icon {
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      opacity: 0.3;
-      transition: opacity 0.3s ease;
-    }
-
-    .cassette-header:hover .cassette-drag-icon {
-      opacity: 0.7;
-    }
-
-    .cassette-header-title {
-      font-family: var(--mono);
-      font-size: 0.55rem;
-      letter-spacing: 0.3em;
-      color: var(--cyan);
-      text-transform: uppercase;
-    }
-
-    .cassette-header-title .dot {
-      display: inline-block;
-      width: 4px;
-      height: 4px;
-      background: var(--pink);
-      border-radius: 50%;
-      margin-right: 0.4rem;
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-
-    .cassette-header-controls {
-      display: flex;
-      gap: 0.3rem;
-    }
-
-    .cassette-header-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 3px 6px;
-      font-size: 0.7rem;
-      border-radius: 4px;
-      transition: all 0.3s ease;
-    }
-
-    .cassette-header-btn:hover {
-      color: var(--cyan);
-      background: rgba(0, 240, 255, 0.1);
-    }
-
-    .cassette-header-btn.close-btn:hover {
-      color: var(--pink);
-      background: rgba(255, 0, 127, 0.1);
-    }
-
-    .cassette-deck-body {
-      padding: 1.5rem;
-      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .tape-window {
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 8px;
-      padding: 1.2rem 0.8rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 2rem;
-      position: relative;
-      border: 1px solid rgba(0, 240, 255, 0.08);
-    }
-
-    .spool {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      border: 2px solid rgba(0, 240, 255, 0.15);
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.4s ease;
-    }
-
-    .spool-inner {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 0, 127, 0.25);
-      background: radial-gradient(circle, rgba(255, 0, 127, 0.05), transparent);
+      box-shadow: 0 0 60px rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.1);
       transition: all 0.4s ease;
     }
 
-    .spool-left.spinning-l {
-      animation: spin-left 4s linear infinite;
-      border-color: var(--pink);
+    .spotify-container:hover {
+      border-color: rgba(255, 0, 127, 0.3);
+      box-shadow: 0 0 80px rgba(255, 0, 127, 0.08);
     }
 
-    .spool-right.spinning-r {
-      animation: spin-right 4s linear infinite;
-      border-color: var(--cyan);
-    }
-
-    .spool-left.spinning-l .spool-inner {
-      border-color: var(--pink);
-      background: radial-gradient(circle, rgba(255, 0, 127, 0.15), transparent);
-    }
-
-    .spool-right.spinning-r .spool-inner {
-      border-color: var(--cyan);
-      background: radial-gradient(circle, rgba(0, 240, 255, 0.15), transparent);
-    }
-
-    @keyframes spin-left {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes spin-right {
-      0% { transform: rotate(360deg); }
-      100% { transform: rotate(0deg); }
-    }
-
-    .tape-between {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 55%;
-      height: 2px;
-      background: linear-gradient(to right, var(--pink), var(--cyan));
-      opacity: 0.15;
-      transition: opacity 0.4s ease;
-    }
-
-    .cassette-deck-float.playing .tape-between {
-      opacity: 0.4;
-      animation: tape-pulse 1.5s ease-in-out infinite;
-    }
-
-    @keyframes tape-pulse {
-      0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scaleX(1); }
-      50% { opacity: 0.4; transform: translate(-50%, -50%) scaleX(1.05); }
-    }
-
-    .equalizer {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 2px;
-      height: 30px;
-      margin: 1rem 0 0.8rem;
-    }
-
-    .eq-bar {
-      width: 4px;
-      height: 6px;
-      background: var(--pink);
-      border-radius: 2px;
-      transition: height 0.15s ease, background 0.3s ease;
-      opacity: 0.6;
-    }
-
-    .eq-bar.active {
-      opacity: 1;
-    }
-
-    .cassette-deck-float.playing .eq-bar {
-      background: var(--cyan);
-    }
-
-    .cassette-controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .cassette-btn {
-      background: transparent;
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      color: var(--text);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cassette-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, var(--pink), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .cassette-btn:hover {
-      border-color: var(--pink);
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(255, 0, 127, 0.15);
-    }
-
-    .cassette-btn:hover::before {
-      opacity: 0.1;
-    }
-
-    .cassette-btn:active {
-      transform: scale(0.95);
-    }
-
-    .cassette-btn .fa-play {
-      margin-left: 2px;
-    }
-
-    .cassette-btn.playing {
-      border-color: var(--pink);
-      box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);
-    }
-
-    .cassette-btn.playing .fa-pause {
-      color: var(--pink);
-    }
-
-    .cassette-status {
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 0.5rem;
-      letter-spacing: 0.3em;
-      color: var(--text-muted);
-      margin-top: 0.8rem;
-      text-transform: uppercase;
-    }
-
-    .cassette-status .status-text {
-      transition: color 0.3s ease;
-    }
-
-    .cassette-deck-float.playing .cassette-status .status-text {
-      color: var(--pink);
+    .spotify-container iframe {
+      display: block;
+      width: 100%;
+      height: 352px;
+      border: none;
+      background: #000;
     }
 
     /* ================================================================
-       RETRO ARCADE SECTION
+       ARCADE GAME SECTION
     ================================================================ */
-    #arcade {
+    #arcade-section {
       padding: 6rem 2rem 5rem;
       background: linear-gradient(to bottom, transparent, rgba(123, 0, 255, 0.03), transparent);
       position: relative;
       overflow: hidden;
     }
 
-    #arcade::before {
+    #arcade-section::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -1147,7 +780,7 @@
     }
 
     .arcade-cabinet {
-      margin-top: 3rem;
+      margin-top: 2rem;
       position: relative;
       z-index: 1;
       background: linear-gradient(145deg, #1a0a2e, #0d0520);
@@ -1160,11 +793,6 @@
         0 20px 60px rgba(0, 0, 0, 0.6);
       position: relative;
       overflow: hidden;
-      min-height: 400px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
     }
 
     .arcade-cabinet::before {
@@ -1189,113 +817,140 @@
       opacity: 0.6;
     }
 
-    .arcade-display {
-      text-align: center;
-      padding: 2rem;
+    .game-wrapper {
       position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      border: 2px solid rgba(123, 0, 255, 0.3);
+      aspect-ratio: 16 / 10;
+      box-shadow: inset 0 0 60px rgba(123, 0, 255, 0.05);
     }
 
-    .arcade-display .arcade-icon {
-      font-size: 5rem;
-      color: var(--pink);
-      text-shadow: 0 0 40px rgba(255, 0, 127, 0.4);
-      margin-bottom: 1.5rem;
+    .game-wrapper canvas {
       display: block;
-      animation: arcade-pulse 2s ease-in-out infinite;
+      width: 100%;
+      height: 100%;
+      background: #000;
     }
 
-    @keyframes arcade-pulse {
-      0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.1); opacity: 1; }
-    }
-
-    .arcade-display h3 {
-      font-family: var(--sans);
-      font-weight: 900;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      text-transform: uppercase;
-      background: linear-gradient(135deg, var(--pink), var(--cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.5rem;
-    }
-
-    .arcade-display p {
-      font-family: var(--mono);
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-    }
-
-    .arcade-display .arcade-buttons {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      margin-top: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .arcade-display .arcade-buttons .arcade-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.8rem 2rem;
-      border-radius: 30px;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 0, 127, 0.3);
-      color: var(--text);
-      background: rgba(255, 0, 127, 0.05);
-    }
-
-    .arcade-display .arcade-buttons .arcade-btn:hover {
-      border-color: var(--pink);
-      box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);
-      transform: translateY(-2px);
-    }
-
-    .arcade-display .arcade-buttons .arcade-btn .btn-dot {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--pink);
-      box-shadow: 0 0 15px var(--pink);
-      animation: blink 1s step-end infinite;
-    }
-
-    .arcade-display .arcade-buttons .arcade-btn .btn-dot.cyan {
-      background: var(--cyan);
-      box-shadow: 0 0 15px var(--cyan);
-    }
-
-    .arcade-scanlines {
+    .game-scanlines {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 2;
+      z-index: 10;
       background: 
         repeating-linear-gradient(
           0deg,
           transparent 0px,
-          transparent 3px,
-          rgba(0, 0, 0, 0.1) 3px,
-          rgba(0, 0, 0, 0.1) 4px
+          transparent 2px,
+          rgba(0, 0, 0, 0.15) 2px,
+          rgba(0, 0, 0, 0.15) 3px
         );
     }
 
-    .arcade-marquee {
+    .game-overlay {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      z-index: 5;
+      font-family: var(--mono);
+      color: var(--cyan);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+      text-align: right;
+    }
+
+    .game-overlay .score-label {
+      font-size: 0.5rem;
+      color: var(--text-muted);
+      letter-spacing: 0.3em;
+    }
+
+    .game-overlay .score-value {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(255, 0, 127, 0.3);
+    }
+
+    .game-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .game-btn {
+      padding: 0.6rem 1.8rem;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 0, 127, 0.3);
+      color: var(--text);
+      background: rgba(255, 0, 127, 0.05);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .game-btn:hover {
+      border-color: var(--pink);
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .game-btn.primary {
+      border-color: var(--cyan);
+      background: rgba(0, 240, 255, 0.05);
+    }
+
+    .game-btn.primary:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+    }
+
+    /* Mobile controls */
+    .mobile-controls {
+      display: none;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .mobile-control-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 240, 255, 0.2);
+      background: rgba(12, 7, 20, 0.8);
+      color: var(--cyan);
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      -webkit-touch-callout: none;
+      touch-action: none;
+    }
+
+    .mobile-control-btn:active {
+      transform: scale(0.9);
+      border-color: var(--pink);
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);
+    }
+
+    .game-marquee {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0.8rem 1rem;
       margin-top: 1rem;
-      width: 100%;
       font-family: var(--mono);
       font-size: 0.55rem;
       letter-spacing: 0.4em;
@@ -1304,18 +959,12 @@
       padding-top: 1rem;
     }
 
-    .arcade-marquee .marquee-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .arcade-marquee .marquee-dots {
+    .game-marquee .marquee-dots {
       display: flex;
       gap: 0.3rem;
     }
 
-    .arcade-marquee .marquee-dots span {
+    .game-marquee .marquee-dots span {
       width: 6px;
       height: 6px;
       border-radius: 50%;
@@ -1323,18 +972,18 @@
       opacity: 0.3;
     }
 
-    .arcade-marquee .marquee-dots span:nth-child(1) { background: var(--pink); }
-    .arcade-marquee .marquee-dots span:nth-child(2) { background: var(--cyan); }
-    .arcade-marquee .marquee-dots span:nth-child(3) { background: var(--purple); }
+    .game-marquee .marquee-dots span:nth-child(1) { background: var(--pink); }
+    .game-marquee .marquee-dots span:nth-child(2) { background: var(--cyan); }
+    .game-marquee .marquee-dots span:nth-child(3) { background: var(--purple); }
 
-    .arcade-marquee .marquee-right {
+    .game-marquee .marquee-right {
       color: var(--pink);
       font-size: 0.5rem;
       animation: blink 1s step-end infinite;
     }
 
     /* ================================================================
-       THE RATE CARD — #rates (FIX 2: Price updated to $50)
+       THE RATE CARD — #rates
     ================================================================ */
     #rates { background: linear-gradient(to bottom, transparent, rgba(255,0,127,0.02), transparent); }
 
@@ -1474,7 +1123,6 @@
     .rate-card.featured .rate-btn::before { background: var(--cyan); }
     .rate-card.featured .rate-btn:hover { color: var(--bg); box-shadow: 0 0 20px rgba(0,240,255,0.4); }
 
-    /* FIX 2: Updated bundle price from $69 to $50 */
     .bundle-strip {
       margin-top: 2rem;
       padding: 2rem 2.2rem;
@@ -1542,7 +1190,7 @@
     }
 
     /* ================================================================
-       THE TERMINAL — #terminal  (Contact)
+       THE TERMINAL — #terminal
     ================================================================ */
     .terminal-window {
       margin-top: 4rem;
@@ -1708,54 +1356,6 @@
     }
 
     /* ================================================================
-       AUDIO TOGGLE BUTTON - FIXED
-    ================================================================ */
-    #audio-toggle {
-      position: fixed;
-      bottom: 100px;
-      right: 30px;
-      z-index: 5001;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 2px solid rgba(0, 240, 255, 0.3);
-      background: rgba(12, 7, 20, 0.85);
-      backdrop-filter: blur(10px);
-      color: var(--cyan);
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.05);
-      opacity: 0;
-      transform: scale(0.8);
-      transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    #audio-toggle.visible {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    #audio-toggle:hover {
-      border-color: var(--pink);
-      box-shadow: 0 0 40px rgba(255, 0, 127, 0.15);
-      transform: scale(1.1);
-    }
-
-    #audio-toggle.muted {
-      border-color: rgba(255, 255, 255, 0.1);
-      color: var(--text-muted);
-    }
-
-    #audio-toggle.muted:hover {
-      border-color: var(--pink);
-      color: var(--pink);
-    }
-
-    /* ================================================================
        FOOTER
     ================================================================ */
     footer {
@@ -1808,14 +1408,10 @@
 
       section { padding: 6rem 1.5rem 5rem; }
 
-      .vault-grid {
-        grid-template-columns: 1fr;
-      }
+      .vault-grid { grid-template-columns: 1fr; }
       .vault-card { min-height: 220px; }
 
-      .rates-grid {
-        grid-template-columns: 1fr;
-      }
+      .rates-grid { grid-template-columns: 1fr; }
 
       .form-row { grid-template-columns: 1fr; }
 
@@ -1825,88 +1421,30 @@
       .bundle-strip { flex-direction: column; }
       .bundle-strip-price { text-align: left; }
 
-      #cassette-float-container {
-        width: 220px;
-        bottom: 15px;
-        right: 15px;
-      }
+      .spotify-container iframe { height: 280px; }
 
-      #audio-toggle {
-        bottom: 80px;
-        right: 15px;
-        width: 42px;
-        height: 42px;
-        font-size: 1rem;
-      }
+      .game-wrapper { aspect-ratio: 16 / 12; }
 
-      .spool {
-        width: 35px;
-        height: 35px;
-      }
+      .mobile-controls { display: flex; }
 
-      .spool-inner {
-        width: 14px;
-        height: 14px;
-      }
+      .game-overlay { top: 15px; right: 20px; }
+      .game-overlay .score-value { font-size: 1.2rem; }
 
-      .equalizer {
-        height: 25px;
-        gap: 2px;
-      }
+      .arcade-cabinet { padding: 1.5rem; }
 
-      .eq-bar {
-        width: 3px;
-      }
-
-      .tape-window {
-        padding: 0.8rem 0.5rem;
-        gap: 1.5rem;
-      }
-
-      .cassette-header-title {
-        font-size: 0.5rem;
-      }
-
-      .arcade-cabinet {
-        padding: 1.5rem;
-        min-height: 300px;
-      }
-
-      .arcade-display .arcade-icon {
-        font-size: 3.5rem;
-      }
-
-      .arcade-display .arcade-buttons .arcade-btn {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.55rem;
-      }
-
-      .arcade-marquee {
-        flex-direction: column;
-        gap: 0.5rem;
-        text-align: center;
-      }
-
-      .space-enter-btn {
-        padding: 1rem 2rem;
-        font-size: 0.8rem;
-      }
+      .game-marquee { flex-direction: column; gap: 0.5rem; text-align: center; }
     }
 
     @media (max-width: 480px) {
       .section-title { font-size: 2rem; }
-      #cassette-float-container { width: 190px; bottom: 10px; right: 10px; }
-      #audio-toggle { bottom: 70px; right: 10px; width: 36px; height: 36px; font-size: 0.8rem; }
-      .spool { width: 28px; height: 28px; }
-      .spool-inner { width: 10px; height: 10px; }
-      .cassette-btn { width: 32px; height: 32px; font-size: 0.8rem; }
-      .cassette-deck-body { padding: 1rem; }
-      .arcade-cabinet { padding: 1rem; min-height: 250px; }
-      .arcade-display .arcade-icon { font-size: 2.5rem; }
-      #blackhole-text { font-size: 2rem; }
+      .spotify-container iframe { height: 200px; }
+      .game-wrapper { aspect-ratio: 4 / 3; }
+      .mobile-control-btn { width: 55px; height: 55px; font-size: 1.5rem; }
+      .game-overlay .score-value { font-size: 1rem; }
+      .arcade-cabinet { padding: 1rem; }
     }
 
-    /* Content wrapper - hidden until entry */
+    /* Content wrapper */
     #main-content {
       opacity: 0;
       transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1923,19 +1461,12 @@
      SPACE INTRO - BLACK HOLE ANIMATION
 ============================================================ -->
 <div id="space-intro">
-  <!-- Starfield Canvas -->
   <canvas id="starfield"></canvas>
-  
-  <!-- Warp Speed Overlay -->
   <div id="warp-overlay"></div>
-  
-  <!-- Black Hole Text -->
   <div id="blackhole-text">
     WELCOME TO THE BLACK HOLE
     <span class="sub">✦ ENTER THE VOID ✦</span>
   </div>
-  
-  <!-- Enter Button -->
   <button class="space-enter-btn" id="space-enter-btn">
     <span>ENTER THE VOID</span>
     <span class="enter-arrow">→</span>
@@ -1965,8 +1496,9 @@
     <ul class="nav-links" id="nav-links" role="list">
       <li><a href="#home"     class="nav-link" data-section="home">// HOME</a></li>
       <li><a href="#vault"    class="nav-link" data-section="vault">// VAULT</a></li>
+      <li><a href="#spotify-section" class="nav-link" data-section="spotify">// MUSIC</a></li>
+      <li><a href="#arcade-section"   class="nav-link" data-section="arcade">// ARCADE</a></li>
       <li><a href="#rates"    class="nav-link" data-section="rates">// RATES</a></li>
-      <li><a href="#arcade"   class="nav-link" data-section="arcade">// ARCADE</a></li>
       <li><a href="#terminal" class="nav-link" data-section="terminal">// TERMINAL</a></li>
     </ul>
 
@@ -1981,8 +1513,9 @@
   <nav id="mobile-nav" role="navigation" aria-label="Mobile navigation">
     <a href="#home"     onclick="closeNav()">// HOME</a>
     <a href="#vault"    onclick="closeNav()">// VAULT</a>
+    <a href="#spotify-section" onclick="closeNav()">// MUSIC</a>
+    <a href="#arcade-section"   onclick="closeNav()">// ARCADE</a>
     <a href="#rates"    onclick="closeNav()">// RATES</a>
-    <a href="#arcade"   onclick="closeNav()">// ARCADE</a>
     <a href="#terminal" onclick="closeNav()">// TERMINAL</a>
   </nav>
 
@@ -2019,7 +1552,7 @@
   </section>
 
   <!-- ============================================================
-       THE VAULT — PORTFOLIO (FIX 3: Sorted image order)
+       THE VAULT — PORTFOLIO
   ============================================================ -->
   <section id="vault" aria-label="Masterpieces — The Vault">
     <div class="container">
@@ -2032,7 +1565,7 @@
       </div>
 
       <div class="vault-grid">
-        <!-- ART 01 -->
+        <!-- ART 01-11 - Keeping all existing cards -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/suzuki with noise.png');"></div>
           <div class="vault-card-overlay">
@@ -2043,7 +1576,6 @@
           </div>
         </div>
 
-        <!-- ART 02 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/horror.png');"></div>
           <div class="vault-card-overlay">
@@ -2054,7 +1586,6 @@
           </div>
         </div>
 
-        <!-- ART 03 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/travis edited.png');"></div>
           <div class="vault-card-overlay">
@@ -2065,7 +1596,6 @@
           </div>
         </div>
 
-        <!-- ART 04 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/sr71 with the signature.png');"></div>
           <div class="vault-card-overlay">
@@ -2076,7 +1606,6 @@
           </div>
         </div>
 
-        <!-- ART 05 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/surfing.png');"></div>
           <div class="vault-card-overlay">
@@ -2087,7 +1616,6 @@
           </div>
         </div>
 
-        <!-- ART 06 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/gorden ramsy.png');"></div>
           <div class="vault-card-overlay">
@@ -2098,7 +1626,6 @@
           </div>
         </div>
 
-        <!-- ART 07 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/final result.png');"></div>
           <div class="vault-card-overlay">
@@ -2109,7 +1636,6 @@
           </div>
         </div>
 
-        <!-- ART 08 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/doomed.png');"></div>
           <div class="vault-card-overlay">
@@ -2120,7 +1646,6 @@
           </div>
         </div>
 
-        <!-- ART 09 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/dapikcha.png');"></div>
           <div class="vault-card-overlay">
@@ -2131,7 +1656,6 @@
           </div>
         </div>
 
-        <!-- ART 10 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/11212.png');"></div>
           <div class="vault-card-overlay">
@@ -2142,7 +1666,6 @@
           </div>
         </div>
       
-        <!-- ART 11 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/zkoka.png');"></div>
           <div class="vault-card-overlay">
@@ -2157,90 +1680,88 @@
   </section>
 
   <!-- ============================================================
-       FLOATING CASSETTE PLAYER
+       SPOTIFY PLAYER SECTION (NEW - Replaces Cassette)
   ============================================================ -->
-  <div id="cassette-float-container">
-    <div class="cassette-deck-float" id="cassette-deck">
-      <!-- Audio Element -->
-      <audio id="audio-player" loop preload="metadata">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        <source src="Venger.mp3" type="audio/mpeg">
-      </audio>
-
-      <!-- Cassette Header - Drag Handle -->
-      <div class="cassette-header" id="cassette-drag-handle">
-        <div class="cassette-header-left">
-          <span class="cassette-drag-icon"><i class="fas fa-grip-lines"></i></span>
-          <span class="cassette-header-title">
-            <span class="dot"></span> RETRO PLAYER
-          </span>
-        </div>
-        <div class="cassette-header-controls">
-          <button class="cassette-header-btn" id="minimize-btn" aria-label="Minimize/Maximize">
-            <i class="fas fa-window-minimize"></i>
-          </button>
-          <button class="cassette-header-btn close-btn" id="close-cassette-btn" aria-label="Close cassette">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
+  <section id="spotify-section" aria-label="Spotify Music Player">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-eyebrow">02 — THE SOUNDTRACK</div>
+        <h2 class="section-title">
+          <span style="color:var(--text);">RETRO</span><br>
+          <span class="neon-pink flicker-slow">WAVES_</span>
+        </h2>
       </div>
 
-      <!-- Cassette Body -->
-      <div class="cassette-deck-body">
-        <!-- Tape Window -->
-        <div class="tape-window">
-          <div class="spool spool-left" id="spool-left">
-            <div class="spool-inner"></div>
+      <div class="spotify-container reveal reveal-delay-1">
+        <!-- Spotify Embed - Replace track URI with your own -->
+        <iframe 
+          src="https://open.spotify.com/embed/track/4iV5W9uYEdYUVa79Axb7Rh?utm_source=generator" 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy"
+          title="Spotify Player">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ARCADE GAME SECTION (NEW)
+  ============================================================ -->
+  <section id="arcade-section" aria-label="Arcade Game">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-eyebrow">03 — THE ARCADE</div>
+        <h2 class="section-title">
+          <span style="color:var(--text);">SPACE</span><br>
+          <span class="neon-cyan flicker-slow">DEFENDER_</span>
+        </h2>
+      </div>
+
+      <div class="arcade-cabinet reveal reveal-delay-1">
+        <div class="game-wrapper" id="game-wrapper">
+          <canvas id="gameCanvas"></canvas>
+          <div class="game-scanlines"></div>
+          <div class="game-overlay">
+            <div class="score-label">SCORE</div>
+            <div class="score-value" id="scoreDisplay">0</div>
           </div>
-          <div class="tape-between"></div>
-          <div class="spool spool-right" id="spool-right">
-            <div class="spool-inner"></div>
+        </div>
+
+        <div class="game-controls">
+          <button class="game-btn primary" id="startGameBtn">▶ START GAME</button>
+          <button class="game-btn" id="resetGameBtn">↻ RESET</button>
+        </div>
+
+        <div class="mobile-controls" id="mobileControls">
+          <button class="mobile-control-btn" id="moveLeftBtn">◀</button>
+          <button class="mobile-control-btn" id="moveRightBtn">▶</button>
+          <button class="mobile-control-btn" id="fireBtn">▲</button>
+        </div>
+
+        <div class="game-marquee">
+          <div class="marquee-left">
+            <span>◉ SPACE DEFENDER</span>
+            <div class="marquee-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           </div>
-        </div>
-
-        <!-- Equalizer -->
-        <div class="equalizer" id="equalizer">
-          <div class="eq-bar" style="height: 6px;"></div>
-          <div class="eq-bar" style="height: 10px;"></div>
-          <div class="eq-bar" style="height: 14px;"></div>
-          <div class="eq-bar" style="height: 20px;"></div>
-          <div class="eq-bar" style="height: 24px;"></div>
-          <div class="eq-bar" style="height: 28px;"></div>
-          <div class="eq-bar" style="height: 24px;"></div>
-          <div class="eq-bar" style="height: 18px;"></div>
-          <div class="eq-bar" style="height: 12px;"></div>
-          <div class="eq-bar" style="height: 8px;"></div>
-        </div>
-
-        <!-- Controls -->
-        <div class="cassette-controls">
-          <button class="cassette-btn" id="play-btn" aria-label="Play/Pause">
-            <i class="fas fa-play" id="play-icon"></i>
-          </button>
-        </div>
-
-        <!-- Status -->
-        <div class="cassette-status">
-          <span class="status-text" id="status-text">⏹ READY</span>
+          <div class="marquee-right">
+            <span id="gameStatus">PRESS START</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- ============================================================
-       AUDIO TOGGLE BUTTON - FIXED (Perfect sync)
-  ============================================================ -->
-  <button id="audio-toggle" class="muted" aria-label="Toggle music">
-    <i class="fas fa-volume-mute" id="audio-toggle-icon"></i>
-  </button>
-
-  <!-- ============================================================
-       THE PRICING — RATES (FIX 2: Price updated to $50)
+       THE PRICING — RATES
   ============================================================ -->
   <section id="rates" aria-label="Prices — Pricing Rates">
     <div class="container">
       <div class="reveal">
-        <div class="section-eyebrow">02 — THE PRICING RATES</div>
+        <div class="section-eyebrow">04 — THE PRICING RATES</div>
         <h2 class="section-title">
           <span style="color:var(--text);">PRICES</span><br>
           <span class="neon-cyan flicker-slow">CONTRACT</span>
@@ -2297,7 +1818,6 @@
         </div>
       </div>
 
-      <!-- FIX 2: Bundle price updated to $50 -->
       <div class="bundle-strip">
         <div class="bundle-strip-left">
           <div class="bundle-strip-title">VIP FULL BULK BRANDING</div>
@@ -2317,57 +1837,12 @@
   </section>
 
   <!-- ============================================================
-       RETRO ARCADE
-  ============================================================ -->
-  <section id="arcade" aria-label="Retro Arcade Cabinet">
-    <div class="container">
-      <div class="reveal">
-        <div class="section-eyebrow">04 — THE ARCADE CABINET</div>
-        <h2 class="section-title">
-          <span style="color:var(--text);">RETRO</span><br>
-          <span class="neon-cyan flicker-slow">ARCADE_</span>
-        </h2>
-      </div>
-
-      <div class="arcade-cabinet reveal reveal-delay-1">
-        <div class="arcade-display">
-          <span class="arcade-icon"><i class="fas fa-gamepad"></i></span>
-          <h3>NEON ARCADE</h3>
-          <p>// PRESS START · INSERT COIN //</p>
-          <div class="arcade-buttons">
-            <button class="arcade-btn" onclick="document.getElementById('terminal').scrollIntoView({behavior:'smooth'})">
-              <span class="btn-dot"></span> PLAY NOW
-            </button>
-            <button class="arcade-btn" onclick="document.getElementById('vault').scrollIntoView({behavior:'smooth'})">
-              <span class="btn-dot cyan"></span> VIEW VAULT
-            </button>
-          </div>
-        </div>
-        <div class="arcade-scanlines"></div>
-        <div class="arcade-marquee">
-          <div class="marquee-left">
-            <span>◉ ARCADE MODE</span>
-            <div class="marquee-dots">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-          <div class="marquee-right">
-            <span>INSERT COIN ▸</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
        THE TERMINAL — CONTACT
   ============================================================ -->
   <section id="terminal" aria-label="Contact — The Terminal">
     <div class="container">
       <div class="reveal">
-        <div class="section-eyebrow">03 — THE TERMINAL</div>
+        <div class="section-eyebrow">05 — THE TERMINAL</div>
         <h2 class="section-title">
           <span style="color:var(--text);">INITIATE</span><br>
           <span class="neon-cyan flicker-slow">CONTACT_</span>
@@ -2455,7 +1930,7 @@
 ============================================================ -->
 <script>
 /* ================================================================
-   FIX 4: BLACK HOLE INTRO ANIMATION
+   BLACK HOLE INTRO ANIMATION
 ================================================================ */
 (function initBlackHoleIntro() {
   const intro = document.getElementById('space-intro');
@@ -2467,16 +1942,12 @@
   const mainContent = document.getElementById('main-content');
   const nav = document.getElementById('nav');
   const home = document.getElementById('home');
-  const cassette = document.getElementById('cassette-float-container');
-  const audioToggle = document.getElementById('audio-toggle');
-  const audio = document.getElementById('audio-player');
 
   let stars = [];
   let numStars = 300;
   let animationId = null;
   let isEntering = false;
 
-  // --- Starfield Setup ---
   function resizeStarfield() {
     starfield.width = window.innerWidth;
     starfield.height = window.innerHeight;
@@ -2485,10 +1956,7 @@
   window.addEventListener('resize', resizeStarfield);
 
   class Star {
-    constructor() {
-      this.reset(true);
-    }
-
+    constructor() { this.reset(true); }
     reset(init = false) {
       this.x = Math.random() * starfield.width;
       this.y = Math.random() * starfield.height;
@@ -2497,18 +1965,11 @@
       this.opacity = Math.random() * 0.8 + 0.2;
       this.twinkleSpeed = Math.random() * 0.02 + 0.005;
       this.twinkleOffset = Math.random() * Math.PI * 2;
-      this.originalX = this.x;
-      this.originalY = this.y;
     }
-
     update() {
       this.x += this.speed * 0.5;
-      if (this.x > starfield.width) {
-        this.x = 0;
-        this.y = Math.random() * starfield.height;
-      }
+      if (this.x > starfield.width) { this.x = 0; this.y = Math.random() * starfield.height; }
     }
-
     draw() {
       const opacity = this.opacity * (0.7 + 0.3 * Math.sin(Date.now() * this.twinkleSpeed + this.twinkleOffset));
       ctx.beginPath();
@@ -2520,16 +1981,12 @@
 
   function initStars() {
     stars = [];
-    for (let i = 0; i < numStars; i++) {
-      stars.push(new Star());
-    }
+    for (let i = 0; i < numStars; i++) stars.push(new Star());
   }
   initStars();
 
   function animateStars() {
     ctx.clearRect(0, 0, starfield.width, starfield.height);
-    
-    // Draw background gradient
     const grad = ctx.createRadialGradient(
       starfield.width / 2, starfield.height / 2, 0,
       starfield.width / 2, starfield.height / 2, starfield.width * 0.7
@@ -2538,266 +1995,79 @@
     grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, starfield.width, starfield.height);
-
-    stars.forEach(star => {
-      star.update();
-      star.draw();
-    });
-
+    stars.forEach(star => { star.update(); star.draw(); });
     animationId = requestAnimationFrame(animateStars);
   }
   animateStars();
 
-  // --- Warp Speed Effect ---
   function triggerWarpSpeed() {
     return new Promise((resolve) => {
       warpOverlay.classList.add('active');
-      
-      // Stretch stars effect
       let warpProgress = 0;
-      const warpDuration = 1200; // ms
+      const warpDuration = 1200;
       const startTime = Date.now();
 
       function warpAnimation() {
         const elapsed = Date.now() - startTime;
         warpProgress = Math.min(elapsed / warpDuration, 1);
-        
-        // Clear and draw stretched stars
         ctx.clearRect(0, 0, starfield.width, starfield.height);
-        
-        // Draw stretched stars
         stars.forEach(star => {
           const stretch = 1 + warpProgress * 15;
-          const x = star.x;
-          const y = star.y;
-          const width = star.size * stretch;
-          const height = star.size;
-          
           ctx.beginPath();
-          ctx.ellipse(x, y, width, height, 0, 0, Math.PI * 2);
+          ctx.ellipse(star.x, star.y, star.size * stretch, star.size, 0, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * (1 - warpProgress * 0.3)})`;
           ctx.fill();
         });
-
-        // Add motion blur effect
         if (warpProgress > 0.3) {
           ctx.fillStyle = `rgba(0, 0, 0, ${warpProgress * 0.05})`;
           ctx.fillRect(0, 0, starfield.width, starfield.height);
         }
-
-        if (warpProgress < 1) {
-          requestAnimationFrame(warpAnimation);
-        } else {
-          resolve();
-        }
+        if (warpProgress < 1) { requestAnimationFrame(warpAnimation); } 
+        else { resolve(); }
       }
-      
       warpAnimation();
     });
   }
 
-  // --- Show Black Hole Text ---
   function showBlackHoleText() {
     return new Promise((resolve) => {
-      // Fade out warp overlay
       warpOverlay.style.transition = 'opacity 0.5s ease';
       warpOverlay.style.opacity = '1';
-      
-      // Show black hole text
-      setTimeout(() => {
-        blackholeText.classList.add('visible');
-      }, 300);
-      
-      // Wait 5 seconds then resolve
-      setTimeout(() => {
-        resolve();
-      }, 5500);
+      setTimeout(() => { blackholeText.classList.add('visible'); }, 300);
+      setTimeout(() => { resolve(); }, 5500);
     });
   }
 
-  // --- Reveal Main Content ---
   function revealMainContent() {
     return new Promise((resolve) => {
-      // Fade out intro
       intro.classList.add('hidden');
-      
-      // Show main content after intro fades
       setTimeout(() => {
         mainContent.classList.add('visible');
         nav.classList.add('visible');
         home.classList.add('visible');
-        
-        setTimeout(() => {
-          cassette.classList.add('visible');
-          audioToggle.classList.add('visible');
-        }, 400);
-        
         document.querySelectorAll('section:not(#home)').forEach((section, index) => {
-          setTimeout(() => {
-            section.classList.add('visible');
-          }, 600 + (index * 200));
+          setTimeout(() => { section.classList.add('visible'); }, 600 + (index * 200));
         });
-        
         resolve();
       }, 800);
     });
   }
 
-  // --- Full Entry Sequence ---
   async function startEntrySequence() {
     if (isEntering) return;
     isEntering = true;
-    
-    // Hide enter button
     enterBtn.style.opacity = '0';
     enterBtn.style.pointerEvents = 'none';
-    
-    // Trigger warp speed
     await triggerWarpSpeed();
-    
-    // Show black hole text
     await showBlackHoleText();
-    
-    // Reveal main content
     await revealMainContent();
   }
 
-  // --- Event Listeners ---
   enterBtn.addEventListener('click', startEntrySequence);
-  
-  // Also allow Enter key
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !isEntering) {
-      startEntrySequence();
-    }
+    if (e.key === 'Enter' && !isEntering) startEntrySequence();
   });
 })();
-
-/* ================================================================
-   FIX 5: AUDIO CONTROLLER - PERFECT SYNC
-================================================================ */
-(function initAudioController() {
-  const audio = document.getElementById('audio-player');
-  const toggleBtn = document.getElementById('audio-toggle');
-  const toggleIcon = document.getElementById('audio-toggle-icon');
-  
-  let isMuted = true;
-  let audioContext = null;
-  let isInitialized = false;
-  
-  // Set initial state
-  audio.muted = true;
-  toggleBtn.classList.add('muted');
-  toggleIcon.className = 'fas fa-volume-mute';
-  
-  // Function to initialize audio context
-  function initAudio() {
-    try {
-      if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioContext.state === 'suspended') {
-          audioContext.resume();
-        }
-      }
-      return true;
-    } catch (error) {
-      console.warn('AudioContext not available:', error);
-      return false;
-    }
-  }
-  
-  // Function to play audio (called from entry)
-  window.startBackgroundMusic = function() {
-    try {
-      const ctxOk = initAudio();
-      if (!ctxOk) return;
-      
-      audio.load();
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          // Audio is playing - unmute and update UI
-          audio.muted = false;
-          isMuted = false;
-          toggleBtn.classList.remove('muted');
-          toggleIcon.className = 'fas fa-volume-up';
-          isInitialized = true;
-        }).catch((error) => {
-          console.warn('Audio playback blocked:', error);
-          // Keep muted state
-          audio.muted = true;
-          isMuted = true;
-          toggleBtn.classList.add('muted');
-          toggleIcon.className = 'fas fa-volume-mute';
-        });
-      }
-    } catch (e) {
-      console.warn('Audio initialization error:', e);
-    }
-  };
-  
-  // Toggle function - SINGLE CLICK works perfectly
-  function toggleAudio() {
-    if (!isInitialized) {
-      // If not initialized, try to start
-      const ctxOk = initAudio();
-      if (!ctxOk) return;
-      
-      audio.load();
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          audio.muted = false;
-          isMuted = false;
-          toggleBtn.classList.remove('muted');
-          toggleIcon.className = 'fas fa-volume-up';
-          isInitialized = true;
-        }).catch((error) => {
-          console.warn('Audio playback blocked:', error);
-        });
-      }
-      return;
-    }
-    
-    // Toggle mute state
-    isMuted = !isMuted;
-    audio.muted = isMuted;
-    
-    if (isMuted) {
-      toggleBtn.classList.add('muted');
-      toggleIcon.className = 'fas fa-volume-mute';
-    } else {
-      toggleBtn.classList.remove('muted');
-      toggleIcon.className = 'fas fa-volume-up';
-    }
-  }
-  
-  // Event listener - SINGLE CLICK toggles perfectly
-  toggleBtn.addEventListener('click', toggleAudio);
-  
-  // Handle audio errors gracefully
-  audio.addEventListener('error', function(e) {
-    console.warn('Audio loading error:', e);
-    // Keep UI in muted state
-    audio.muted = true;
-    isMuted = true;
-    toggleBtn.classList.add('muted');
-    toggleIcon.className = 'fas fa-volume-mute';
-  });
-  
-  // Expose init function to entry screen
-  window._audioInitialized = false;
-  const originalInit = window.startBackgroundMusic;
-  window.startBackgroundMusic = function() {
-    originalInit();
-    window._audioInitialized = true;
-  };
-})();
-
-/* ================================================================
-   CUSTOM CURSOR - REMOVED (FIX 1: Default cursor restored)
-   No custom cursor code needed - default cursor is now visible
-============================================================ */
 
 /* ================================================================
    PERSPECTIVE GRID CANVAS
@@ -2817,12 +2087,10 @@
   function drawGridFrame() {
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
-
     const hz = H * 0.52;
     const vpx = W / 2;
     const spd = 0.45;
     gridTick += spd;
-
     const numH = 22;
     const numV = 16;
 
@@ -2832,7 +2100,6 @@
       const ext = 1 - (1 - t) * 0.82;
       const lx = vpx - vpx * ext;
       const rx2 = vpx + (W - vpx) * ext;
-
       ctx.beginPath();
       ctx.moveTo(lx, y);
       ctx.lineTo(rx2, y);
@@ -2888,7 +2155,6 @@
       ctx.lineTo(vpx + hw, ly);
       ctx.stroke();
     }
-
     requestAnimationFrame(drawGridFrame);
   }
   drawGridFrame();
@@ -2899,264 +2165,338 @@
 })();
 
 /* ================================================================
-   FLOATING CASSETTE PLAYER - DRAGGABLE
+   ARCADE GAME - SPACE DEFENDER
 ================================================================ */
-(function initFloatingCassette() {
-  const container = document.getElementById('cassette-float-container');
-  const deck = document.getElementById('cassette-deck');
-  const audio = document.getElementById('audio-player');
-  const playBtn = document.getElementById('play-btn');
-  const playIcon = document.getElementById('play-icon');
-  const statusText = document.getElementById('status-text');
-  const spoolLeft = document.getElementById('spool-left');
-  const spoolRight = document.getElementById('spool-right');
-  const eqBars = document.querySelectorAll('#equalizer .eq-bar');
-  const dragHandle = document.getElementById('cassette-drag-handle');
-  const minimizeBtn = document.getElementById('minimize-btn');
-  const closeBtn = document.getElementById('close-cassette-btn');
+(function initArcadeGame() {
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const scoreDisplay = document.getElementById('scoreDisplay');
+  const gameStatus = document.getElementById('gameStatus');
+  const startBtn = document.getElementById('startGameBtn');
+  const resetBtn = document.getElementById('resetGameBtn');
 
-  let isPlaying = false;
-  let eqAnimation = null;
-  let audioContext = null;
-  let audioInitialized = false;
-  let isDragging = false;
-  let isMinimized = false;
-  let isVisible = true;
+  // Mobile controls
+  const leftBtn = document.getElementById('moveLeftBtn');
+  const rightBtn = document.getElementById('moveRightBtn');
+  const fireBtn = document.getElementById('fireBtn');
 
-  function initDrag() {
-    let startX, startY, startLeft, startTop;
+  // Game state
+  let gameRunning = false;
+  let score = 0;
+  let animationId = null;
+  let keys = { left: false, right: false, fire: false };
 
-    function onStart(e) {
-      e.preventDefault();
-      const touch = e.touches ? e.touches[0] : e;
-      
-      const rect = container.getBoundingClientRect();
-      const style = window.getComputedStyle(container);
-      
-      startX = touch.clientX;
-      startY = touch.clientY;
-      startLeft = parseFloat(style.left) || rect.left;
-      startTop = parseFloat(style.top) || rect.top;
-      
-      isDragging = true;
-      container.classList.add('dragging');
-      container.style.transition = 'none';
+  // Player
+  const player = {
+    x: 0,
+    y: 0,
+    width: 40,
+    height: 30,
+    speed: 4,
+    draw() {
+      ctx.shadowColor = '#00f0ff';
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = '#00f0ff';
+      // Ship shape (triangle)
+      ctx.beginPath();
+      ctx.moveTo(this.x + this.width / 2, this.y);
+      ctx.lineTo(this.x, this.y + this.height);
+      ctx.lineTo(this.x + this.width, this.y + this.height);
+      ctx.closePath();
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      // Cockpit
+      ctx.fillStyle = 'rgba(255, 0, 127, 0.5)';
+      ctx.beginPath();
+      ctx.arc(this.x + this.width / 2, this.y + this.height * 0.3, 6, 0, Math.PI * 2);
+      ctx.fill();
     }
+  };
 
-    function onMove(e) {
-      if (!isDragging) return;
-      e.preventDefault();
-      
-      const touch = e.touches ? e.touches[0] : e;
-      const dx = touch.clientX - startX;
-      const dy = touch.clientY - startY;
-      
-      const newLeft = startLeft + dx;
-      const newTop = startTop + dy;
-      
-      container.style.left = newLeft + 'px';
-      container.style.top = newTop + 'px';
-      container.style.right = 'auto';
-      container.style.bottom = 'auto';
-      container.style.transform = 'none';
-    }
+  // Bullets
+  let bullets = [];
+  const bulletSpeed = 6;
+  const bulletCooldown = 10;
+  let bulletTimer = 0;
 
-    function onEnd(e) {
-      if (!isDragging) return;
-      isDragging = false;
-      container.classList.remove('dragging');
-      container.style.transition = '';
-    }
+  // Enemies
+  let enemies = [];
+  const enemySpawnRate = 30;
+  let enemyTimer = 0;
+  let enemySpeed = 1.5;
 
-    dragHandle.addEventListener('mousedown', onStart);
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onEnd);
-    
-    dragHandle.addEventListener('touchstart', onStart, { passive: false });
-    document.addEventListener('touchmove', onMove, { passive: false });
-    document.addEventListener('touchend', onEnd);
+  // Stars background
+  let gameStars = [];
+
+  function resizeGame() {
+    const wrapper = document.getElementById('game-wrapper');
+    const rect = wrapper.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    player.x = canvas.width / 2 - player.width / 2;
+    player.y = canvas.height - 60;
+    initGameStars();
   }
 
-  function toggleMinimize() {
-    isMinimized = !isMinimized;
-    container.classList.toggle('minimized', isMinimized);
-    minimizeBtn.innerHTML = isMinimized ? '<i class="fas fa-window-maximize"></i>' : '<i class="fas fa-window-minimize"></i>';
+  function initGameStars() {
+    gameStars = [];
+    for (let i = 0; i < 50; i++) {
+      gameStars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2 + 0.5,
+        speed: Math.random() * 0.5 + 0.2
+      });
+    }
   }
 
-  function toggleVisibility() {
-    isVisible = !isVisible;
-    container.style.display = isVisible ? 'block' : 'none';
+  function spawnEnemy() {
+    const x = Math.random() * (canvas.width - 30);
+    enemies.push({
+      x: x,
+      y: -20,
+      width: 30,
+      height: 25,
+      speed: enemySpeed + Math.random() * 0.5,
+      hit: false
+    });
   }
 
-  function initAudioContext() {
-    try {
-      if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioContext.state === 'suspended') {
-          audioContext.resume();
+  function fireBullet() {
+    if (bulletTimer <= 0) {
+      bullets.push({
+        x: player.x + player.width / 2 - 3,
+        y: player.y,
+        width: 6,
+        height: 15
+      });
+      bulletTimer = bulletCooldown;
+    }
+  }
+
+  function resetGame() {
+    score = 0;
+    scoreDisplay.textContent = '0';
+    enemies = [];
+    bullets = [];
+    bulletTimer = 0;
+    enemyTimer = 0;
+    enemySpeed = 1.5;
+    gameRunning = false;
+    gameStatus.textContent = 'GAME OVER';
+    gameStatus.style.color = 'var(--pink)';
+    if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+    // Reset player position
+    player.x = canvas.width / 2 - player.width / 2;
+    player.y = canvas.height - 60;
+    drawGame();
+  }
+
+  function startGame() {
+    resetGame();
+    gameRunning = true;
+    gameStatus.textContent = 'PLAYING';
+    gameStatus.style.color = 'var(--cyan)';
+    score = 0;
+    scoreDisplay.textContent = '0';
+    enemies = [];
+    bullets = [];
+    enemySpeed = 1.5;
+    gameLoop();
+  }
+
+  function update() {
+    if (!gameRunning) return;
+
+    // Player movement
+    if (keys.left && player.x > 0) player.x -= player.speed;
+    if (keys.right && player.x < canvas.width - player.width) player.x += player.speed;
+    if (keys.fire) fireBullet();
+
+    // Bullet timer
+    if (bulletTimer > 0) bulletTimer--;
+
+    // Update bullets
+    bullets = bullets.filter(b => {
+      b.y -= bulletSpeed;
+      return b.y > 0;
+    });
+
+    // Spawn enemies
+    enemyTimer++;
+    if (enemyTimer >= enemySpawnRate) {
+      spawnEnemy();
+      enemyTimer = 0;
+      // Increase difficulty
+      if (enemySpeed < 3.5) enemySpeed += 0.05;
+    }
+
+    // Update enemies
+    enemies = enemies.filter(enemy => {
+      enemy.y += enemy.speed;
+      return enemy.y < canvas.height + 30;
+    });
+
+    // Collision detection - bullets vs enemies
+    for (let i = bullets.length - 1; i >= 0; i--) {
+      for (let j = enemies.length - 1; j >= 0; j--) {
+        const b = bullets[i];
+        const e = enemies[j];
+        if (b.x < e.x + e.width &&
+            b.x + b.width > e.x &&
+            b.y < e.y + e.height &&
+            b.y + b.height > e.y) {
+          bullets.splice(i, 1);
+          enemies.splice(j, 1);
+          score += 10;
+          scoreDisplay.textContent = score;
+          break;
         }
       }
-      return true;
-    } catch (error) {
-      console.warn('AudioContext not available:', error);
-      return false;
-    }
-  }
-
-  function animateEqualizer() {
-    if (eqAnimation) {
-      cancelAnimationFrame(eqAnimation);
-      eqAnimation = null;
     }
 
-    function updateEq() {
-      if (!isPlaying) {
-        eqBars.forEach(function(bar) {
-          bar.style.height = '2px';
-          bar.classList.remove('active');
-        });
+    // Collision detection - player vs enemies
+    for (let j = enemies.length - 1; j >= 0; j--) {
+      const e = enemies[j];
+      if (player.x < e.x + e.width &&
+          player.x + player.width > e.x &&
+          player.y < e.y + e.height &&
+          player.y + player.height > e.y) {
+        gameRunning = false;
+        gameStatus.textContent = 'GAME OVER';
+        gameStatus.style.color = 'var(--pink)';
+        if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+        drawGame();
         return;
       }
-
-      eqBars.forEach(function(bar) {
-        const minH = 2;
-        const maxH = 28;
-        const randomH = minH + Math.random() * (maxH - minH);
-        bar.style.height = randomH + 'px';
-        bar.classList.add('active');
-      });
-
-      eqAnimation = requestAnimationFrame(updateEq);
-    }
-
-    updateEq();
-  }
-
-  function togglePlay() {
-    try {
-      if (!audioInitialized) {
-        const ctxOk = initAudioContext();
-        if (!ctxOk) {
-          audioInitialized = true;
-          isPlaying = !isPlaying;
-          updateUI();
-          animateEqualizer();
-          updateStatus(isPlaying ? '▶ PLAYING (visual mode)' : '⏹ PAUSED');
-          return;
-        }
-        audioInitialized = true;
-      }
-
-      if (isPlaying) {
-        audio.pause();
-        isPlaying = false;
-        updateUI();
-        animateEqualizer();
-        updateStatus('⏹ PAUSED');
-      } else {
-        if (audio.readyState < 2) {
-          audio.load();
-        }
-        
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.then(function() {
-            isPlaying = true;
-            updateUI();
-            animateEqualizer();
-            updateStatus('▶ PLAYING');
-          }).catch(function(error) {
-            console.warn('Audio playback blocked:', error);
-            isPlaying = true;
-            updateUI();
-            animateEqualizer();
-            updateStatus('▶ PLAYING (visual mode)');
-          });
-        } else {
-          isPlaying = true;
-          updateUI();
-          animateEqualizer();
-          updateStatus('▶ PLAYING');
-        }
-      }
-    } catch (error) {
-      console.warn('Audio controller error:', error);
-      isPlaying = !isPlaying;
-      updateUI();
-      animateEqualizer();
-      updateStatus(isPlaying ? '▶ PLAYING (fallback)' : '⏹ PAUSED');
     }
   }
 
-  function updateUI() {
-    if (isPlaying) {
-      playIcon.className = 'fas fa-pause';
-      playBtn.classList.add('playing');
-      deck.classList.add('playing');
-      spoolLeft.classList.add('spinning-l');
-      spoolRight.classList.add('spinning-r');
-    } else {
-      playIcon.className = 'fas fa-play';
-      playBtn.classList.remove('playing');
-      deck.classList.remove('playing');
-      spoolLeft.classList.remove('spinning-l');
-      spoolRight.classList.remove('spinning-r');
-      eqBars.forEach(function(bar) {
-        bar.style.height = '2px';
-        bar.classList.remove('active');
-      });
-      if (eqAnimation) {
-        cancelAnimationFrame(eqAnimation);
-        eqAnimation = null;
-      }
-    }
-  }
+  function drawGame() {
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
 
-  function updateStatus(text) {
-    if (statusText) {
-      statusText.textContent = text;
-    }
-  }
+    // Background
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, W, H);
 
-  playBtn.addEventListener('click', togglePlay);
-  minimizeBtn.addEventListener('click', toggleMinimize);
-  closeBtn.addEventListener('click', toggleVisibility);
-
-  if (audio) {
-    audio.addEventListener('error', function(e) {
-      console.warn('Audio loading error:', e);
-      updateStatus('⚠️ AUDIO ERROR (visual mode)');
-      setTimeout(function() {
-        audio.load();
-      }, 1000);
+    // Stars
+    gameStars.forEach(star => {
+      star.y += star.speed;
+      if (star.y > H) { star.y = 0; star.x = Math.random() * W; }
+      ctx.fillStyle = `rgba(255,255,255,${star.size * 0.3})`;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fill();
     });
 
-    audio.addEventListener('ended', function() {
-      if (isPlaying) {
-        isPlaying = false;
-        updateUI();
-        animateEqualizer();
-        updateStatus('⏹ ENDED');
-        try {
-          audio.currentTime = 0;
-          audio.play().catch(function(e) {});
-        } catch (e) {}
-      }
+    // Draw enemies
+    enemies.forEach(enemy => {
+      ctx.shadowColor = '#ff007f';
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = '#ff007f';
+      ctx.beginPath();
+      ctx.moveTo(enemy.x + enemy.width / 2, enemy.y);
+      ctx.lineTo(enemy.x, enemy.y + enemy.height);
+      ctx.lineTo(enemy.x + enemy.width, enemy.y + enemy.height);
+      ctx.closePath();
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      // Enemy eye
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.beginPath();
+      ctx.arc(enemy.x + enemy.width / 2, enemy.y + enemy.height * 0.35, 4, 0, Math.PI * 2);
+      ctx.fill();
     });
+
+    // Draw bullets
+    bullets.forEach(b => {
+      ctx.shadowColor = '#00f0ff';
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = '#00f0ff';
+      ctx.fillRect(b.x, b.y, b.width, b.height);
+      ctx.shadowBlur = 0;
+    });
+
+    // Draw player
+    player.draw();
+
+    // Score on canvas
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    ctx.font = '120px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(score, W / 2, H / 2 + 40);
   }
 
-  window.addEventListener('beforeunload', function() {
-    if (eqAnimation) {
-      cancelAnimationFrame(eqAnimation);
+  function gameLoop() {
+    if (!gameRunning) return;
+    update();
+    drawGame();
+    animationId = requestAnimationFrame(gameLoop);
+  }
+
+  // --- Event Listeners ---
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'a') keys.left = true;
+    if (e.key === 'ArrowRight' || e.key === 'd') keys.right = true;
+    if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w') {
+      e.preventDefault();
+      keys.fire = true;
     }
-    if (audio) {
-      try { audio.pause(); } catch (e) {}
+    if (e.key === 'Enter' && !gameRunning) startGame();
+  });
+
+  document.addEventListener('keyup', (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'a') keys.left = false;
+    if (e.key === 'ArrowRight' || e.key === 'd') keys.right = false;
+    if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w') {
+      e.preventDefault();
+      keys.fire = false;
     }
   });
 
-  initDrag();
-  updateStatus('⏹ READY');
-  updateUI();
+  // Buttons
+  startBtn.addEventListener('click', startGame);
+  resetBtn.addEventListener('click', resetGame);
+
+  // Mobile controls
+  function setupMobileButton(btn, key, onStart, onEnd) {
+    if (!btn) return;
+    btn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (onStart) onStart();
+      keys[key] = true;
+    });
+    btn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      if (onEnd) onEnd();
+      keys[key] = false;
+    });
+    btn.addEventListener('touchcancel', (e) => {
+      keys[key] = false;
+    });
+    btn.addEventListener('mousedown', () => { keys[key] = true; });
+    btn.addEventListener('mouseup', () => { keys[key] = false; });
+    btn.addEventListener('mouseleave', () => { keys[key] = false; });
+  }
+
+  setupMobileButton(leftBtn, 'left');
+  setupMobileButton(rightBtn, 'right');
+  setupMobileButton(fireBtn, 'fire', () => { if (gameRunning) fireBullet(); });
+
+  // Window resize
+  window.addEventListener('resize', () => {
+    resizeGame();
+    if (!gameRunning) drawGame();
+  });
+
+  // --- Init ---
+  resizeGame();
+  drawGame();
+  gameStatus.textContent = 'PRESS START';
+  gameStatus.style.color = 'var(--text-muted)';
 })();
 
 /* ================================================================
@@ -3164,7 +2504,6 @@
 ================================================================ */
 (function initNav() {
   let navOpen = false;
-
   window.toggleNav = function() {
     navOpen = !navOpen;
     document.getElementById('mobile-nav').classList.toggle('open', navOpen);
@@ -3173,7 +2512,6 @@
     document.getElementById('toggle-2').style.opacity = navOpen ? '0' : '1';
     document.getElementById('toggle-3').style.transform = navOpen ? 'rotate(-45deg) translate(4.5px,-4.5px)' : '';
   };
-
   window.closeNav = function() {
     if (navOpen) window.toggleNav();
   };
@@ -3185,38 +2523,17 @@
 (function initScrollReveal() {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
-
     document.querySelectorAll('.reveal').forEach(function(el) {
-      gsap.fromTo(el,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1, y: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
+      gsap.fromTo(el, { opacity: 0, y: 50 }, {
+        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+      });
     });
-
     gsap.utils.toArray('.vault-card').forEach(function(card, i) {
-      gsap.fromTo(card,
-        { opacity: 0, y: 60 },
-        {
-          opacity: 1, y: 0,
-          duration: 0.85,
-          delay: i * 0.12,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '#vault .vault-grid',
-            start: 'top 82%',
-            toggleActions: 'play none none none'
-          }
-        }
-      );
+      gsap.fromTo(card, { opacity: 0, y: 60 }, {
+        opacity: 1, y: 0, duration: 0.85, delay: i * 0.12, ease: 'power3.out',
+        scrollTrigger: { trigger: '#vault .vault-grid', start: 'top 82%', toggleActions: 'play none none none' }
+      });
     });
   } else {
     document.querySelectorAll('.reveal, .vault-card').forEach(function(el) {
@@ -3230,7 +2547,7 @@
    NAV ACTIVE LINK TRACKING
 ================================================================ */
 (function initNavTracking() {
-  const sectIds = ['home', 'vault', 'rates', 'arcade', 'terminal'];
+  const sectIds = ['home', 'vault', 'spotify-section', 'arcade-section', 'rates', 'terminal'];
   window.addEventListener('scroll', function() {
     const sp = window.scrollY + 120;
     sectIds.forEach(function(id) {
@@ -3256,7 +2573,6 @@
     const label = document.getElementById('submit-label');
     btn.disabled = true;
     label.textContent = '[ TRANSMITTING... ]';
-
     setTimeout(function() {
       e.target.reset();
       document.getElementById('form-success').style.display = 'block';
@@ -3265,30 +2581,6 @@
     }, 1600);
   };
 })();
-
-/* ================================================================
-   FIX 5: TRIGGER AUDIO ON ENTRY
-================================================================ */
-// This connects the entry button to the audio controller
-document.addEventListener('DOMContentLoaded', function() {
-  // Wait for entry button to be clicked via the space intro
-  const observer = new MutationObserver(function() {
-    if (document.getElementById('space-intro').classList.contains('hidden')) {
-      // Intro is hidden - start music
-      if (typeof window.startBackgroundMusic === 'function') {
-        setTimeout(function() {
-          window.startBackgroundMusic();
-        }, 500);
-      }
-      observer.disconnect();
-    }
-  });
-  
-  observer.observe(document.getElementById('space-intro'), {
-    attributes: true,
-    attributeFilter: ['class']
-  });
-});
 </script>
 </body>
 </html>
