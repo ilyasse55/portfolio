@@ -20,6 +20,23 @@
 
   <style>
     /* ================================================================
+       FIX 1: CURSOR VISIBILITY
+    ================================================================ */
+    body {
+      cursor: default !important; /* Force default cursor */
+    }
+    
+    /* Remove custom cursor entirely */
+    #cursor, #cursor-ring {
+      display: none !important;
+    }
+    
+    /* But keep hover effects on interactive elements */
+    a, button, .vault-card, .rate-card, input, textarea, .cassette-btn, .cassette-header-btn, .entry-btn, .arcade-btn {
+      cursor: pointer !important;
+    }
+
+    /* ================================================================
        CSS CUSTOM PROPERTIES — PALETTE & TOKENS
     ================================================================ */
     :root {
@@ -47,7 +64,6 @@
       color: var(--text);
       font-family: var(--sans);
       overflow-x: hidden;
-      cursor: none;
       line-height: 1.6;
     }
 
@@ -57,33 +73,6 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--pink); box-shadow: 0 0 8px var(--pink); }
-
-    /* ================================================================
-       CUSTOM CURSOR
-    ================================================================ */
-    #cursor {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      background: var(--cyan);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      mix-blend-mode: screen;
-      transform: translate(-50%, -50%);
-      transition: transform 0.08s;
-    }
-    #cursor-ring {
-      position: fixed;
-      width: 38px;
-      height: 38px;
-      border: 1px solid var(--pink);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: width 0.25s, height 0.25s, border-color 0.25s;
-    }
 
     /* ================================================================
        CRT SCANLINE + VIGNETTE OVERLAY
@@ -120,9 +109,9 @@
     }
 
     /* ================================================================
-       ENTRY OVERLAY - GUNS.LOL STYLE
+       SPACE INTRO - BLACK HOLE ANIMATION
     ================================================================ */
-    #entry-overlay {
+    #space-intro {
       position: fixed;
       inset: 0;
       z-index: 99999;
@@ -131,133 +120,110 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-      pointer-events: all;
+      overflow: hidden;
+      transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 1.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    #entry-overlay.hidden {
+    #space-intro.hidden {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
 
-    #entry-overlay .entry-content {
-      text-align: center;
-      animation: entry-pulse 3s ease-in-out infinite;
+    /* Starfield Canvas */
+    #starfield {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
     }
 
-    @keyframes entry-pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-    }
-
-    #entry-overlay .entry-title {
-      font-family: var(--sans);
-      font-weight: 900;
-      font-size: clamp(3rem, 10vw, 8rem);
-      text-transform: uppercase;
-      letter-spacing: -0.03em;
-      line-height: 0.9;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--pink), var(--cyan), var(--purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: entry-glitch 6s infinite;
-    }
-
-    @keyframes entry-glitch {
-      0%, 90%, 100% { opacity: 1; transform: none; }
-      92% { opacity: 0.8; transform: translate(-2px, 2px); }
-      94% { opacity: 1; transform: translate(2px, -2px); }
-      96% { opacity: 0.9; transform: translate(-1px, 1px); }
-    }
-
-    #entry-overlay .entry-sub {
-      font-family: var(--mono);
-      font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-      letter-spacing: 0.6em;
-      color: var(--text-muted);
-      margin-bottom: 3rem;
-      text-transform: uppercase;
-    }
-
-    #entry-overlay .entry-sub .blink {
-      animation: blink 1s step-end infinite;
-    }
-
-    .entry-btn {
+    /* Enter Button */
+    .space-enter-btn {
+      position: relative;
+      z-index: 10;
       display: inline-flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.2rem;
       font-family: var(--mono);
-      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
-      letter-spacing: 0.35em;
+      font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+      letter-spacing: 0.4em;
       text-transform: uppercase;
       padding: 1.2rem 3.5rem;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      border: 2px solid var(--cyan);
-      color: var(--cyan);
+      border: 2px solid rgba(0, 240, 255, 0.6);
+      color: #fff;
       background: transparent;
       transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.1);
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+      animation: space-pulse 2.5s ease-in-out infinite;
     }
 
-    .entry-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--cyan);
-      transform: translateX(-101%);
-      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-      z-index: 0;
+    .space-enter-btn:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 80px rgba(0, 240, 255, 0.3);
+      transform: scale(1.05);
     }
 
-    .entry-btn:hover {
-      box-shadow: 0 0 60px rgba(0, 240, 255, 0.3);
-    }
-
-    .entry-btn:hover::before {
-      transform: translateX(0);
-    }
-
-    .entry-btn span {
-      position: relative;
-      z-index: 1;
-    }
-
-    .entry-btn .arrow {
-      position: relative;
-      z-index: 1;
+    .space-enter-btn .enter-arrow {
       transition: transform 0.4s ease;
       display: inline-block;
     }
 
-    .entry-btn:hover .arrow {
-      transform: translateX(6px);
+    .space-enter-btn:hover .enter-arrow {
+      transform: translateX(8px);
     }
 
-    #entry-overlay::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent 0px,
-        transparent 2px,
-        rgba(0, 240, 255, 0.015) 2px,
-        rgba(0, 240, 255, 0.015) 4px
-      );
-      pointer-events: none;
+    @keyframes space-pulse {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
     }
 
-    #entry-overlay .entry-crt {
+    /* Warp Speed Overlay */
+    #warp-overlay {
       position: absolute;
       inset: 0;
+      z-index: 5;
+      background: #000;
+      opacity: 0;
       pointer-events: none;
-      background: radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.8) 100%);
+      transition: opacity 0.1s ease;
+    }
+
+    #warp-overlay.active {
+      opacity: 1;
+    }
+
+    /* Black Hole Text */
+    #blackhole-text {
+      position: absolute;
+      z-index: 8;
+      color: #fff;
+      font-family: var(--sans);
+      font-weight: 900;
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      text-shadow: 0 0 60px rgba(123, 0, 255, 0.3), 0 0 120px rgba(255, 0, 127, 0.2);
+    }
+
+    #blackhole-text.visible {
+      opacity: 1;
+    }
+
+    #blackhole-text .sub {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.25em;
+      font-weight: 400;
+      letter-spacing: 0.6em;
+      color: rgba(255, 255, 255, 0.3);
+      margin-top: 1rem;
     }
 
     /* ================================================================
@@ -654,7 +620,7 @@
     }
 
     /* ================================================================
-       THE VAULT — PORTFOLIO STYLES
+       THE VAULT — PORTFOLIO STYLES (FIX 3: Image Gallery)
     ================================================================ */
     #vault {
       padding: 8rem 2rem 6rem;
@@ -686,14 +652,16 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     }
 
+    /* FIX 3: Image display fix - object-fit: contain */
     .vault-card-bg {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-size: cover;
-      background-position: center;
+      background-size: contain !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
       transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
       z-index: 1;
     }
@@ -1153,7 +1121,7 @@
     }
 
     /* ================================================================
-       RETRO ARCADE SECTION - REPLACED WITH NEON DESIGN
+       RETRO ARCADE SECTION
     ================================================================ */
     #arcade {
       padding: 6rem 2rem 5rem;
@@ -1366,7 +1334,7 @@
     }
 
     /* ================================================================
-       THE RATE CARD — #rates
+       THE RATE CARD — #rates (FIX 2: Price updated to $50)
     ================================================================ */
     #rates { background: linear-gradient(to bottom, transparent, rgba(255,0,127,0.02), transparent); }
 
@@ -1506,6 +1474,7 @@
     .rate-card.featured .rate-btn::before { background: var(--cyan); }
     .rate-card.featured .rate-btn:hover { color: var(--bg); box-shadow: 0 0 20px rgba(0,240,255,0.4); }
 
+    /* FIX 2: Updated bundle price from $69 to $50 */
     .bundle-strip {
       margin-top: 2rem;
       padding: 2rem 2.2rem;
@@ -1739,6 +1708,54 @@
     }
 
     /* ================================================================
+       AUDIO TOGGLE BUTTON - FIXED
+    ================================================================ */
+    #audio-toggle {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      z-index: 5001;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 240, 255, 0.3);
+      background: rgba(12, 7, 20, 0.85);
+      backdrop-filter: blur(10px);
+      color: var(--cyan);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.05);
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #audio-toggle.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #audio-toggle:hover {
+      border-color: var(--pink);
+      box-shadow: 0 0 40px rgba(255, 0, 127, 0.15);
+      transform: scale(1.1);
+    }
+
+    #audio-toggle.muted {
+      border-color: rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
+
+    #audio-toggle.muted:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+    }
+
+    /* ================================================================
        FOOTER
     ================================================================ */
     footer {
@@ -1814,6 +1831,14 @@
         right: 15px;
       }
 
+      #audio-toggle {
+        bottom: 80px;
+        right: 15px;
+        width: 42px;
+        height: 42px;
+        font-size: 1rem;
+      }
+
       .spool {
         width: 35px;
         height: 35px;
@@ -1861,17 +1886,24 @@
         gap: 0.5rem;
         text-align: center;
       }
+
+      .space-enter-btn {
+        padding: 1rem 2rem;
+        font-size: 0.8rem;
+      }
     }
 
     @media (max-width: 480px) {
       .section-title { font-size: 2rem; }
       #cassette-float-container { width: 190px; bottom: 10px; right: 10px; }
+      #audio-toggle { bottom: 70px; right: 10px; width: 36px; height: 36px; font-size: 0.8rem; }
       .spool { width: 28px; height: 28px; }
       .spool-inner { width: 10px; height: 10px; }
       .cassette-btn { width: 32px; height: 32px; font-size: 0.8rem; }
       .cassette-deck-body { padding: 1rem; }
       .arcade-cabinet { padding: 1rem; min-height: 250px; }
       .arcade-display .arcade-icon { font-size: 2.5rem; }
+      #blackhole-text { font-size: 2rem; }
     }
 
     /* Content wrapper - hidden until entry */
@@ -1888,28 +1920,32 @@
 <body>
 
 <!-- ============================================================
-     ENTRY OVERLAY
+     SPACE INTRO - BLACK HOLE ANIMATION
 ============================================================ -->
-<div id="entry-overlay">
-  <div class="entry-crt"></div>
-  <div class="entry-content">
-    <div class="entry-title">AJN</div>
-    <div class="entry-sub">dsn_ajn · <span class="blink">▌</span></div>
-    <button class="entry-btn" id="entry-btn">
-      <span>[ INITIATE SYSTEM ]</span>
-      <span class="arrow">→</span>
-    </button>
+<div id="space-intro">
+  <!-- Starfield Canvas -->
+  <canvas id="starfield"></canvas>
+  
+  <!-- Warp Speed Overlay -->
+  <div id="warp-overlay"></div>
+  
+  <!-- Black Hole Text -->
+  <div id="blackhole-text">
+    WELCOME TO THE BLACK HOLE
+    <span class="sub">✦ ENTER THE VOID ✦</span>
   </div>
+  
+  <!-- Enter Button -->
+  <button class="space-enter-btn" id="space-enter-btn">
+    <span>ENTER THE VOID</span>
+    <span class="enter-arrow">→</span>
+  </button>
 </div>
 
 <!-- ============================================================
      MAIN CONTENT WRAPPER
 ============================================================ -->
 <div id="main-content">
-
-  <!-- CURSOR -->
-  <div id="cursor"></div>
-  <div id="cursor-ring"></div>
 
   <!-- CRT + SCANLINES -->
   <div id="crt" aria-hidden="true"></div>
@@ -1983,7 +2019,7 @@
   </section>
 
   <!-- ============================================================
-       THE VAULT — PORTFOLIO
+       THE VAULT — PORTFOLIO (FIX 3: Sorted image order)
   ============================================================ -->
   <section id="vault" aria-label="Masterpieces — The Vault">
     <div class="container">
@@ -1996,6 +2032,7 @@
       </div>
 
       <div class="vault-grid">
+        <!-- ART 01 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/suzuki with noise.png');"></div>
           <div class="vault-card-overlay">
@@ -2006,6 +2043,7 @@
           </div>
         </div>
 
+        <!-- ART 02 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/horror.png');"></div>
           <div class="vault-card-overlay">
@@ -2016,6 +2054,7 @@
           </div>
         </div>
 
+        <!-- ART 03 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/travis edited.png');"></div>
           <div class="vault-card-overlay">
@@ -2026,6 +2065,7 @@
           </div>
         </div>
 
+        <!-- ART 04 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/sr71 with the signature.png');"></div>
           <div class="vault-card-overlay">
@@ -2036,6 +2076,7 @@
           </div>
         </div>
 
+        <!-- ART 05 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/surfing.png');"></div>
           <div class="vault-card-overlay">
@@ -2046,6 +2087,7 @@
           </div>
         </div>
 
+        <!-- ART 06 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/gorden ramsy.png');"></div>
           <div class="vault-card-overlay">
@@ -2056,6 +2098,7 @@
           </div>
         </div>
 
+        <!-- ART 07 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/final result.png');"></div>
           <div class="vault-card-overlay">
@@ -2066,6 +2109,7 @@
           </div>
         </div>
 
+        <!-- ART 08 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/doomed.png');"></div>
           <div class="vault-card-overlay">
@@ -2076,6 +2120,7 @@
           </div>
         </div>
 
+        <!-- ART 09 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/dapikcha.png');"></div>
           <div class="vault-card-overlay">
@@ -2086,6 +2131,7 @@
           </div>
         </div>
 
+        <!-- ART 10 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/11212.png');"></div>
           <div class="vault-card-overlay">
@@ -2096,12 +2142,13 @@
           </div>
         </div>
       
+        <!-- ART 11 -->
         <div class="vault-card">
           <div class="vault-card-bg" style="background-image: url('images/zkoka.png');"></div>
           <div class="vault-card-overlay">
             <div class="vault-card-cat">ART_11 . ABSTRACT</div>
-            <div class="vault-card-title">THE LONLEY KNIGHT</div>
-            <div class="vault-card-desc">Complex surreal portrait edit with a lonley knight at night.</div>
+            <div class="vault-card-title">THE LONELY KNIGHT</div>
+            <div class="vault-card-desc">Complex surreal portrait edit with a lonely knight at night.</div>
             <a href="images/zkoka.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
           </div>
         </div>
@@ -2114,7 +2161,7 @@
   ============================================================ -->
   <div id="cassette-float-container">
     <div class="cassette-deck-float" id="cassette-deck">
-      <!-- Audio Element - FIXED: Using CDN audio for testing -->
+      <!-- Audio Element -->
       <audio id="audio-player" loop preload="metadata">
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         <source src="Venger.mp3" type="audio/mpeg">
@@ -2181,7 +2228,14 @@
   </div>
 
   <!-- ============================================================
-       THE PRICING — RATES (FIXED: Buttons link to terminal)
+       AUDIO TOGGLE BUTTON - FIXED (Perfect sync)
+  ============================================================ -->
+  <button id="audio-toggle" class="muted" aria-label="Toggle music">
+    <i class="fas fa-volume-mute" id="audio-toggle-icon"></i>
+  </button>
+
+  <!-- ============================================================
+       THE PRICING — RATES (FIX 2: Price updated to $50)
   ============================================================ -->
   <section id="rates" aria-label="Prices — Pricing Rates">
     <div class="container">
@@ -2243,6 +2297,7 @@
         </div>
       </div>
 
+      <!-- FIX 2: Bundle price updated to $50 -->
       <div class="bundle-strip">
         <div class="bundle-strip-left">
           <div class="bundle-strip-title">VIP FULL BULK BRANDING</div>
@@ -2255,14 +2310,14 @@
         </div>
         <div class="bundle-strip-price">
           <div class="bundle-price-label">STARTING AT</div>
-          <div class="bundle-price-value">$69</div>
+          <div class="bundle-price-value">$50</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ============================================================
-       RETRO ARCADE - NEON DESIGN (Replaced Pac-Man)
+       RETRO ARCADE
   ============================================================ -->
   <section id="arcade" aria-label="Retro Arcade Cabinet">
     <div class="container">
@@ -2400,117 +2455,349 @@
 ============================================================ -->
 <script>
 /* ================================================================
-   ENTRY SCREEN CONTROLLER
+   FIX 4: BLACK HOLE INTRO ANIMATION
 ================================================================ */
-(function initEntryScreen() {
-  const overlay = document.getElementById('entry-overlay');
+(function initBlackHoleIntro() {
+  const intro = document.getElementById('space-intro');
+  const starfield = document.getElementById('starfield');
+  const ctx = starfield.getContext('2d');
+  const enterBtn = document.getElementById('space-enter-btn');
+  const warpOverlay = document.getElementById('warp-overlay');
+  const blackholeText = document.getElementById('blackhole-text');
   const mainContent = document.getElementById('main-content');
-  const entryBtn = document.getElementById('entry-btn');
-  const audio = document.getElementById('audio-player');
   const nav = document.getElementById('nav');
   const home = document.getElementById('home');
   const cassette = document.getElementById('cassette-float-container');
+  const audioToggle = document.getElementById('audio-toggle');
+  const audio = document.getElementById('audio-player');
 
-  let isUnlocked = false;
+  let stars = [];
+  let numStars = 300;
+  let animationId = null;
+  let isEntering = false;
 
-  function unlockSystem() {
-    if (isUnlocked) return;
-    isUnlocked = true;
+  // --- Starfield Setup ---
+  function resizeStarfield() {
+    starfield.width = window.innerWidth;
+    starfield.height = window.innerHeight;
+  }
+  resizeStarfield();
+  window.addEventListener('resize', resizeStarfield);
 
-    // 1. Initialize AudioContext and play audio
-    try {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      
-      // Force load and play audio
-      audio.load();
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(function(error) {
-          console.warn('Audio playback blocked by browser:', error);
-          // Try again on user interaction
-          document.addEventListener('click', function playOnClick() {
-            audio.play().catch(function(e) {});
-            document.removeEventListener('click', playOnClick);
-          }, { once: true });
-        });
-      }
-    } catch (e) {
-      console.warn('AudioContext initialization error:', e);
+  class Star {
+    constructor() {
+      this.reset(true);
     }
 
-    // 2. Hide overlay with fade
-    overlay.classList.add('hidden');
+    reset(init = false) {
+      this.x = Math.random() * starfield.width;
+      this.y = Math.random() * starfield.height;
+      this.size = Math.random() * 2 + 0.5;
+      this.speed = Math.random() * 0.5 + 0.2;
+      this.opacity = Math.random() * 0.8 + 0.2;
+      this.twinkleSpeed = Math.random() * 0.02 + 0.005;
+      this.twinkleOffset = Math.random() * Math.PI * 2;
+      this.originalX = this.x;
+      this.originalY = this.y;
+    }
 
-    // 3. Show main content
-    setTimeout(function() {
-      mainContent.classList.add('visible');
-      
-      nav.classList.add('visible');
-      home.classList.add('visible');
-      
-      setTimeout(function() {
-        cassette.classList.add('visible');
-      }, 400);
-      
-      document.querySelectorAll('section:not(#home)').forEach(function(section, index) {
-        setTimeout(function() {
-          section.classList.add('visible');
-        }, 600 + (index * 200));
-      });
-    }, 300);
+    update() {
+      this.x += this.speed * 0.5;
+      if (this.x > starfield.width) {
+        this.x = 0;
+        this.y = Math.random() * starfield.height;
+      }
+    }
+
+    draw() {
+      const opacity = this.opacity * (0.7 + 0.3 * Math.sin(Date.now() * this.twinkleSpeed + this.twinkleOffset));
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+      ctx.fill();
+    }
   }
 
-  entryBtn.addEventListener('click', unlockSystem);
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < numStars; i++) {
+      stars.push(new Star());
+    }
+  }
+  initStars();
 
+  function animateStars() {
+    ctx.clearRect(0, 0, starfield.width, starfield.height);
+    
+    // Draw background gradient
+    const grad = ctx.createRadialGradient(
+      starfield.width / 2, starfield.height / 2, 0,
+      starfield.width / 2, starfield.height / 2, starfield.width * 0.7
+    );
+    grad.addColorStop(0, 'rgba(20, 5, 40, 0.3)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, starfield.width, starfield.height);
+
+    stars.forEach(star => {
+      star.update();
+      star.draw();
+    });
+
+    animationId = requestAnimationFrame(animateStars);
+  }
+  animateStars();
+
+  // --- Warp Speed Effect ---
+  function triggerWarpSpeed() {
+    return new Promise((resolve) => {
+      warpOverlay.classList.add('active');
+      
+      // Stretch stars effect
+      let warpProgress = 0;
+      const warpDuration = 1200; // ms
+      const startTime = Date.now();
+
+      function warpAnimation() {
+        const elapsed = Date.now() - startTime;
+        warpProgress = Math.min(elapsed / warpDuration, 1);
+        
+        // Clear and draw stretched stars
+        ctx.clearRect(0, 0, starfield.width, starfield.height);
+        
+        // Draw stretched stars
+        stars.forEach(star => {
+          const stretch = 1 + warpProgress * 15;
+          const x = star.x;
+          const y = star.y;
+          const width = star.size * stretch;
+          const height = star.size;
+          
+          ctx.beginPath();
+          ctx.ellipse(x, y, width, height, 0, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * (1 - warpProgress * 0.3)})`;
+          ctx.fill();
+        });
+
+        // Add motion blur effect
+        if (warpProgress > 0.3) {
+          ctx.fillStyle = `rgba(0, 0, 0, ${warpProgress * 0.05})`;
+          ctx.fillRect(0, 0, starfield.width, starfield.height);
+        }
+
+        if (warpProgress < 1) {
+          requestAnimationFrame(warpAnimation);
+        } else {
+          resolve();
+        }
+      }
+      
+      warpAnimation();
+    });
+  }
+
+  // --- Show Black Hole Text ---
+  function showBlackHoleText() {
+    return new Promise((resolve) => {
+      // Fade out warp overlay
+      warpOverlay.style.transition = 'opacity 0.5s ease';
+      warpOverlay.style.opacity = '1';
+      
+      // Show black hole text
+      setTimeout(() => {
+        blackholeText.classList.add('visible');
+      }, 300);
+      
+      // Wait 5 seconds then resolve
+      setTimeout(() => {
+        resolve();
+      }, 5500);
+    });
+  }
+
+  // --- Reveal Main Content ---
+  function revealMainContent() {
+    return new Promise((resolve) => {
+      // Fade out intro
+      intro.classList.add('hidden');
+      
+      // Show main content after intro fades
+      setTimeout(() => {
+        mainContent.classList.add('visible');
+        nav.classList.add('visible');
+        home.classList.add('visible');
+        
+        setTimeout(() => {
+          cassette.classList.add('visible');
+          audioToggle.classList.add('visible');
+        }, 400);
+        
+        document.querySelectorAll('section:not(#home)').forEach((section, index) => {
+          setTimeout(() => {
+            section.classList.add('visible');
+          }, 600 + (index * 200));
+        });
+        
+        resolve();
+      }, 800);
+    });
+  }
+
+  // --- Full Entry Sequence ---
+  async function startEntrySequence() {
+    if (isEntering) return;
+    isEntering = true;
+    
+    // Hide enter button
+    enterBtn.style.opacity = '0';
+    enterBtn.style.pointerEvents = 'none';
+    
+    // Trigger warp speed
+    await triggerWarpSpeed();
+    
+    // Show black hole text
+    await showBlackHoleText();
+    
+    // Reveal main content
+    await revealMainContent();
+  }
+
+  // --- Event Listeners ---
+  enterBtn.addEventListener('click', startEntrySequence);
+  
+  // Also allow Enter key
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !isUnlocked) {
-      unlockSystem();
+    if (e.key === 'Enter' && !isEntering) {
+      startEntrySequence();
     }
   });
 })();
 
 /* ================================================================
-   CUSTOM CURSOR
+   FIX 5: AUDIO CONTROLLER - PERFECT SYNC
 ================================================================ */
-(function initCursor() {
-  const cursor = document.getElementById('cursor');
-  const cursorRing = document.getElementById('cursor-ring');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener('mousemove', function(e) {
-    mx = e.clientX;
-    my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-  });
-
-  function trackRing() {
-    rx += (mx - rx) * 0.13;
-    ry += (my - ry) * 0.13;
-    cursorRing.style.left = rx + 'px';
-    cursorRing.style.top = ry + 'px';
-    requestAnimationFrame(trackRing);
+(function initAudioController() {
+  const audio = document.getElementById('audio-player');
+  const toggleBtn = document.getElementById('audio-toggle');
+  const toggleIcon = document.getElementById('audio-toggle-icon');
+  
+  let isMuted = true;
+  let audioContext = null;
+  let isInitialized = false;
+  
+  // Set initial state
+  audio.muted = true;
+  toggleBtn.classList.add('muted');
+  toggleIcon.className = 'fas fa-volume-mute';
+  
+  // Function to initialize audio context
+  function initAudio() {
+    try {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+      }
+      return true;
+    } catch (error) {
+      console.warn('AudioContext not available:', error);
+      return false;
+    }
   }
-  trackRing();
-
-  document.querySelectorAll('a,button,.vault-card,.rate-card,input,textarea,.cassette-btn,.cassette-header-btn,.entry-btn,.arcade-btn').forEach(function(el) {
-    el.addEventListener('mouseenter', function() {
-      cursor.style.transform = 'translate(-50%,-50%) scale(2.2)';
-      cursorRing.style.width = '64px';
-      cursorRing.style.height = '64px';
-      cursorRing.style.borderColor = 'var(--cyan)';
-    });
-    el.addEventListener('mouseleave', function() {
-      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
-      cursorRing.style.width = '38px';
-      cursorRing.style.height = '38px';
-      cursorRing.style.borderColor = 'var(--pink)';
-    });
+  
+  // Function to play audio (called from entry)
+  window.startBackgroundMusic = function() {
+    try {
+      const ctxOk = initAudio();
+      if (!ctxOk) return;
+      
+      audio.load();
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          // Audio is playing - unmute and update UI
+          audio.muted = false;
+          isMuted = false;
+          toggleBtn.classList.remove('muted');
+          toggleIcon.className = 'fas fa-volume-up';
+          isInitialized = true;
+        }).catch((error) => {
+          console.warn('Audio playback blocked:', error);
+          // Keep muted state
+          audio.muted = true;
+          isMuted = true;
+          toggleBtn.classList.add('muted');
+          toggleIcon.className = 'fas fa-volume-mute';
+        });
+      }
+    } catch (e) {
+      console.warn('Audio initialization error:', e);
+    }
+  };
+  
+  // Toggle function - SINGLE CLICK works perfectly
+  function toggleAudio() {
+    if (!isInitialized) {
+      // If not initialized, try to start
+      const ctxOk = initAudio();
+      if (!ctxOk) return;
+      
+      audio.load();
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          audio.muted = false;
+          isMuted = false;
+          toggleBtn.classList.remove('muted');
+          toggleIcon.className = 'fas fa-volume-up';
+          isInitialized = true;
+        }).catch((error) => {
+          console.warn('Audio playback blocked:', error);
+        });
+      }
+      return;
+    }
+    
+    // Toggle mute state
+    isMuted = !isMuted;
+    audio.muted = isMuted;
+    
+    if (isMuted) {
+      toggleBtn.classList.add('muted');
+      toggleIcon.className = 'fas fa-volume-mute';
+    } else {
+      toggleBtn.classList.remove('muted');
+      toggleIcon.className = 'fas fa-volume-up';
+    }
+  }
+  
+  // Event listener - SINGLE CLICK toggles perfectly
+  toggleBtn.addEventListener('click', toggleAudio);
+  
+  // Handle audio errors gracefully
+  audio.addEventListener('error', function(e) {
+    console.warn('Audio loading error:', e);
+    // Keep UI in muted state
+    audio.muted = true;
+    isMuted = true;
+    toggleBtn.classList.add('muted');
+    toggleIcon.className = 'fas fa-volume-mute';
   });
+  
+  // Expose init function to entry screen
+  window._audioInitialized = false;
+  const originalInit = window.startBackgroundMusic;
+  window.startBackgroundMusic = function() {
+    originalInit();
+    window._audioInitialized = true;
+  };
 })();
+
+/* ================================================================
+   CUSTOM CURSOR - REMOVED (FIX 1: Default cursor restored)
+   No custom cursor code needed - default cursor is now visible
+============================================================ */
 
 /* ================================================================
    PERSPECTIVE GRID CANVAS
@@ -2612,7 +2899,7 @@
 })();
 
 /* ================================================================
-   FLOATING CASSETTE PLAYER - DRAGGABLE (FIXED AUDIO)
+   FLOATING CASSETTE PLAYER - DRAGGABLE
 ================================================================ */
 (function initFloatingCassette() {
   const container = document.getElementById('cassette-float-container');
@@ -2636,7 +2923,6 @@
   let isMinimized = false;
   let isVisible = true;
 
-  // --- Drag functionality ---
   function initDrag() {
     let startX, startY, startLeft, startTop;
 
@@ -2702,7 +2988,6 @@
     container.style.display = isVisible ? 'block' : 'none';
   }
 
-  // --- Audio Controls (FIXED) ---
   function initAudioContext() {
     try {
       if (!audioContext) {
@@ -2749,7 +3034,6 @@
 
   function togglePlay() {
     try {
-      // Initialize audio context on first play
       if (!audioInitialized) {
         const ctxOk = initAudioContext();
         if (!ctxOk) {
@@ -2770,7 +3054,6 @@
         animateEqualizer();
         updateStatus('⏹ PAUSED');
       } else {
-        // Force reload if audio is stuck
         if (audio.readyState < 2) {
           audio.load();
         }
@@ -2784,7 +3067,6 @@
             updateStatus('▶ PLAYING');
           }).catch(function(error) {
             console.warn('Audio playback blocked:', error);
-            // Visual-only mode fallback
             isPlaying = true;
             updateUI();
             animateEqualizer();
@@ -2836,17 +3118,14 @@
     }
   }
 
-  // --- Event Listeners ---
   playBtn.addEventListener('click', togglePlay);
   minimizeBtn.addEventListener('click', toggleMinimize);
   closeBtn.addEventListener('click', toggleVisibility);
 
-  // Handle audio errors gracefully
   if (audio) {
     audio.addEventListener('error', function(e) {
       console.warn('Audio loading error:', e);
       updateStatus('⚠️ AUDIO ERROR (visual mode)');
-      // Try to recover by reloading
       setTimeout(function() {
         audio.load();
       }, 1000);
@@ -2875,7 +3154,6 @@
     }
   });
 
-  // --- Init ---
   initDrag();
   updateStatus('⏹ READY');
   updateUI();
@@ -2987,6 +3265,30 @@
     }, 1600);
   };
 })();
+
+/* ================================================================
+   FIX 5: TRIGGER AUDIO ON ENTRY
+================================================================ */
+// This connects the entry button to the audio controller
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait for entry button to be clicked via the space intro
+  const observer = new MutationObserver(function() {
+    if (document.getElementById('space-intro').classList.contains('hidden')) {
+      // Intro is hidden - start music
+      if (typeof window.startBackgroundMusic === 'function') {
+        setTimeout(function() {
+          window.startBackgroundMusic();
+        }, 500);
+      }
+      observer.disconnect();
+    }
+  });
+  
+  observer.observe(document.getElementById('space-intro'), {
+    attributes: true,
+    attributeFilter: ['class']
+  });
+});
 </script>
 </body>
 </html>
