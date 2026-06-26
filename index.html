@@ -110,6 +110,14 @@
       transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), visibility 1.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
+    /* FIX: Black hole screen fades on scroll */
+    #space-intro.fade-on-scroll {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), visibility 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
     #space-intro.hidden {
       opacity: 0;
       visibility: hidden;
@@ -160,7 +168,6 @@
       transform: translateX(8px);
     }
 
-    /* FIX: Enter button hidden state */
     .space-enter-btn.hidden {
       opacity: 0 !important;
       visibility: hidden !important;
@@ -201,6 +208,7 @@
       opacity: 0;
       transition: opacity 1.5s ease;
       text-shadow: 0 0 60px rgba(123, 0, 255, 0.3), 0 0 120px rgba(255, 0, 127, 0.2);
+      pointer-events: none;
     }
 
     #blackhole-text.visible {
@@ -215,6 +223,35 @@
       letter-spacing: 0.6em;
       color: rgba(255, 255, 255, 0.3);
       margin-top: 1rem;
+    }
+
+    /* Scroll indicator on black hole screen */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.2);
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      animation: scroll-indicator-bounce 2s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .scroll-indicator .line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+    }
+
+    @keyframes scroll-indicator-bounce {
+      0%, 100% { transform: translateY(0); opacity: 0.3; }
+      50% { transform: translateY(10px); opacity: 1; }
     }
 
     /* ================================================================
@@ -1636,6 +1673,7 @@
       .terminal-body { padding: 1.5rem; }
       .t-line { font-size: 0.7rem; }
       .terminal-corner { display: none; }
+      .scroll-indicator { display: none; }
     }
 
     @media (max-width: 480px) {
@@ -1651,6 +1689,7 @@
       .t-line { font-size: 0.6rem; }
       .form-input, .form-textarea { font-size: 0.7rem; }
       .terminal-power { font-size: 0.3rem; }
+      .scroll-indicator { display: none; }
     }
 
     /* Content wrapper */
@@ -1667,7 +1706,7 @@
 <body>
 
 <!-- ============================================================
-     SPACE INTRO - BLACK HOLE ANIMATION
+     SPACE INTRO - BLACK HOLE ANIMATION (WITH SCROLL FADE)
 ============================================================ -->
 <div id="space-intro">
   <canvas id="starfield"></canvas>
@@ -1680,6 +1719,11 @@
     <span>ENTER THE VOID</span>
     <span class="enter-arrow">→</span>
   </button>
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator" id="scrollIndicator">
+    <span>SCROLL TO EXPLORE</span>
+    <div class="line"></div>
+  </div>
 </div>
 
 <!-- ============================================================
@@ -1786,12 +1830,12 @@
         </div>
 
         <div class="vault-card">
-          <div class="vault-card-bg" style="background-image: url('images/horror.png');"></div>
+          <div class="vault-card-bg" style="background-image: url('images/desert manipulation.png');"></div>
           <div class="vault-card-overlay">
             <div class="vault-card-cat">ART_02 . SURREALISM</div>
-            <div class="vault-card-title">HORROR</div>
-            <div class="vault-card-desc">Gothic cyber composition featuring neon tones and dark surreal atmosphere.</div>
-            <a href="images/horror.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
+            <div class="vault-card-title">DESERT</div>
+            <div class="vault-card-desc">Manipulation photo with desert atmosphere</div>
+            <a href="images/desert manipulation.png" target="_blank" class="vault-card-arrow">VIEW DESIGN <span>➔</span></a>
           </div>
         </div>
 
@@ -1889,7 +1933,7 @@
   </section>
 
   <!-- ============================================================
-       SPOTIFY PLAYER SECTION (NEW - Replaces Cassette)
+       SPOTIFY PLAYER SECTION
   ============================================================ -->
   <section id="spotify-section" aria-label="Spotify Music Player">
     <div class="container">
@@ -1902,7 +1946,6 @@
       </div>
 
       <div class="spotify-container reveal reveal-delay-1">
-        <!-- Spotify Embed - Venger Track -->
         <iframe 
           id="spotify-main-player"
           src="https://open.spotify.com/embed/track/4iV5W9uYEdYUVa79Axb7Rh?utm_source=generator" 
@@ -1915,7 +1958,7 @@
   </section>
 
   <!-- ============================================================
-       ARCADE GAME SECTION (NEW)
+       ARCADE GAME SECTION
   ============================================================ -->
   <section id="arcade-section" aria-label="Arcade Game">
     <div class="container">
@@ -2150,38 +2193,86 @@
 ============================================================ -->
 <script>
 /* ================================================================
-   FIX 1: ENTER BUTTON - IMMEDIATE HIDE
-   FIX 2: SPOTIFY SECTION-BASED TRANSITIONS
+   FIX: BLACK HOLE SCREEN FADES ON SCROLL
 ================================================================ */
 
-// --- Global Spotify Controller ---
+// --- Black Hole Scroll Fade Controller ---
+const BlackHoleScrollController = {
+  intro: null,
+  isFading: false,
+  hasFaded: false,
+
+  init() {
+    this.intro = document.getElementById('space-intro');
+    if (!this.intro) return;
+    
+    // Check if intro is already hidden (after entry animation)
+    if (this.intro.classList.contains('hidden')) {
+      this.hasFaded = true;
+      return;
+    }
+    
+    // Add scroll listener
+    window.addEventListener('scroll', this.handleScroll.bind(this), { passive: true });
+  },
+
+  handleScroll() {
+    if (this.hasFaded || this.isFading) return;
+    
+    const scrollY = window.scrollY;
+    const triggerPoint = window.innerHeight * 0.3; // 30% of viewport height
+    
+    if (scrollY > triggerPoint) {
+      this.fadeOut();
+    }
+  },
+
+  fadeOut() {
+    if (this.hasFading) return;
+    this.isFading = true;
+    
+    // Add fade class
+    this.intro.classList.add('fade-on-scroll');
+    this.hasFaded = true;
+    
+    // Dispatch event for Spotify controller
+    document.dispatchEvent(new CustomEvent('blackHoleFaded'));
+    
+    // Clean up scroll listener
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+};
+
+/* ================================================================
+   SPOTIFY CONTROLLER WITH SCROLL FADE INTEGRATION
+================================================================ */
 const SpotifyController = {
   mainPlayer: null,
   arcadePlayer: null,
   currentTrack: 'main',
   isArcadeVisible: false,
   transitionTimeout: null,
+  isInitialized: false,
 
   init() {
-    // Get the main Spotify iframe (Venger)
+    if (this.isInitialized) return;
     this.mainPlayer = document.getElementById('spotify-main-player');
-    
-    // Create a hidden arcade player that we'll swap in
     this.createArcadePlayer();
-    
-    // Set up intersection observer for arcade section
     this.setupSectionObserver();
+    this.isInitialized = true;
+    
+    // Listen for black hole fade event to start music
+    document.addEventListener('blackHoleFaded', () => {
+      this.playVengerOnEntry();
+    });
   },
 
   createArcadePlayer() {
-    // Create a container for the arcade player
     const container = document.querySelector('.spotify-container');
     if (!container) return;
     
-    // Create the arcade iframe (Space Defender track)
     this.arcadePlayer = document.createElement('iframe');
     this.arcadePlayer.id = 'spotify-arcade-player';
-    // Replace with actual Space Defender track URI
     this.arcadePlayer.src = 'https://open.spotify.com/embed/track/4iV5W9uYEdYUVa79Axb7Rh?utm_source=generator';
     this.arcadePlayer.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
     this.arcadePlayer.loading = 'lazy';
@@ -2202,16 +2293,12 @@ const SpotifyController = {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          // User is viewing the arcade section
           this.switchToArcadeTrack();
         } else {
-          // User left the arcade section
           this.switchToMainTrack();
         }
       });
-    }, {
-      threshold: 0.3 // Trigger when 30% of section is visible
-    });
+    }, { threshold: 0.3 });
 
     observer.observe(arcadeSection);
   },
@@ -2221,13 +2308,11 @@ const SpotifyController = {
     this.currentTrack = 'arcade';
     this.isArcadeVisible = true;
     
-    // Smoothly transition
     if (this.mainPlayer) {
       this.mainPlayer.style.transition = 'opacity 0.5s ease';
       this.mainPlayer.style.opacity = '0';
     }
     
-    // Show arcade player after fade
     clearTimeout(this.transitionTimeout);
     this.transitionTimeout = setTimeout(() => {
       if (this.mainPlayer) {
@@ -2237,7 +2322,6 @@ const SpotifyController = {
         this.arcadePlayer.style.display = 'block';
         this.arcadePlayer.style.opacity = '0';
         this.arcadePlayer.style.transition = 'opacity 0.5s ease';
-        // Reload the iframe to start playing
         this.arcadePlayer.src = this.arcadePlayer.src;
         setTimeout(() => {
           this.arcadePlayer.style.opacity = '1';
@@ -2251,13 +2335,11 @@ const SpotifyController = {
     this.currentTrack = 'main';
     this.isArcadeVisible = false;
     
-    // Hide arcade player
     if (this.arcadePlayer) {
       this.arcadePlayer.style.transition = 'opacity 0.5s ease';
       this.arcadePlayer.style.opacity = '0';
     }
     
-    // Show main player after fade
     clearTimeout(this.transitionTimeout);
     this.transitionTimeout = setTimeout(() => {
       if (this.arcadePlayer) {
@@ -2267,7 +2349,6 @@ const SpotifyController = {
         this.mainPlayer.style.display = 'block';
         this.mainPlayer.style.opacity = '0';
         this.mainPlayer.style.transition = 'opacity 0.5s ease';
-        // Reload to start playing
         this.mainPlayer.src = this.mainPlayer.src;
         setTimeout(() => {
           this.mainPlayer.style.opacity = '1';
@@ -2276,10 +2357,8 @@ const SpotifyController = {
     }, 500);
   },
 
-  // Force play Venger on entry
   playVengerOnEntry() {
     if (this.mainPlayer) {
-      // Reload the iframe to trigger autoplay
       this.mainPlayer.src = this.mainPlayer.src;
       this.mainPlayer.style.display = 'block';
       this.mainPlayer.style.opacity = '1';
@@ -2288,7 +2367,7 @@ const SpotifyController = {
 };
 
 /* ================================================================
-   BLACK HOLE INTRO ANIMATION (FIXED: Enter button hides instantly)
+   BLACK HOLE INTRO ANIMATION
 ================================================================ */
 (function initBlackHoleIntro() {
   const intro = document.getElementById('space-intro');
@@ -2300,6 +2379,7 @@ const SpotifyController = {
   const mainContent = document.getElementById('main-content');
   const nav = document.getElementById('nav');
   const home = document.getElementById('home');
+  const scrollIndicator = document.getElementById('scrollIndicator');
 
   let stars = [];
   let numStars = 300;
@@ -2392,13 +2472,21 @@ const SpotifyController = {
       warpOverlay.style.transition = 'opacity 0.5s ease';
       warpOverlay.style.opacity = '1';
       setTimeout(() => { blackholeText.classList.add('visible'); }, 300);
+      // Hide scroll indicator when text appears
+      if (scrollIndicator) {
+        scrollIndicator.style.transition = 'opacity 0.5s ease';
+        scrollIndicator.style.opacity = '0';
+      }
       setTimeout(() => { resolve(); }, 5500);
     });
   }
 
   function revealMainContent() {
     return new Promise((resolve) => {
-      intro.classList.add('hidden');
+      // Initialize scroll fade controller
+      BlackHoleScrollController.init();
+      
+      // Show main content after intro fades
       setTimeout(() => {
         mainContent.classList.add('visible');
         nav.classList.add('visible');
@@ -2406,14 +2494,8 @@ const SpotifyController = {
         document.querySelectorAll('section:not(#home)').forEach((section, index) => {
           setTimeout(() => { section.classList.add('visible'); }, 600 + (index * 200));
         });
-        // Initialize Spotify controller after content is visible
-        SpotifyController.init();
-        // Start Venger on entry
-        setTimeout(() => {
-          SpotifyController.playVengerOnEntry();
-        }, 1000);
         resolve();
-      }, 800);
+      }, 300);
     });
   }
 
@@ -2421,13 +2503,15 @@ const SpotifyController = {
     if (isEntering) return;
     isEntering = true;
     
-    // FIX: INSTANTLY hide the button with display: none + fade
     enterBtn.classList.add('hidden');
     enterBtn.style.display = 'none';
     
     await triggerWarpSpeed();
     await showBlackHoleText();
     await revealMainContent();
+    
+    // Initialize Spotify after content is visible
+    SpotifyController.init();
   }
 
   enterBtn.addEventListener('click', startEntrySequence);
