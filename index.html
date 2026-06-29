@@ -20,22 +20,18 @@
 
   <style>
     /* ================================================================
-       ROOT VARIABLES - RETRO-FUTURISTIC PALETTE
+       ROOT VARIABLES - BLACKHOLE AESTHETIC
     ================================================================ */
     :root {
       --bg: #0a0a0f;
       --bg-secondary: #0d0d1a;
       --pink: #ff007f;
       --cyan: #00f0ff;
-      --magenta: #ff00ff;
-      --ultraviolet: #8b00ff;
+      --purple: #7b00ff;
       --text: #e0d7ff;
       --text-muted: rgba(224, 215, 255, 0.45);
       --mono: 'Share Tech Mono', monospace;
       --sans: 'Montserrat', sans-serif;
-      --glow-pink: 0 0 20px rgba(255, 0, 127, 0.3);
-      --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.3);
-      --glow-uv: 0 0 20px rgba(139, 0, 255, 0.3);
     }
 
     /* ================================================================
@@ -70,7 +66,7 @@
       mix-blend-mode: screen;
       transform: translate(-50%, -50%);
       transition: transform 0.08s;
-      box-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan);
+      box-shadow: 0 0 30px var(--cyan);
     }
     #cursor-ring {
       position: fixed;
@@ -103,7 +99,7 @@
     }
 
     /* ================================================================
-       WELCOME SCREEN
+       WELCOME SCREEN - SCROLL DRIVEN
     ================================================================ */
     #welcome-screen {
       position: fixed;
@@ -124,7 +120,7 @@
       pointer-events: none;
     }
 
-    #welcome-screen canvas {
+    #welcome-screen .welcome-stars {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -141,17 +137,23 @@
     .welcome-title {
       font-family: var(--sans);
       font-weight: 900;
-      font-size: clamp(3.5rem, 12vw, 8rem);
+      font-size: clamp(3rem, 10vw, 7rem);
       text-transform: uppercase;
       letter-spacing: -0.03em;
       line-height: 0.9;
-      background: linear-gradient(135deg, var(--pink), var(--cyan), var(--magenta), var(--ultraviolet));
+      background: linear-gradient(135deg, var(--pink), var(--cyan), var(--purple));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: welcome-glitch 4s infinite;
-      text-shadow: 0 0 80px rgba(255, 0, 127, 0.2);
+      animation: welcome-glitch 6s infinite;
       margin-bottom: 0.5rem;
+    }
+
+    @keyframes welcome-glitch {
+      0%, 90%, 100% { opacity: 1; transform: none; }
+      92% { opacity: 0.8; transform: translate(-2px, 2px); }
+      94% { opacity: 1; transform: translate(2px, -2px); }
+      96% { opacity: 0.9; transform: translate(-1px, 1px); }
     }
 
     .welcome-sub {
@@ -160,17 +162,9 @@
       letter-spacing: 0.6em;
       color: var(--text-muted);
       text-transform: uppercase;
-      text-shadow: 0 0 30px rgba(0, 240, 255, 0.1);
     }
 
     .welcome-sub .blink { animation: blink 1s step-end infinite; }
-
-    @keyframes welcome-glitch {
-      0%, 90%, 100% { opacity: 1; transform: none; filter: none; }
-      92% { opacity: 0.8; transform: translate(-2px, 2px); filter: hue-rotate(20deg); }
-      94% { opacity: 1; transform: translate(2px, -2px); filter: hue-rotate(-20deg); }
-      96% { opacity: 0.9; transform: translate(-1px, 1px); }
-    }
 
     .welcome-scroll-indicator {
       position: absolute;
@@ -192,7 +186,6 @@
       width: 1px;
       height: 40px;
       background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
     }
 
     @keyframes scroll-bounce {
@@ -212,7 +205,7 @@
     #main-content.visible { opacity: 1; }
 
     /* ================================================================
-       NAVIGATION - NEON GLOW
+       NAVIGATION - MULTI-TAB
     ================================================================ */
     .nav-tabs {
       position: fixed;
@@ -223,7 +216,7 @@
       background: rgba(10, 10, 15, 0.92);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0, 240, 255, 0.08);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.05);
       padding: 0 2rem;
       height: 70px;
       display: flex;
@@ -232,7 +225,6 @@
       opacity: 0;
       transform: translateY(-100%);
       transition: opacity 0.6s ease, transform 0.6s ease;
-      box-shadow: 0 0 40px rgba(0, 240, 255, 0.02);
     }
 
     .nav-tabs.visible {
@@ -248,16 +240,21 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      text-shadow: var(--glow-cyan);
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
     }
 
     .nav-tabs .logo .dot {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       background: var(--pink);
       border-radius: 50%;
-      box-shadow: var(--glow-pink);
+      box-shadow: 0 0 10px var(--pink);
       animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.6); }
     }
 
     .tab-list {
@@ -274,22 +271,11 @@
       font-size: 0.6rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      padding: 0.6rem 1.4rem;
+      padding: 0.6rem 1.2rem;
       cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: all 0.3s ease;
       border-radius: 4px;
       position: relative;
-    }
-
-    .tab-btn::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 4px;
-      background: linear-gradient(135deg, var(--pink), var(--cyan));
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      z-index: -1;
     }
 
     .tab-btn::after {
@@ -301,27 +287,13 @@
       width: 0;
       height: 2px;
       background: var(--cyan);
-      box-shadow: var(--glow-cyan);
-      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 0 10px var(--cyan);
+      transition: width 0.3s ease;
     }
 
-    .tab-btn:hover {
-      color: var(--text);
-      text-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
-    }
-
-    .tab-btn.active {
-      color: var(--cyan);
-      text-shadow: var(--glow-cyan);
-    }
-
-    .tab-btn.active::before {
-      opacity: 0.05;
-    }
-
-    .tab-btn.active::after {
-      width: 60%;
-    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--cyan); }
+    .tab-btn.active::after { width: 60%; }
 
     /* Mobile nav */
     .nav-toggle {
@@ -339,7 +311,7 @@
       width: 24px;
       height: 1.5px;
       background: var(--cyan);
-      box-shadow: var(--glow-cyan);
+      box-shadow: 0 0 6px var(--cyan);
       transition: transform 0.3s, opacity 0.3s;
     }
 
@@ -357,12 +329,12 @@
     .tab-content.active { display: block; }
 
     @keyframes tab-load {
-      0% { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(4px); }
-      100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+      0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     /* ================================================================
-       HERO - RETRO-FUTURISTIC SUN GRID
+       HERO
     ================================================================ */
     .hero-section {
       min-height: 80vh;
@@ -372,27 +344,6 @@
       align-items: center;
       text-align: center;
       padding: 4rem 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Animated Grid Sunset Background */
-    .grid-sunset {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .grid-sunset canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .hero-section > * {
-      position: relative;
-      z-index: 1;
     }
 
     .hero-tag {
@@ -402,8 +353,7 @@
       color: var(--cyan);
       text-transform: uppercase;
       margin-bottom: 2rem;
-      text-shadow: var(--glow-cyan);
-      animation: flicker 3s infinite;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
     }
 
     .hero-name {
@@ -413,17 +363,10 @@
       text-transform: uppercase;
       letter-spacing: -0.03em;
       line-height: 0.88;
-      background: linear-gradient(135deg, var(--pink), var(--cyan), var(--magenta));
+      background: linear-gradient(135deg, var(--pink), var(--cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 0 80px rgba(255, 0, 127, 0.15);
-      animation: hero-float 4s ease-in-out infinite;
-    }
-
-    @keyframes hero-float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
     }
 
     .hero-handle {
@@ -432,7 +375,7 @@
       letter-spacing: 0.6em;
       color: var(--pink);
       margin-top: 1.5rem;
-      text-shadow: var(--glow-pink);
+      text-shadow: 0 0 20px rgba(255, 0, 127, 0.1);
     }
 
     .hero-sub {
@@ -444,14 +387,39 @@
       margin: 1.8rem auto 0;
     }
 
-    @keyframes flicker {
-      0%, 18%, 20%, 50.1%, 60%, 65.1%, 80%, 90.1%, 92%, 100% { opacity: 1; }
-      19%, 49%, 50%, 60.1%, 65%, 80.1%, 90%, 91% { opacity: 0.4; }
+    /* ================================================================
+       GALLERY - EXHIBITION STYLE
+    ================================================================ */
+    .section-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.5em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
     }
 
-    /* ================================================================
-       GALLERY - EXHIBITION STYLE WITH NEON GLOW
-    ================================================================ */
+    .section-eyebrow::before {
+      content: '';
+      width: 30px;
+      height: 1px;
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    .section-title {
+      font-family: var(--sans);
+      font-weight: 900;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      text-transform: uppercase;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+    }
+
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -471,34 +439,14 @@
       border-radius: 12px;
       overflow: hidden;
       aspect-ratio: 4 / 3;
-      border: 1px solid rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.05);
       transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     }
 
-    .gallery-item .image-container::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 12px;
-      padding: 1px;
-      background: linear-gradient(135deg, transparent, var(--pink), var(--cyan), transparent);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .gallery-item .image-container:hover::before {
-      opacity: 1;
-    }
-
     .gallery-item .image-container:hover {
-      border-color: rgba(255, 0, 127, 0.2);
-      box-shadow: 0 0 60px rgba(255, 0, 127, 0.08), 0 20px 60px rgba(0, 0, 0, 0.6);
+      border-color: rgba(255, 0, 127, 0.15);
+      box-shadow: 0 0 60px rgba(255, 0, 127, 0.05), 0 20px 60px rgba(0, 0, 0, 0.6);
       transform: translateY(-6px);
     }
 
@@ -521,7 +469,6 @@
       color: var(--cyan);
       text-transform: uppercase;
       opacity: 0.6;
-      text-shadow: var(--glow-cyan);
     }
 
     .gallery-item .image-title {
@@ -530,7 +477,6 @@
       font-size: 1.2rem;
       color: #fff;
       letter-spacing: 0.05em;
-      text-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
     }
 
     .gallery-item .image-desc {
@@ -548,29 +494,27 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: all 0.3s ease;
       border-bottom: 1px solid transparent;
       padding-bottom: 2px;
       width: fit-content;
-      text-shadow: var(--glow-pink);
     }
 
     .gallery-item .image-link:hover {
       color: var(--cyan);
       border-color: var(--cyan);
-      text-shadow: var(--glow-cyan);
     }
 
     .gallery-item .image-link span {
-      transition: transform 0.4s ease;
+      transition: transform 0.3s ease;
     }
 
     .gallery-item .image-link:hover span {
-      transform: translateX(6px);
+      transform: translateX(4px);
     }
 
     /* ================================================================
-       PROJECTS - NEON CARDS
+       PROJECTS
     ================================================================ */
     .projects-grid {
       display: grid;
@@ -581,29 +525,14 @@
 
     .project-card {
       background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.05);
       border-radius: 12px;
       padding: 2rem;
       transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .project-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255, 0, 127, 0.03), rgba(0, 240, 255, 0.03));
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-
-    .project-card:hover::before {
-      opacity: 1;
     }
 
     .project-card:hover {
-      border-color: rgba(255, 0, 127, 0.2);
+      border-color: rgba(255, 0, 127, 0.15);
       box-shadow: 0 0 60px rgba(255, 0, 127, 0.05);
       transform: translateY(-6px);
     }
@@ -613,7 +542,6 @@
       color: var(--pink);
       margin-bottom: 1rem;
       display: block;
-      text-shadow: var(--glow-pink);
     }
 
     .project-card .project-title {
@@ -640,38 +568,21 @@
       border-radius: 20px;
       color: var(--cyan);
       margin-top: 1rem;
-      text-shadow: var(--glow-cyan);
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.02);
     }
 
     /* ================================================================
-       KALI LINUX TERMINAL
+       CONTACT - TERMINAL STYLE
     ================================================================ */
-    .terminal-wrapper {
-      position: relative;
+    .terminal-window {
       margin-top: 2rem;
+      border: 1px solid rgba(0, 240, 255, 0.08);
       border-radius: 12px;
       overflow: hidden;
-      border: 1px solid rgba(0, 240, 255, 0.08);
-      box-shadow: 0 0 60px rgba(0, 240, 255, 0.03);
+      box-shadow: 0 0 60px rgba(0, 240, 255, 0.02);
     }
 
-    .terminal-wrapper::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      border-radius: 12px;
-      padding: 1px;
-      background: linear-gradient(135deg, transparent, var(--cyan), var(--pink), transparent);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      opacity: 0.3;
-      pointer-events: none;
-    }
-
-    .terminal-header {
-      background: rgba(0, 0, 0, 0.6);
+    .terminal-titlebar {
+      background: rgba(0, 0, 0, 0.4);
       padding: 0.6rem 1.2rem;
       display: flex;
       align-items: center;
@@ -679,22 +590,12 @@
       border-bottom: 1px solid rgba(0, 240, 255, 0.05);
     }
 
-    .terminal-dots {
-      display: flex;
-      gap: 6px;
-    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot-red { background: #ff5f57; }
+    .t-dot-amber { background: #febc2e; }
+    .t-dot-green { background: #28c840; }
 
-    .terminal-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .terminal-dot.red { background: #ff5f57; box-shadow: 0 0 10px rgba(255, 95, 87, 0.2); }
-    .terminal-dot.amber { background: #febc2e; box-shadow: 0 0 10px rgba(254, 188, 46, 0.2); }
-    .terminal-dot.green { background: #28c840; box-shadow: 0 0 10px rgba(40, 200, 64, 0.2); }
-
-    .terminal-title {
+    .t-title {
       font-family: var(--mono);
       font-size: 0.55rem;
       letter-spacing: 0.2em;
@@ -704,99 +605,114 @@
 
     .terminal-body {
       background: rgba(0, 0, 0, 0.9);
-      padding: 1.5rem;
+      padding: 2rem;
+    }
+
+    .t-line {
       font-family: var(--mono);
       font-size: 0.75rem;
-      line-height: 1.8;
-      max-height: 400px;
-      overflow-y: auto;
-      position: relative;
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
     }
 
-    .terminal-body::-webkit-scrollbar {
-      width: 3px;
-    }
+    .t-prompt { color: var(--pink); }
+    .t-cmd { color: var(--cyan); }
+    .t-out { color: var(--text-muted); }
 
-    .terminal-body::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .terminal-body::-webkit-scrollbar-thumb {
-      background: var(--pink);
-      box-shadow: 0 0 10px var(--pink);
-    }
-
-    .terminal-line {
+    .socials {
       display: flex;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      opacity: 0;
-      animation: terminal-type 0.3s forwards;
-    }
-
-    .terminal-line .prompt {
-      color: var(--pink);
-      text-shadow: var(--glow-pink);
-    }
-
-    .terminal-line .cmd {
-      color: var(--cyan);
-      text-shadow: var(--glow-cyan);
-    }
-
-    .terminal-line .output {
-      color: rgba(224, 215, 255, 0.5);
-    }
-
-    .terminal-line .output.green { color: #00ff41; text-shadow: 0 0 20px rgba(0, 255, 65, 0.1); }
-    .terminal-line .output.pink { color: var(--pink); text-shadow: var(--glow-pink); }
-
-    .terminal-cursor {
-      display: inline-block;
-      width: 8px;
-      height: 1em;
-      background: var(--cyan);
-      box-shadow: var(--glow-cyan);
-      vertical-align: text-bottom;
-      animation: blink 1s step-end infinite;
-    }
-
-    @keyframes terminal-type {
-      0% { opacity: 0; transform: translateX(-10px); }
-      100% { opacity: 1; transform: translateX(0); }
-    }
-
-    /* ================================================================
-       SECTION EYEBROW
-    ================================================================ */
-    .section-eyebrow {
+      gap: 0.7rem;
       font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.5em;
-      color: var(--cyan);
-      text-transform: uppercase;
-      margin-bottom: 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid rgba(255, 0, 127, 0.15);
+      color: var(--text);
+      transition: all 0.3s;
+      cursor: pointer;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .social-btn:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.05);
+    }
+
+    .contact-form {
+      margin-top: 1.5rem;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       gap: 0.8rem;
-      text-shadow: var(--glow-cyan);
     }
 
-    .section-eyebrow::before {
-      content: '';
-      width: 30px;
-      height: 1px;
-      background: var(--cyan);
-      box-shadow: var(--glow-cyan);
-    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
 
-    .section-title {
-      font-family: var(--sans);
-      font-weight: 900;
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
+    .form-label {
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: rgba(0, 240, 255, 0.4);
       text-transform: uppercase;
-      line-height: 0.92;
-      letter-spacing: -0.02em;
+    }
+    .form-label::before { content: '> '; color: var(--pink); }
+
+    .form-input, .form-textarea {
+      background: rgba(0, 240, 255, 0.02);
+      border: 1px solid rgba(0, 240, 255, 0.08);
+      color: var(--text);
+      padding: 0.6rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+      border-radius: 4px;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.03);
+    }
+
+    .form-textarea { resize: vertical; min-height: 100px; }
+
+    .form-submit {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      padding: 0.8rem 2rem;
+      background: transparent;
+      border: 1px solid var(--pink);
+      color: var(--pink);
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 4px;
+    }
+
+    .form-submit:hover {
+      background: var(--pink);
+      color: var(--bg);
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.1);
+    }
+
+    #form-success {
+      display: none;
+      margin-top: 1rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--cyan);
     }
 
     /* ================================================================
@@ -812,8 +728,8 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-radius: 12px;
-      border: 1px solid rgba(0, 240, 255, 0.08);
-      box-shadow: 0 10px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 240, 255, 0.02);
+      border: 1px solid rgba(0, 240, 255, 0.05);
+      box-shadow: 0 10px 60px rgba(0, 0, 0, 0.8);
       overflow: hidden;
       transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
       opacity: 0;
@@ -825,20 +741,15 @@
       transform: translateY(0) scale(1);
     }
 
-    .spotify-widget:hover {
-      border-color: rgba(255, 0, 127, 0.15);
-      box-shadow: 0 10px 60px rgba(255, 0, 127, 0.05);
-    }
-
-    .spotify-header {
+    .spotify-widget .spotify-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.6rem 1rem;
+      padding: 0.5rem 1rem;
       border-bottom: 1px solid rgba(0, 240, 255, 0.05);
     }
 
-    .spotify-label {
+    .spotify-widget .spotify-label {
       font-family: var(--mono);
       font-size: 0.5rem;
       letter-spacing: 0.3em;
@@ -846,13 +757,12 @@
       text-transform: uppercase;
     }
 
-    .spotify-label i {
+    .spotify-widget .spotify-label i {
       color: #1DB954;
       margin-right: 0.4rem;
-      text-shadow: 0 0 20px rgba(29, 185, 84, 0.2);
     }
 
-    .spotify-toggle {
+    .spotify-widget .spotify-toggle {
       background: none;
       border: none;
       color: var(--text-muted);
@@ -862,7 +772,7 @@
       transition: all 0.3s ease;
     }
 
-    .spotify-toggle:hover {
+    .spotify-widget .spotify-toggle:hover {
       color: var(--cyan);
       background: rgba(0, 240, 255, 0.05);
     }
@@ -875,39 +785,49 @@
     }
 
     /* ================================================================
-       AUDIO TRANSLATION CUES
+       FOOTER
     ================================================================ */
-    .audio-cue {
-      position: fixed;
-      bottom: 120px;
-      right: 20px;
-      z-index: 998;
-      font-family: var(--mono);
-      font-size: 0.5rem;
-      letter-spacing: 0.2em;
-      color: var(--cyan);
-      opacity: 0;
-      transition: opacity 0.6s ease;
-      text-shadow: var(--glow-cyan);
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(0, 240, 255, 0.05);
+      margin-top: 2rem;
+    }
+
+    .footer-wordmark {
+      font-family: var(--sans);
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .footer-rule {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 1rem;
+      max-width: 400px;
+      margin: 1rem auto;
     }
 
-    .audio-cue.visible {
-      opacity: 1;
+    .footer-rule::before, .footer-rule::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(0, 240, 255, 0.15), transparent);
     }
 
-    .audio-cue .cue-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: var(--glow-cyan);
-      animation: pulse-dot 1.5s ease-in-out infinite;
+    .footer-rule span {
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.4em;
+      color: rgba(0, 240, 255, 0.25);
     }
 
-    .audio-cue .cue-text {
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 0.5rem;
+      letter-spacing: 0.25em;
+      color: rgba(224, 215, 255, 0.15);
       text-transform: uppercase;
     }
 
@@ -915,10 +835,7 @@
        RESPONSIVE
     ================================================================ */
     @media (max-width: 768px) {
-      .nav-tabs {
-        padding: 0 1rem;
-        height: 60px;
-      }
+      .nav-tabs { padding: 0 1rem; height: 60px; }
 
       .tab-list {
         display: none;
@@ -935,7 +852,6 @@
       }
 
       .tab-list.open { display: flex; }
-
       .nav-toggle { display: flex; }
 
       .tab-btn {
@@ -950,74 +866,37 @@
 
       .tab-content { padding: 1rem 1rem 3rem; }
 
-      .gallery-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
+      .gallery-grid { grid-template-columns: 1fr; gap: 2rem; }
       .projects-grid { grid-template-columns: 1fr; }
 
-      .spotify-widget {
-        width: 220px;
-        bottom: 10px;
-        right: 10px;
-      }
-
+      .spotify-widget { width: 220px; bottom: 10px; right: 10px; }
       .spotify-widget iframe { height: 60px; }
 
       .hero-section { min-height: 60vh; padding: 2rem 1rem; }
 
       .welcome-title { font-size: clamp(2.5rem, 8vw, 4rem); }
-
       .welcome-scroll-indicator { display: none; }
 
-      .terminal-body {
-        max-height: 300px;
-        font-size: 0.65rem;
-        padding: 1rem;
-      }
-
-      .audio-cue { display: none; }
+      .form-row { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 480px) {
       .gallery-item .image-container { aspect-ratio: 16 / 10; }
-
-      .spotify-widget {
-        width: 180px;
-        bottom: 10px;
-        right: 10px;
-      }
-
+      .spotify-widget { width: 180px; }
       .spotify-widget iframe { height: 50px; }
-
       .nav-tabs .logo { font-size: 0.8rem; }
-
-      .terminal-body {
-        max-height: 200px;
-        font-size: 0.55rem;
-        padding: 0.8rem;
-      }
-
-      .terminal-line { flex-wrap: wrap; }
     }
 
     /* Utility */
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-    @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.6); } }
 
-    .flicker { animation: flicker 3s infinite; }
+    .flicker {
+      animation: flicker 3s infinite;
+    }
 
-    /* Scrollbar for terminal */
-    .terminal-body::-webkit-scrollbar {
-      width: 3px;
-    }
-    .terminal-body::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .terminal-body::-webkit-scrollbar-thumb {
-      background: var(--pink);
-      box-shadow: 0 0 10px var(--pink);
+    @keyframes flicker {
+      0%, 18%, 20%, 50.1%, 60%, 65.1%, 80%, 90.1%, 92%, 100% { opacity: 1; }
+      19%, 49%, 50%, 60.1%, 65%, 80.1%, 90%, 91% { opacity: 0.4; }
     }
   </style>
 </head>
@@ -1035,10 +914,10 @@
 <div id="cursor-ring"></div>
 
 <!-- ============================================================
-     WELCOME SCREEN
+     WELCOME SCREEN - SCROLL DRIVEN
 ============================================================ -->
 <div id="welcome-screen">
-  <canvas id="welcome-stars"></canvas>
+  <canvas id="welcome-stars" class="welcome-stars"></canvas>
   <div class="welcome-content">
     <div class="welcome-title">THE BLACKHOLE</div>
     <div class="welcome-sub">enter the void <span class="blink">▌</span></div>
@@ -1055,7 +934,7 @@
 <div id="main-content">
 
   <!-- ============================================================
-       NAVIGATION
+       NAVIGATION - MULTI-TAB
   ============================================================ -->
   <nav class="nav-tabs" id="nav-tabs">
     <div class="logo">
@@ -1066,7 +945,7 @@
       <li><button class="tab-btn active" data-tab="home">// HOME</button></li>
       <li><button class="tab-btn" data-tab="gallery">// VAULT</button></li>
       <li><button class="tab-btn" data-tab="projects">// PROJECTS</button></li>
-      <li><button class="tab-btn" data-tab="terminal">// TERMINAL</button></li>
+      <li><button class="tab-btn" data-tab="contact">// CONTACT</button></li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
       <span></span>
@@ -1076,16 +955,11 @@
   </nav>
 
   <!-- ============================================================
-     TAB: HOME - RETRO-FUTURISTIC SUN GRID
+     TAB: HOME
   ============================================================ -->
   <section class="tab-content active" id="tab-home">
     <div class="hero-section">
-      <!-- Grid Sunset Background -->
-      <div class="grid-sunset">
-        <canvas id="grid-sunset-canvas"></canvas>
-      </div>
-      
-      <span class="hero-tag">// Graphic Designer · Retro-Futurist · Visual Alchemist</span>
+      <span class="hero-tag flicker">// Graphic Designer · Retro-Futurist · Visual Alchemist</span>
       <h1 class="hero-name">BLACKHOLE</h1>
       <div class="hero-handle">dsn_ajn</div>
       <p class="hero-sub">
@@ -1102,11 +976,11 @@
     <div class="section-eyebrow">01 — THE VAULT</div>
     <h2 class="section-title">
       <span style="color:var(--text);">MASTERPIECE</span><br>
-      <span style="color:var(--cyan); text-shadow:var(--glow-cyan);">COLLECTION</span>
+      <span style="color:var(--cyan);">COLLECTION</span>
     </h2>
 
     <div class="gallery-grid">
-      <!-- Gallery Items 1-11 -->
+      <!-- Gallery Item 1 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/suzuki with noise.png" alt="Suzuki Poster" loading="lazy">
@@ -1117,6 +991,7 @@
         <a href="images/suzuki with noise.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 2 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/horror.png" alt="Horror" loading="lazy">
@@ -1127,6 +1002,7 @@
         <a href="images/horror.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 3 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/travis edited.png" alt="Travis Scott" loading="lazy">
@@ -1137,6 +1013,7 @@
         <a href="images/travis edited.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 4 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/sr71 with the signature.png" alt="SR71 Blackbird" loading="lazy">
@@ -1147,6 +1024,7 @@
         <a href="images/sr71 with the signature.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 5 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/surfing.png" alt="Father of Surfing" loading="lazy">
@@ -1157,6 +1035,7 @@
         <a href="images/surfing.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 6 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/gorden ramsy.png" alt="Hell's Kitchen" loading="lazy">
@@ -1167,6 +1046,7 @@
         <a href="images/gorden ramsy.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 7 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/final result.png" alt="Devil Banana Company" loading="lazy">
@@ -1177,6 +1057,7 @@
         <a href="images/final result.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 8 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/doomed.png" alt="Doomed" loading="lazy">
@@ -1187,6 +1068,7 @@
         <a href="images/doomed.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 9 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/dapikcha.png" alt="Walter White" loading="lazy">
@@ -1197,6 +1079,7 @@
         <a href="images/dapikcha.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 10 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/11212.png" alt="Shattered Cognition" loading="lazy">
@@ -1207,6 +1090,7 @@
         <a href="images/11212.png" target="_blank" class="image-link">VIEW DESIGN <span>→</span></a>
       </div>
 
+      <!-- Gallery Item 11 -->
       <div class="gallery-item">
         <div class="image-container">
           <img src="images/zkoka.png" alt="Lonely Knight" loading="lazy">
@@ -1226,7 +1110,7 @@
     <div class="section-eyebrow">02 — THE WORK</div>
     <h2 class="section-title">
       <span style="color:var(--text);">FEATURED</span><br>
-      <span style="color:var(--magenta); text-shadow:0 0 30px rgba(255,0,255,0.2);">PROJECTS</span>
+      <span style="color:var(--purple);">PROJECTS</span>
     </h2>
 
     <div class="projects-grid">
@@ -1275,26 +1159,70 @@
   </section>
 
   <!-- ============================================================
-     TAB: TERMINAL - KALI LINUX STYLE
+     TAB: CONTACT - TERMINAL STYLE
   ============================================================ -->
-  <section class="tab-content" id="tab-terminal">
+  <section class="tab-content" id="tab-contact">
     <div class="section-eyebrow">03 — THE TERMINAL</div>
     <h2 class="section-title">
-      <span style="color:var(--text);">KALI</span><br>
-      <span style="color:var(--pink); text-shadow:var(--glow-pink);">SHELL_</span>
+      <span style="color:var(--text);">INITIATE</span><br>
+      <span style="color:var(--cyan);">CONTACT_</span>
     </h2>
 
-    <div class="terminal-wrapper">
-      <div class="terminal-header">
-        <div class="terminal-dots">
-          <span class="terminal-dot red"></span>
-          <span class="terminal-dot amber"></span>
-          <span class="terminal-dot green"></span>
-        </div>
-        <span class="terminal-title">ROOT@BLACKHOLE:~#</span>
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <div class="t-dot t-dot-red"></div>
+        <div class="t-dot t-dot-amber"></div>
+        <div class="t-dot t-dot-green"></div>
+        <div class="t-title">AJN_TERMINAL v2.4.1 — root@dsn_ajn:~</div>
       </div>
-      <div class="terminal-body" id="terminal-body">
-        <!-- Terminal lines will be injected by JS -->
+
+      <div class="terminal-body">
+        <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ whoami</span></p>
+        <p class="t-line" style="margin-bottom:0.8rem;"><span class="t-out">// Graphic designer. Retro futurist. Visual alchemist. Based in the neon underground.</span></p>
+
+        <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ cat socials.txt</span></p>
+        <p class="t-line" style="margin-bottom:0.5rem;"><span class="t-out">// Active channels detected —</span></p>
+
+        <div class="socials">
+          <a href="https://discord.com/users/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Discord profile">
+            <i class="fab fa-discord" style="color:#5865f2;"></i>
+            <span>elyas867 · Discord</span>
+          </a>
+          <a href="https://instagram.com/dsn_ajn" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram profile">
+            <i class="fab fa-instagram" style="background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"></i>
+            <span>ajn_dsn · Instagram</span>
+          </a>
+        </div>
+
+        <p class="t-line"><span class="t-prompt">xilyassexss@gmail.com</span>:<span class="t-cmd"> ~$ compose_message --secure</span></p>
+        <p class="t-line" style="margin-bottom:1rem;"><span class="t-out">// Encrypted channel open. Fill the fields below.</span></p>
+
+        <form class="contact-form" id="contact-form" onsubmit="handleSubmit(event)" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="field-name">YOUR_HANDLE</label>
+              <input type="text" id="field-name" name="name" class="form-input" placeholder="your username" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="field-email">EMAIL_ADDR</label>
+              <input type="email" id="field-email" name="email" class="form-input" placeholder="addr@domain.com" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="field-subject">SUBJECT_LINE</label>
+            <input type="text" id="field-subject" name="subject" class="form-input" placeholder="Commission / collab / inquiry" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="field-message">MESSAGE_BODY</label>
+            <textarea id="field-message" name="message" class="form-textarea" placeholder="Describe your project — style references, deliverables, timeline..." required></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="submit-btn">
+            <span id="submit-label">[ TRANSMIT MESSAGE ]</span>
+          </button>
+          <div id="form-success">
+            <span class="t-out" style="color:var(--cyan);">// MESSAGE_TRANSMITTED ✓ &nbsp;Check your inbox — response inbound.</span>
+          </div>
+        </form>
       </div>
     </div>
   </section>
@@ -1319,26 +1247,14 @@
 </div>
 
 <!-- ============================================================
-     AUDIO TRANSLATION CUES
+     FOOTER
 ============================================================ -->
-<div class="audio-cue" id="audio-cue">
-  <span class="cue-dot"></span>
-  <span class="cue-text" id="cue-text">SYSTEM ACTIVATED</span>
-</div>
-
-<!-- ============================================================
-     FOOTER - UPDATED TO 2026
-============================================================ -->
-<footer class="text-center py-6 border-t border-cyan-500/5 mt-12">
-  <div class="text-3xl font-black uppercase tracking-tight">
-    <span class="text-pink-500 flicker" style="text-shadow:var(--glow-pink);">THE BLACKHOLE</span>
+<footer>
+  <div class="footer-wordmark">
+    <span class="text-pink-500 flicker">THE BLACKHOLE</span>
   </div>
-  <div class="flex items-center justify-center gap-4 max-w-[400px] mx-auto my-4">
-    <div class="flex-1 h-px bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent"></div>
-    <span class="text-[10px] font-mono tracking-[0.4em] text-cyan-500/35">dsn_ajn</span>
-    <div class="flex-1 h-px bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent"></div>
-  </div>
-  <p class="text-[10px] font-mono tracking-[0.25em] text-gray-600 uppercase">© 2026 THE BLACKHOLE PROJECT - ALL RIGHTS RESERVED</p>
+  <div class="footer-rule"><span>dsn_ajn</span></div>
+  <p class="footer-copy">© 2026 THE BLACKHOLE PROJECT - ALL RIGHTS RESERVED</p>
 </footer>
 
 <!-- ============================================================
@@ -1346,17 +1262,16 @@
 ============================================================ -->
 <script>
 /* ================================================================
-   WELCOME SCREEN
+   WELCOME SCREEN - SCROLL DRIVEN FADE
 ================================================================ */
-(function initWelcome() {
+(function initWelcomeScreen() {
   const welcome = document.getElementById('welcome-screen');
   const mainContent = document.getElementById('main-content');
   const navTabs = document.getElementById('nav-tabs');
-  const spotify = document.getElementById('spotify-widget');
-  const audioCue = document.getElementById('audio-cue');
+  const spotifyWidget = document.getElementById('spotify-widget');
   let hasFaded = false;
 
-  // Stars
+  // Stars background
   const canvas = document.getElementById('welcome-stars');
   const ctx = canvas.getContext('2d');
   let stars = [];
@@ -1370,11 +1285,11 @@
 
   function initStars() {
     stars = [];
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 200; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 0.5,
+        size: Math.random() * 1.5 + 0.5,
         speed: Math.random() * 0.3 + 0.1,
         opacity: Math.random() * 0.8 + 0.2
       });
@@ -1386,168 +1301,56 @@
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     stars.forEach(star => {
       star.x += star.speed * 0.3;
-      if (star.x > canvas.width) { star.x = 0; star.y = Math.random() * canvas.height; }
+      if (star.x > canvas.width) {
+        star.x = 0;
+        star.y = Math.random() * canvas.height;
+      }
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.6})`;
+      ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.5})`;
       ctx.fill();
     });
     requestAnimationFrame(animateStars);
   }
   animateStars();
 
-  function fadeWelcome() {
-    if (hasFaded) return;
-    hasFaded = true;
-    welcome.classList.add('fade-out');
-    setTimeout(() => {
-      mainContent.classList.add('visible');
-      navTabs.classList.add('visible');
-      spotify.classList.add('visible');
-      setTimeout(() => audioCue.classList.add('visible'), 800);
-    }, 400);
-    window.removeEventListener('scroll', handleScroll);
-  }
-
+  // Scroll-driven fade
   function handleScroll() {
     if (hasFaded) return;
+    
     const scrollY = window.scrollY;
-    const threshold = window.innerHeight * 0.2;
-    if (scrollY > threshold) fadeWelcome();
+    const windowHeight = window.innerHeight;
+    const threshold = windowHeight * 0.2;
+
+    if (scrollY > threshold) {
+      hasFaded = true;
+      welcome.classList.add('fade-out');
+      
+      setTimeout(() => {
+        mainContent.classList.add('visible');
+        navTabs.classList.add('visible');
+        spotifyWidget.classList.add('visible');
+      }, 400);
+      
+      window.removeEventListener('scroll', handleScroll);
+    }
   }
 
   window.addEventListener('scroll', handleScroll, { passive: true });
-  welcome.addEventListener('click', fadeWelcome);
-})();
 
-/* ================================================================
-   RETRO-FUTURISTIC SUN GRID
-================================================================ */
-(function initGridSunset() {
-  const canvas = document.getElementById('grid-sunset-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let w, h, tick = 0;
-
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-    w = canvas.width;
-    h = canvas.height;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    tick += 0.008;
-
-    const horizon = h * 0.55;
-    const vpx = w / 2;
-
-    // Gradient sky
-    const skyGrad = ctx.createLinearGradient(0, 0, 0, horizon);
-    skyGrad.addColorStop(0, 'rgba(10, 10, 15, 1)');
-    skyGrad.addColorStop(0.3, 'rgba(20, 5, 30, 0.9)');
-    skyGrad.addColorStop(0.6, 'rgba(40, 0, 40, 0.7)');
-    skyGrad.addColorStop(0.85, 'rgba(80, 0, 50, 0.5)');
-    skyGrad.addColorStop(1, 'rgba(255, 0, 127, 0.15)');
-    ctx.fillStyle = skyGrad;
-    ctx.fillRect(0, 0, w, horizon);
-
-    // Sun glow
-    const sunY = horizon - 50;
-    const sunR = 80 + Math.sin(tick * 0.5) * 5;
-    const sunGrad = ctx.createRadialGradient(vpx, sunY, 0, vpx, sunY, sunR * 2);
-    sunGrad.addColorStop(0, 'rgba(255, 0, 127, 0.6)');
-    sunGrad.addColorStop(0.2, 'rgba(255, 0, 127, 0.3)');
-    sunGrad.addColorStop(0.4, 'rgba(255, 0, 127, 0.1)');
-    sunGrad.addColorStop(0.6, 'rgba(0, 240, 255, 0.05)');
-    sunGrad.addColorStop(1, 'rgba(0, 240, 255, 0)');
-    ctx.fillStyle = sunGrad;
-    ctx.beginPath();
-    ctx.arc(vpx, sunY, sunR * 2, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Sun core
-    ctx.shadowColor = '#ff007f';
-    ctx.shadowBlur = 60;
-    ctx.fillStyle = 'rgba(255, 0, 127, 0.3)';
-    ctx.beginPath();
-    ctx.arc(vpx, sunY, sunR * 0.6, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.shadowBlur = 0;
-
-    // Grid lines - horizontal
-    const numH = 18;
-    for (let i = 0; i <= numH; i++) {
-      const t = i / numH;
-      const y = horizon + (h - horizon) * Math.pow(t, 1.4);
-      const ext = 1 - Math.pow(t, 0.7) * 0.75;
-      const lx = vpx - vpx * ext;
-      const rx = vpx + (w - vpx) * ext;
-      
-      const alpha = 0.03 + t * 0.06 + Math.sin(tick * 2 + i * 0.5) * 0.01;
-      ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
-      ctx.lineWidth = 0.8;
-      ctx.shadowColor = 'rgba(0, 240, 255, 0.05)';
-      ctx.shadowBlur = 10;
-      ctx.beginPath();
-      ctx.moveTo(lx, y);
-      ctx.lineTo(rx, y);
-      ctx.stroke();
+  // Also allow click on welcome screen
+  welcome.addEventListener('click', () => {
+    if (!hasFaded) {
+      hasFaded = true;
+      welcome.classList.add('fade-out');
+      setTimeout(() => {
+        mainContent.classList.add('visible');
+        navTabs.classList.add('visible');
+        spotifyWidget.classList.add('visible');
+      }, 400);
+      window.removeEventListener('scroll', handleScroll);
     }
-
-    // Grid lines - vertical perspective
-    const numV = 14;
-    for (let i = 0; i <= numV; i++) {
-      const t = i / numV;
-      const x = t * w;
-      const alpha = 0.02 + Math.sin(Math.PI * t) * 0.06;
-      ctx.strokeStyle = `rgba(255, 0, 127, ${alpha})`;
-      ctx.lineWidth = 0.6;
-      ctx.shadowColor = 'rgba(255, 0, 127, 0.03)';
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.moveTo(vpx, horizon);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-    ctx.shadowBlur = 0;
-
-    // Horizon glow
-    const glowGrad = ctx.createLinearGradient(0, horizon - 20, 0, horizon + 40);
-    glowGrad.addColorStop(0, 'rgba(0, 240, 255, 0)');
-    glowGrad.addColorStop(0.3, 'rgba(255, 0, 127, 0.08)');
-    glowGrad.addColorStop(0.6, 'rgba(0, 240, 255, 0.05)');
-    glowGrad.addColorStop(1, 'rgba(0, 240, 255, 0)');
-    ctx.fillStyle = glowGrad;
-    ctx.fillRect(0, horizon - 20, w, 60);
-
-    // Sun stripes
-    const stripes = 12;
-    for (let i = 0; i < stripes; i++) {
-      const angle = (i / stripes) * Math.PI * 2 + tick * 0.2;
-      const len = sunR * 0.8 + Math.sin(tick * 0.7 + i) * 15;
-      const x1 = vpx + Math.cos(angle) * sunR * 0.3;
-      const y1 = sunY + Math.sin(angle) * sunR * 0.3;
-      const x2 = vpx + Math.cos(angle) * len;
-      const y2 = sunY + Math.sin(angle) * len;
-      ctx.strokeStyle = `rgba(255, 0, 127, ${0.08 + Math.sin(tick * 0.5 + i) * 0.03})`;
-      ctx.lineWidth = 1.5;
-      ctx.shadowColor = 'rgba(255, 0, 127, 0.05)';
-      ctx.shadowBlur = 15;
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.stroke();
-    }
-    ctx.shadowBlur = 0;
-
-    requestAnimationFrame(draw);
-  }
-  draw();
+  });
 })();
 
 /* ================================================================
@@ -1555,7 +1358,7 @@
 ================================================================ */
 (function initCursor() {
   const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
+  const cursorRing = document.getElementById('cursor-ring');
   let mx = 0, my = 0, rx = 0, ry = 0;
 
   document.addEventListener('mousemove', function(e) {
@@ -1568,34 +1371,30 @@
   function trackRing() {
     rx += (mx - rx) * 0.13;
     ry += (my - ry) * 0.13;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
+    cursorRing.style.left = rx + 'px';
+    cursorRing.style.top = ry + 'px';
     requestAnimationFrame(trackRing);
   }
   trackRing();
 
-  document.querySelectorAll('a,button,.gallery-item,.project-card,input,textarea,.tab-btn').forEach(function(el) {
+  document.querySelectorAll('a,button,.gallery-item,.project-card,input,textarea').forEach(function(el) {
     el.addEventListener('mouseenter', function() {
-      cursor.style.transform = 'translate(-50%,-50%) scale(2.8)';
-      cursor.style.boxShadow = '0 0 50px var(--cyan), 0 0 80px var(--cyan)';
-      ring.style.width = '56px';
-      ring.style.height = '56px';
-      ring.style.borderColor = 'var(--cyan)';
-      ring.style.boxShadow = '0 0 60px rgba(0, 240, 255, 0.2)';
+      cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
+      cursorRing.style.width = '56px';
+      cursorRing.style.height = '56px';
+      cursorRing.style.borderColor = 'var(--cyan)';
     });
     el.addEventListener('mouseleave', function() {
       cursor.style.transform = 'translate(-50%,-50%) scale(1)';
-      cursor.style.boxShadow = '0 0 30px var(--cyan), 0 0 60px var(--cyan)';
-      ring.style.width = '40px';
-      ring.style.height = '40px';
-      ring.style.borderColor = 'var(--pink)';
-      ring.style.boxShadow = '0 0 40px rgba(255, 0, 127, 0.15)';
+      cursorRing.style.width = '40px';
+      cursorRing.style.height = '40px';
+      cursorRing.style.borderColor = 'var(--pink)';
     });
   });
 })();
 
 /* ================================================================
-   MULTI-TAB NAVIGATION - CYBERPUNK TRANSITIONS
+   MULTI-TAB NAVIGATION
 ================================================================ */
 (function initTabs() {
   const tabBtns = document.querySelectorAll('.tab-btn');
@@ -1607,25 +1406,16 @@
     btn.addEventListener('click', function() {
       const tabId = this.dataset.tab;
       
-      // Cyberpunk transition: flash effect
-      document.querySelector('.tab-content.active')?.classList.remove('active');
-      
       tabBtns.forEach(b => b.classList.remove('active'));
       this.classList.add('active');
       
-      // System loading sequence effect
-      const targetContent = document.getElementById('tab-' + tabId);
-      
-      // Brief flash before showing new content
-      targetContent.style.opacity = '0';
-      targetContent.style.transform = 'scale(0.96)';
-      
-      setTimeout(() => {
-        targetContent.classList.add('active');
-        targetContent.style.opacity = '1';
-        targetContent.style.transform = 'scale(1)';
-      }, 100);
-      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+        if (content.id === 'tab-' + tabId) {
+          content.classList.add('active');
+        }
+      });
+
       tabList.classList.remove('open');
       navToggle.setAttribute('aria-expanded', 'false');
     });
@@ -1642,99 +1432,6 @@
       navToggle.setAttribute('aria-expanded', 'false');
     }
   });
-})();
-
-/* ================================================================
-   KALI LINUX TERMINAL - MATRIX CODE EFFECT
-================================================================ */
-(function initTerminal() {
-  const terminalBody = document.getElementById('terminal-body');
-  if (!terminalBody) return;
-
-  const commands = [
-    { cmd: 'whoami', output: 'root' },
-    { cmd: 'uname -a', output: 'Linux blackhole 6.8.0 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux' },
-    { cmd: 'cat /etc/os-release', output: 'NAME="Kali Linux"\nVERSION="2026.1"\nID=kali\nID_LIKE=debian' },
-    { cmd: 'ifconfig eth0', output: 'eth0: flags=4163<UP,BROADCAST,RUNNING>  mtu 1500\ninet 192.168.1.100  netmask 255.255.255.0  broadcast 192.168.1.255' },
-    { cmd: 'ps aux | grep systemd', output: 'root         1  0.0  0.1  16824  1024 ?  Ss  00:00   0:02 /sbin/init\nroot        678  0.0  0.0  12345  512 ?  Ss  00:00   0:01 /lib/systemd/systemd-journald' },
-    { cmd: 'nmap -sP 192.168.1.0/24', output: 'Starting Nmap 7.95 ( https://nmap.org )\nNmap scan report for 192.168.1.1\nHost is up (0.0012s latency).\nNmap scan report for 192.168.1.100\nHost is up (0.0008s latency).' },
-    { cmd: 'df -h', output: 'Filesystem      Size  Used Avail Use% Mounted on\n/dev/sda1       256G   42G  214G  17% /\n/dev/sda2       512G   128G  384G  25% /home' },
-    { cmd: 'tail -f /var/log/syslog', output: 'Jan 1 00:00:01 blackhole systemd[1]: Started Session 1 of user root.\nJan 1 00:00:02 blackhole kernel: [    0.000000] Linux version 6.8.0\nJan 1 00:00:03 blackhole networkd[456]: eth0: Link is up' },
-    { cmd: 'python3 --version', output: 'Python 3.12.0' },
-    { cmd: 'gcc --version', output: 'gcc (Debian 14.1.0) 14.1.0\nCopyright (C) 2024 Free Software Foundation, Inc.' },
-    { cmd: 'curl -I blackhole.local', output: 'HTTP/1.1 200 OK\nServer: nginx/1.26.0\nDate: Tue, 01 Jan 2026 00:00:00 GMT\nContent-Type: text/html\nContent-Length: 2048' },
-    { cmd: 'whois blackhole.local', output: 'Domain Name: BLACKHOLE.LOCAL\nRegistry: LOCAL\nRegistrar: DSN_AJN\nCreation Date: 2026-01-01\nExpiration Date: 2030-01-01' },
-    { cmd: 'ls -la /usr/local/bin/', output: 'total 2048\ndrwxr-xr-x  2 root root  4096 Jan  1 00:00 .\ndrwxr-xr-x 10 root root  4096 Jan  1 00:00 ..\n-rwxr-xr-x  1 root root 1024 Jan  1 00:00 blackhole\n-rwxr-xr-x  1 root root  512 Jan  1 00:00 void' },
-    { cmd: 'ping -c 4 8.8.8.8', output: 'PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.\n64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=14.2 ms\n64 bytes from 8.8.8.8: icmp_seq=2 ttl=117 time=13.8 ms\n64 bytes from 8.8.8.8: icmp_seq=3 ttl=117 time=14.5 ms\n64 bytes from 8.8.8.8: icmp_seq=4 ttl=117 time=13.9 ms' },
-    { cmd: 'echo "THE BLACKHOLE SYSTEM ONLINE"', output: 'THE BLACKHOLE SYSTEM ONLINE' },
-    { cmd: 'uptime', output: ' 00:00:00 up 1 day, 2:30, 1 user, load average: 0.08, 0.03, 0.01' },
-  ];
-
-  let lineIndex = 0;
-  let charIndex = 0;
-  let currentLine = '';
-  let isTyping = false;
-
-  function typeLine() {
-    if (lineIndex >= commands.length) {
-      // Loop back
-      lineIndex = 0;
-      setTimeout(typeLine, 2000);
-      return;
-    }
-
-    const entry = commands[lineIndex];
-    const line = document.createElement('div');
-    line.className = 'terminal-line';
-    
-    // Build the line content
-    let content = `<span class="prompt">root@blackhole:~#</span> <span class="cmd">${entry.cmd}</span>`;
-    line.innerHTML = content;
-    terminalBody.appendChild(line);
-    
-    // After command, show output
-    setTimeout(() => {
-      const outputLines = entry.output.split('\n');
-      outputLines.forEach((out, idx) => {
-        setTimeout(() => {
-          const outLine = document.createElement('div');
-          outLine.className = 'terminal-line';
-          const isGreen = out.includes('online') || out.includes('OK') || out.includes('up');
-          const isPink = out.includes('BLACKHOLE') || out.includes('root');
-          let colorClass = 'output';
-          if (isGreen) colorClass += ' green';
-          if (isPink) colorClass += ' pink';
-          outLine.innerHTML = `<span class="${colorClass}">${out}</span>`;
-          terminalBody.appendChild(outLine);
-          terminalBody.scrollTop = terminalBody.scrollHeight;
-        }, idx * 150);
-      });
-      
-      // Add blank line after output
-      setTimeout(() => {
-        const blank = document.createElement('div');
-        blank.className = 'terminal-line';
-        blank.innerHTML = `<span class="output">&nbsp;</span>`;
-        terminalBody.appendChild(blank);
-        terminalBody.scrollTop = terminalBody.scrollHeight;
-        
-        lineIndex++;
-        setTimeout(typeLine, 600);
-      }, outputLines.length * 150 + 400);
-      
-    }, 400);
-    
-    terminalBody.scrollTop = terminalBody.scrollHeight;
-  }
-
-  // Start typing after a delay
-  setTimeout(typeLine, 1000);
-
-  // Add a cursor at the end
-  const cursorLine = document.createElement('div');
-  cursorLine.className = 'terminal-line';
-  cursorLine.innerHTML = `<span class="prompt">root@blackhole:~#</span> <span class="cmd">_<span class="terminal-cursor"></span></span>`;
-  terminalBody.appendChild(cursorLine);
 })();
 
 /* ================================================================
@@ -1761,24 +1458,24 @@
 })();
 
 /* ================================================================
-   AUDIO CUE ANIMATION
+   CONTACT FORM
 ================================================================ */
-(function initAudioCue() {
-  const cueText = document.getElementById('cue-text');
-  const statuses = [
-    'SYSTEM ACTIVATED',
-    'AUDIO SYNC OK',
-    'NEON ENGAGED',
-    'VOID CONNECTED',
-    'SIGNAL STRONG'
-  ];
-  let idx = 0;
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  const label = document.getElementById('submit-label');
+  const success = document.getElementById('form-success');
+  
+  btn.disabled = true;
+  label.textContent = '[ TRANSMITTING... ]';
 
-  setInterval(() => {
-    idx = (idx + 1) % statuses.length;
-    cueText.textContent = statuses[idx];
-  }, 3000);
-})();
+  setTimeout(() => {
+    e.target.reset();
+    success.style.display = 'block';
+    label.textContent = '[ TRANSMITTED ✓ ]';
+    btn.disabled = false;
+  }, 1600);
+}
 
 /* ================================================================
    GSAP SCROLL REVEAL
@@ -1789,11 +1486,10 @@
 
     gsap.utils.toArray('.gallery-item, .project-card').forEach((el, i) => {
       gsap.fromTo(el,
-        { opacity: 0, y: 50, filter: 'blur(4px)' },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
-          filter: 'blur(0px)',
           duration: 0.8,
           delay: i * 0.08,
           ease: 'power3.out',
@@ -1808,6 +1504,5 @@
   }
 })();
 </script>
-
 </body>
 </html>
